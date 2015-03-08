@@ -42,11 +42,11 @@ public class NoxViewModel {
   }
 
   public boolean hasUrl() {
-    return false;
+    return url != null;
   }
 
   public boolean hasResourceId() {
-    return false;
+    return resourceId != null;
   }
 
   public String getUrl() {
@@ -58,6 +58,8 @@ public class NoxViewModel {
   }
 
   private void validateUrl(String url) {
-
+    if (url == null) {
+      throw new NullPointerException("The url String used to create a NoxViewModel can't be null");
+    }
   }
 }
