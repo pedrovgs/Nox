@@ -19,6 +19,11 @@ package com.github.pedrovgs.nox.sample;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
+/**
+ * Sample activity created to show how to use NoxView with a List of NoxViewModel instances.
+ *
+ * @author Pedro Vicente Gomez Sanchez.
+ */
 public class MainActivity extends ActionBarActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {

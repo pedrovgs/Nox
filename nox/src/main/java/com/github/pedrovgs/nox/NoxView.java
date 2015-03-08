@@ -31,7 +31,7 @@ import android.view.View;
  * NoxViewModel objects are going to be used to render the user interface using the resource used
  * to render inside each element and a view holder.
  *
- * @author Pedro Vicente Gómez Sánchez.
+ * @author Pedro Vicente Gomez Sanchez.
  */
 public class NoxView extends View {
 
