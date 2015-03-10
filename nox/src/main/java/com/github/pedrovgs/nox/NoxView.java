@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import java.util.List;
 
 /**
  * Main library component. This custom view is going to receive a List of Nox objects and create a
@@ -34,6 +35,8 @@ import android.view.View;
  * @author Pedro Vicente Gomez Sanchez.
  */
 public class NoxView extends View {
+
+  private List<NoxViewModel> noxViewModels;
 
   public NoxView(Context context) {
     super(context);
@@ -62,5 +65,19 @@ public class NoxView extends View {
 
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
+  }
+
+  /**
+   * Given a List<NoxViewModel> draws this items keeping the previous view state.
+   */
+  public void showNoxViewModels(List<NoxViewModel> noxViewModels) {
+    validateNoxViewModels(noxViewModels);
+    this.noxViewModels = noxViewModels;
+  }
+
+  private void validateNoxViewModels(List<NoxViewModel> noxViewModelList) {
+    if (noxViewModelList == null) {
+      throw new NullPointerException("The list of NoxViewModel can't be null");
+    }
   }
 }
