@@ -36,8 +36,7 @@ import org.robolectric.annotation.Config;
     noxView = new NoxView(activity);
   }
 
-  @Test(expected = NullPointerException.class)
-  public void shouldNotAcceptANullNoxViewModelListToShow() {
-    noxView.showNoxViewModels(null);
+  @Test(expected = NullPointerException.class) public void shouldNotAcceptANullNoxItemListToShow() {
+    noxView.showNoxItems(null);
   }
 }

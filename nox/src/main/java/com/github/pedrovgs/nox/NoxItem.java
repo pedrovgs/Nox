@@ -22,21 +22,21 @@ package com.github.pedrovgs.nox;
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class NoxViewModel {
+public class NoxItem {
 
   private final String url;
   private final Integer resourceId;
 
-  public NoxViewModel(String url) {
+  public NoxItem(String url) {
     this(url, null);
     validateUrl(url);
   }
 
-  public NoxViewModel(int resourceId) {
+  public NoxItem(int resourceId) {
     this(null, resourceId);
   }
 
-  private NoxViewModel(String url, Integer resourceId) {
+  private NoxItem(String url, Integer resourceId) {
     this.url = url;
     this.resourceId = resourceId;
   }
@@ -59,7 +59,7 @@ public class NoxViewModel {
 
   private void validateUrl(String url) {
     if (url == null) {
-      throw new NullPointerException("The url String used to create a NoxViewModel can't be null");
+      throw new NullPointerException("The url String used to create a NoxItem can't be null");
     }
   }
 }

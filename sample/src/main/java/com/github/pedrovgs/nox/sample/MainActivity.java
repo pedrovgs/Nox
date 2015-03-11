@@ -20,7 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 /**
- * Sample activity created to show how to use NoxView with a List of NoxViewModel instances.
+ * Sample activity created to show how to use NoxView with a List of NoxItem instances.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */

@@ -29,14 +29,14 @@ import java.util.List;
  * awesome panel full of images. This new UI component is going to simulate the Apple's watch main
  * menu user interface http://cdni.wired.co.uk/1240x826/a_c/apple-watch-6_1.jpg
  *
- * NoxViewModel objects are going to be used to render the user interface using the resource used
+ * NoxItem objects are going to be used to render the user interface using the resource used
  * to render inside each element and a view holder.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
 public class NoxView extends View {
 
-  private List<NoxViewModel> noxViewModels;
+  private List<NoxItem> noxItems;
 
   public NoxView(Context context) {
     super(context);
@@ -68,16 +68,17 @@ public class NoxView extends View {
   }
 
   /**
-   * Given a List<NoxViewModel> draws this items keeping the previous view state.
+   * Given a List<NoxItem> draws this items keeping the previous view state.
    */
-  public void showNoxViewModels(List<NoxViewModel> noxViewModels) {
-    validateNoxViewModels(noxViewModels);
-    this.noxViewModels = noxViewModels;
+  //TODO: RENAME THIS AND AND NOX VIEW MODEL CLASS TO NOX ITEM.
+  public void showNoxItems(List<NoxItem> noxItems) {
+    validateNoxItems(noxItems);
+    this.noxItems = noxItems;
   }
 
-  private void validateNoxViewModels(List<NoxViewModel> noxViewModelList) {
-    if (noxViewModelList == null) {
-      throw new NullPointerException("The list of NoxViewModel can't be null");
+  private void validateNoxItems(List<NoxItem> noxItems) {
+    if (noxItems == null) {
+      throw new NullPointerException("The list of NoxItem can't be null");
     }
   }
 }

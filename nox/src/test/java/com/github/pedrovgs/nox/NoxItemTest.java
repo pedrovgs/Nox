@@ -24,37 +24,37 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Pedro Vicente Gómez Sánchez.
  */
-public class NoxViewModelTest {
+public class NoxItemTest {
 
   private static final String ANY_URL = "http://www.anyurl.com";
   private static final int ANY_RESOURCE_ID = 1;
 
   @Test(expected = NullPointerException.class)
-  public void shouldThrowExceptionIfTryToCreateANoxViewModelWithANullUrl() {
-    new NoxViewModel(null);
+  public void shouldThrowExceptionIfTryToCreateANoxItemWithANullUrl() {
+    new NoxItem(null);
   }
 
   @Test public void shouldReturnTrueIfHasConfiguredAnUrl() {
-    NoxViewModel noxViewModel = new NoxViewModel(ANY_URL);
+    NoxItem noxItem = new NoxItem(ANY_URL);
 
-    assertTrue(noxViewModel.hasUrl());
+    assertTrue(noxItem.hasUrl());
   }
 
   @Test public void shouldReturnFalseIfHasNoConfiguredAnUrl() {
-    NoxViewModel noxViewModel = new NoxViewModel(ANY_RESOURCE_ID);
+    NoxItem noxItem = new NoxItem(ANY_RESOURCE_ID);
 
-    assertFalse(noxViewModel.hasUrl());
+    assertFalse(noxItem.hasUrl());
   }
 
   @Test public void shouldReturnTrueIfHasConfiguredAResourceId() {
-    NoxViewModel noxViewModel = new NoxViewModel(ANY_RESOURCE_ID);
+    NoxItem noxItem = new NoxItem(ANY_RESOURCE_ID);
 
-    assertTrue(noxViewModel.hasResourceId());
+    assertTrue(noxItem.hasResourceId());
   }
 
   @Test public void shouldReturnFalseIfHasNoConfiguredAResoureceId() {
-    NoxViewModel noxViewModel = new NoxViewModel(ANY_URL);
+    NoxItem noxItem = new NoxItem(ANY_URL);
 
-    assertFalse(noxViewModel.hasResourceId());
+    assertFalse(noxItem.hasResourceId());
   }
 }
