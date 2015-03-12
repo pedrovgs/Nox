@@ -70,7 +70,6 @@ public class NoxView extends View {
   /**
    * Given a List<NoxItem> draws this items keeping the previous view state.
    */
-  //TODO: RENAME THIS AND AND NOX VIEW MODEL CLASS TO NOX ITEM.
   public void showNoxItems(List<NoxItem> noxItems) {
     validateNoxItems(noxItems);
     this.noxItems = noxItems;
