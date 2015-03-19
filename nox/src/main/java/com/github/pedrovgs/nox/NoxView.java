@@ -19,6 +19,7 @@ package com.github.pedrovgs.nox;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -65,6 +66,11 @@ public class NoxView extends View {
 
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
+    int y = getMeasuredHeight() / 2;
+    int x = getMeasuredWidth() / 2;
+    Paint paint = new Paint();
+    paint.setStyle(Paint.Style.FILL);
+    canvas.drawCircle(x, y, 100, paint);
   }
 
   /**
