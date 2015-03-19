@@ -15,19 +15,6 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-  <com.github.pedrovgs.nox.NoxView
-      xmlns:nox="http://schemas.android.com/apk/res-auto"
-      android:id="@+id/nox_view"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="@color/white"
-      nox:item_size="@dimen/nox_item_size"/>
-
-
-</RelativeLayout>
+<resources>
+  <dimen name="nox_item_size">20dp</dimen>
+</resources>

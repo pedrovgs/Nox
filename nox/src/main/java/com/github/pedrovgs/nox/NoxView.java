@@ -38,7 +38,7 @@ import java.util.List;
 public class NoxView extends View {
 
   private List<NoxItem> noxItems;
-
+  
   public NoxView(Context context) {
     super(context);
   }
