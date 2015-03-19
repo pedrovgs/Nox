@@ -16,6 +16,8 @@
 
 package com.github.pedrovgs.nox;
 
+import android.graphics.drawable.Drawable;
+
 /**
  * Contains all the NoxView configurable elements needed to render a list of NoxItems inside
  * NoxView.
@@ -25,6 +27,7 @@ package com.github.pedrovgs.nox;
 class NoxConfig {
 
   private float noxItemSize;
+  private Drawable placeholder;
 
   float getNoxItemSize() {
     return noxItemSize;
@@ -32,5 +35,13 @@ class NoxConfig {
 
   void setNoxItemSize(float noxItemSize) {
     this.noxItemSize = noxItemSize;
+  }
+
+  void setPlaceholder(Drawable placeholder) {
+    this.placeholder = placeholder;
+  }
+
+  Drawable getPlaceholder() {
+    return placeholder;
   }
 }

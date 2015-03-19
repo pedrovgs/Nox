@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -96,9 +97,23 @@ public class NoxView extends View {
     noxConfig = new NoxConfig();
     TypedArray attributes = context.getTheme()
         .obtainStyledAttributes(attrs, R.styleable.nox, defStyleAttr, defStyleRes);
+    initializeNoxItemSize(attributes);
+    initializeNoxItemPlaceholder(attributes);
+    attributes.recycle();
+  }
+
+  private void initializeNoxItemSize(TypedArray attributes) {
     float noxItemDefaultValue = getResources().getDimension(R.dimen.default_nox_item_size);
     float noxItemSize = attributes.getDimension(R.styleable.nox_item_size, noxItemDefaultValue);
     noxConfig.setNoxItemSize(noxItemSize);
-    attributes.recycle();
+  }
+
+  private void initializeNoxItemPlaceholder(TypedArray attributes) {
+    Drawable placeholder = attributes.getDrawable(R.styleable.nox_placeholder);
+    if (placeholder == null) {
+      //TODO: Change this with a white circle or another placeholder.
+      placeholder = getContext().getResources().getDrawable(R.drawable.abc_ic_clear_mtrl_alpha);
+    }
+    noxConfig.setPlaceholder(placeholder);
   }
 }
