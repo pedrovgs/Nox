@@ -27,6 +27,7 @@ import android.graphics.drawable.Drawable;
 class NoxConfig {
 
   private float noxItemSize;
+  private float noxItemMargin;
   private Drawable placeholder;
 
   float getNoxItemSize() {
@@ -35,6 +36,14 @@ class NoxConfig {
 
   void setNoxItemSize(float noxItemSize) {
     this.noxItemSize = noxItemSize;
+  }
+
+  void setNoxItemMargin(float noxItemMargin) {
+    this.noxItemMargin = noxItemMargin;
+  }
+
+  float getNoxItemMargin() {
+    return noxItemMargin;
   }
 
   void setPlaceholder(Drawable placeholder) {

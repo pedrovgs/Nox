@@ -28,7 +28,7 @@
       android:layout_height="match_parent"
       android:background="@color/white"
       nox:item_size="@dimen/nox_item_size"
+      nox:item_margin="@dimen/nox_item_margin"
       nox:placeholder="@drawable/ic_launcher"/>
-
 
 </RelativeLayout>

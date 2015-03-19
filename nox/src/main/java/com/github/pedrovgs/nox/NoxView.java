@@ -98,14 +98,22 @@ public class NoxView extends View {
     TypedArray attributes = context.getTheme()
         .obtainStyledAttributes(attrs, R.styleable.nox, defStyleAttr, defStyleRes);
     initializeNoxItemSize(attributes);
+    initializeNoxItemMargin(attributes);
     initializeNoxItemPlaceholder(attributes);
     attributes.recycle();
   }
 
   private void initializeNoxItemSize(TypedArray attributes) {
-    float noxItemDefaultValue = getResources().getDimension(R.dimen.default_nox_item_size);
-    float noxItemSize = attributes.getDimension(R.styleable.nox_item_size, noxItemDefaultValue);
+    float noxItemSizeDefaultValue = getResources().getDimension(R.dimen.default_nox_item_size);
+    float noxItemSize = attributes.getDimension(R.styleable.nox_item_size, noxItemSizeDefaultValue);
     noxConfig.setNoxItemSize(noxItemSize);
+  }
+
+  private void initializeNoxItemMargin(TypedArray attributes) {
+    float noxItemMarginDefaultValue = getResources().getDimension(R.dimen.default_nox_item_margin);
+    float noxItemMargin =
+        attributes.getDimension(R.styleable.nox_item_margin, noxItemMarginDefaultValue);
+    noxConfig.setNoxItemMargin(noxItemMargin);
   }
 
   private void initializeNoxItemPlaceholder(TypedArray attributes) {
