@@ -26,19 +26,26 @@ public class NoxItem {
 
   private final String url;
   private final Integer resourceId;
+  private final Integer placeholder;
 
   public NoxItem(String url) {
-    this(url, null);
     validateUrl(url);
+    this.url = url;
+    this.resourceId = null;
+    this.placeholder = null;
   }
 
   public NoxItem(int resourceId) {
-    this(null, resourceId);
+    this.url = null;
+    this.resourceId = resourceId;
+    this.placeholder = null;
   }
 
-  private NoxItem(String url, Integer resourceId) {
+  public NoxItem(String url, int placeholder) {
+    validateUrl(url);
     this.url = url;
-    this.resourceId = resourceId;
+    this.placeholder = placeholder;
+    this.resourceId = null;
   }
 
   public boolean hasUrl() {
@@ -47,6 +54,10 @@ public class NoxItem {
 
   public boolean hasResourceId() {
     return resourceId != null;
+  }
+
+  public boolean hasPlaceholder() {
+    return placeholder != null;
   }
 
   public String getUrl() {

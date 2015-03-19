@@ -28,10 +28,16 @@ public class NoxItemTest {
 
   private static final String ANY_URL = "http://www.anyurl.com";
   private static final int ANY_RESOURCE_ID = 1;
+  private static final int ANY_PLACEHOLDER = 2;
 
   @Test(expected = NullPointerException.class)
   public void shouldThrowExceptionIfTryToCreateANoxItemWithANullUrl() {
     new NoxItem(null);
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void shouldThrowExceptionIfTryToCreateANoxItemWithAnNullUrlAndAnyPlaceholder() {
+    new NoxItem(null, ANY_PLACEHOLDER);
   }
 
   @Test public void shouldReturnTrueIfHasConfiguredAnUrl() {
@@ -52,9 +58,21 @@ public class NoxItemTest {
     assertTrue(noxItem.hasResourceId());
   }
 
-  @Test public void shouldReturnFalseIfHasNoConfiguredAResoureceId() {
+  @Test public void shouldReturnFalseIfHasNoConfiguredAResourceId() {
     NoxItem noxItem = new NoxItem(ANY_URL);
 
     assertFalse(noxItem.hasResourceId());
+  }
+
+  @Test public void shouldReturnTrueIfHasPlaceholder() {
+    NoxItem noxItem = new NoxItem(ANY_URL, ANY_PLACEHOLDER);
+
+    assertTrue(noxItem.hasPlaceholder());
+  }
+
+  @Test public void shouldReturnFalseIfHasNoConfiguredAPlaceholder() {
+    NoxItem noxItem = new NoxItem(ANY_URL);
+
+    assertFalse(noxItem.hasPlaceholder());
   }
 }
