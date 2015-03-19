@@ -5,12 +5,10 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:1.0.0'
     classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
   }
 }
 apply plugin: 'com.android.library'
 apply plugin: 'checkstyle'
-apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
   jcenter()
@@ -21,7 +19,7 @@ android {
   buildToolsVersion "21.1.2"
 
   defaultConfig {
-    minSdkVersion 14
+    minSdkVersion 8
     targetSdkVersion 21
     versionCode 1
     versionName "1.0"
@@ -38,8 +36,6 @@ apply plugin: 'android-unit-test'
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   compile 'com.android.support:appcompat-v7:21.0.3'
-  apt 'io.sweers.barber:barber-compiler:1.1.1'
-  compile 'io.sweers.barber:barber-api:1.1.1'
   testCompile 'junit:junit:4.10'
   testCompile 'org.mockito:mockito-all:1.9.5'
   testCompile 'org.robolectric:robolectric:2.4'
@@ -47,7 +43,7 @@ dependencies {
 
 task checkstyle(type: Checkstyle) {
   configFile file('../config/checkstyle/checkstyle.xml')
-  source 'src'
+  source 'src/main/java'
   include '**/*.java'
   exclude '**/gen/**'
 
