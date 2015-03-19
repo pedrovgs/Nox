@@ -18,6 +18,7 @@ package com.github.pedrovgs.nox;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Build;
@@ -38,22 +39,25 @@ import java.util.List;
 public class NoxView extends View {
 
   private List<NoxItem> noxItems;
+  private NoxConfig noxConfig;
 
   public NoxView(Context context) {
-    super(context);
+    this(context, null);
   }
 
   public NoxView(Context context, AttributeSet attrs) {
-    super(context, attrs);
+    this(context, attrs, 0);
   }
 
   public NoxView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
+    initializeNoxViewConfig(context, attrs, defStyleAttr, 0);
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   public NoxView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
+    initializeNoxViewConfig(context, attrs, defStyleAttr, defStyleRes);
   }
 
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -85,5 +89,16 @@ public class NoxView extends View {
     if (noxItems == null) {
       throw new NullPointerException("The list of NoxItem can't be null");
     }
+  }
+
+  private void initializeNoxViewConfig(Context context, AttributeSet attrs, int defStyleAttr,
+      int defStyleRes) {
+    noxConfig = new NoxConfig();
+    TypedArray attributes = context.getTheme()
+        .obtainStyledAttributes(attrs, R.styleable.nox, defStyleAttr, defStyleRes);
+    float noxItemDefaultValue = getResources().getDimension(R.dimen.default_nox_item_size);
+    float noxItemSize = attributes.getDimension(R.styleable.nox_item_size, noxItemDefaultValue);
+    noxConfig.setNoxItemSize(noxItemSize);
+    attributes.recycle();
   }
 }
