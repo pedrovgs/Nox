@@ -19,6 +19,8 @@ package com.github.pedrovgs.nox;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -75,7 +77,9 @@ public class NoxView extends View {
     int x = getMeasuredWidth() / 2;
     Paint paint = new Paint();
     paint.setStyle(Paint.Style.FILL);
-    canvas.drawCircle(x, y, 100, paint);
+    Integer resourceId = noxItems.get(0).getResourceId();
+    Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), resourceId);
+    canvas.drawBitmap(bitmap, x, y, paint);
   }
 
   /**
@@ -84,6 +88,7 @@ public class NoxView extends View {
   public void showNoxItems(List<NoxItem> noxItems) {
     validateNoxItems(noxItems);
     this.noxItems = noxItems;
+    invalidate();
   }
 
   private void validateNoxItems(List<NoxItem> noxItems) {

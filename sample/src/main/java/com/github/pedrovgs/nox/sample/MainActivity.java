@@ -18,6 +18,10 @@ package com.github.pedrovgs.nox.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import com.github.pedrovgs.nox.NoxItem;
+import com.github.pedrovgs.nox.NoxView;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Sample activity created to show how to use NoxView with a List of NoxItem instances.
@@ -29,5 +33,13 @@ public class MainActivity extends ActionBarActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    configureNoxView();
+  }
+
+  private void configureNoxView() {
+    NoxView noxView = (NoxView) findViewById(R.id.nox_view);
+    List<NoxItem> noxItems = new ArrayList<NoxItem>();
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxView.showNoxItems(noxItems);
   }
 }
