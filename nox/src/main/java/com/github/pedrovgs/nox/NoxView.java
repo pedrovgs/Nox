@@ -43,6 +43,7 @@ public class NoxView extends View {
 
   private List<NoxItem> noxItems;
   private NoxConfig noxConfig;
+  private Paint paint = new Paint();
 
   public NoxView(Context context) {
     this(context, null);
@@ -75,8 +76,6 @@ public class NoxView extends View {
     super.onDraw(canvas);
     int y = getMeasuredHeight() / 2;
     int x = getMeasuredWidth() / 2;
-    Paint paint = new Paint();
-    paint.setStyle(Paint.Style.FILL);
     Integer resourceId = noxItems.get(0).getResourceId();
     Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), resourceId);
     canvas.drawBitmap(bitmap, x, y, paint);
