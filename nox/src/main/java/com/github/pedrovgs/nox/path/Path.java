@@ -5,17 +5,15 @@ package com.github.pedrovgs.nox.path;
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-public interface Path {
+public abstract class Path {
 
-  void setNumberOfElements(int numberOfElements);
+  private final PathConfig pathConfig;
 
-  void setSize(int width, int height);
+  public Path(PathConfig pathConfig) {
+    this.pathConfig = pathConfig;
+  }
 
-  void setFirstItemSize(float firstItemSize);
+  public abstract float getLeftForItemAtPosition(int position);
 
-  void setFirstItemMargin(float firstItemSize);
-
-  float getLeftForItemAtPosition(int position);
-
-  float getRightForItemAtPosition(int position);
+  public abstract float getRightForItemAtPosition(int position);
 }
