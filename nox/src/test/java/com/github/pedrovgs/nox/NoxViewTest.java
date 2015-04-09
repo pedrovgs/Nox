@@ -17,6 +17,8 @@
 package com.github.pedrovgs.nox;
 
 import android.app.Activity;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +31,8 @@ import org.robolectric.annotation.Config;
  */
 @Config(emulateSdk = 18) @RunWith(RobolectricTestRunner.class) public class NoxViewTest {
 
+  private static final int ANY_RESOURCE_ID = R.drawable.abc_ab_share_pack_holo_dark;
+
   private NoxView noxView;
 
   @Before public void setUp() {
@@ -38,5 +42,16 @@ import org.robolectric.annotation.Config;
 
   @Test(expected = NullPointerException.class) public void shouldNotAcceptANullNoxItemListToShow() {
     noxView.showNoxItems(null);
+  }
+
+  @Test public void shouldAcceptAnEmptyListOfNoxItems() {
+    noxView.showNoxItems(new ArrayList<NoxItem>());
+  }
+
+  @Test public void shouldAcceptANonEmptyListOfNoxItems() {
+    List<NoxItem> noxItems = new ArrayList<NoxItem>();
+    noxItems.add(new NoxItem(ANY_RESOURCE_ID));
+
+    noxView.showNoxItems(noxItems);
   }
 }

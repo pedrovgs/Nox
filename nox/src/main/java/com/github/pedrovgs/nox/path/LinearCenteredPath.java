@@ -6,9 +6,9 @@ package com.github.pedrovgs.nox.path;
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-class SimpleLinearCenteredPath extends SimpleLinearPath {
+class LinearCenteredPath extends SimpleLinearPath {
 
-  SimpleLinearCenteredPath(PathConfig pathConfig) {
+  LinearCenteredPath(PathConfig pathConfig) {
     super(pathConfig);
   }
 

@@ -12,6 +12,6 @@ public class PathFactory {
   }
 
   public static Path getLinearCenteredPath(PathConfig pathConfig) {
-    return new SimpleLinearCenteredPath(pathConfig);
+    return new LinearCenteredPath(pathConfig);
   }
 }

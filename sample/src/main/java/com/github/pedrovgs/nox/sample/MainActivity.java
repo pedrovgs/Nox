@@ -55,7 +55,6 @@ public class MainActivity extends ActionBarActivity {
     noxItems.add(new NoxItem(R.drawable.ic_launcher));
     noxItems.add(new NoxItem(R.drawable.ic_launcher));
     noxItems.add(new NoxItem(R.drawable.ic_launcher));
-
     noxView.showNoxItems(noxItems);
   }
 }

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class SimpleLinearCenteredPathTest extends BasePathTestCase {
+public class LinearCenteredPathTest extends BasePathTestCase {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
