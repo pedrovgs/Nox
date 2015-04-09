@@ -7,17 +7,46 @@ package com.github.pedrovgs.nox.path;
  */
 public abstract class Path {
 
-  protected final PathConfig pathConfig;
+  private final PathConfig pathConfig;
+  private float[] noxItemsXPositions;
+  private float[] noxItemsYPositions;
 
   public Path(PathConfig pathConfig) {
     this.pathConfig = pathConfig;
+    int numberOfElements = pathConfig.getNumberOfElements();
+    this.noxItemsXPositions = new float[numberOfElements];
+    this.noxItemsYPositions = new float[numberOfElements];
   }
 
-  public abstract float getLeftForItemAtPosition(int position);
+  protected PathConfig getPathConfig() {
+    return pathConfig;
+  }
 
-  public abstract float getTopForItemAtPosition(int position);
+  public float getLeftForItemAtPosition(int position) {
+    return noxItemsXPositions[position];
+  }
 
-  public abstract boolean isItemInsideView(int position);
+  protected void setNoxItemLeftPosition(int position, float left) {
+    noxItemsXPositions[position] = left;
+  }
+
+  public float getTopForItemAtPosition(int position) {
+    return noxItemsYPositions[position];
+  }
+
+  protected void setNoxItemTopPosition(int position, float top) {
+    noxItemsYPositions[position] = top;
+  }
+
+  public boolean isItemInsideView(int position) {
+    float x = getLeftForItemAtPosition(position);
+    float y = getTopForItemAtPosition(position);
+    boolean matchesHorizontally =
+        x >= 0 && (x + pathConfig.getFirstItemSize()) <= pathConfig.getViewWidth();
+    boolean matchesVertically =
+        y >= 0 && (y + pathConfig.getFirstItemSize() <= pathConfig.getViewHeight());
+    return matchesHorizontally && matchesVertically;
+  }
 
   public abstract void calculate();
 }
