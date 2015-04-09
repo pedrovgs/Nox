@@ -8,14 +8,14 @@ package com.github.pedrovgs.nox.path;
  */
 class SimpleLinearPath extends Path {
 
-  private int[] noxItemsXPositions;
-  private int[] noxItemsYPositions;
+  private float[] noxItemsXPositions;
+  private float[] noxItemsYPositions;
 
   SimpleLinearPath(PathConfig pathConfig) {
     super(pathConfig);
     int numberOfElements = pathConfig.getNumberOfElements();
-    noxItemsXPositions = new int[numberOfElements];
-    noxItemsYPositions = new int[numberOfElements];
+    noxItemsXPositions = new float[numberOfElements];
+    noxItemsYPositions = new float[numberOfElements];
   }
 
   @Override public float getLeftForItemAtPosition(int position) {
@@ -39,9 +39,10 @@ class SimpleLinearPath extends Path {
   @Override public void calculate() {
     int numberOfItems = pathConfig.getNumberOfElements();
     int height = (int) ((pathConfig.getViewHeight() / 2) - (pathConfig.getFirstItemSize() / 2));
-    int x = 0;
+
     float itemWidth = pathConfig.getFirstItemSize();
     float viewMargin = pathConfig.getFirstItemMargin();
+    float x = viewMargin;
 
     for (int i = 0; i < numberOfItems; i++) {
       noxItemsYPositions[i] = height;

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @author Pedro Vicente Gómez Sánchez.
+ * @author Pedro Vicente Gomez Sanchez.
  */
 public class NoxItemTest {
 

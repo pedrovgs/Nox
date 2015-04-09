@@ -25,7 +25,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 /**
- * @author Pedro Vicente Gómez Sánchez.
+ * @author Pedro Vicente Gomez Sanchez.
  */
 @Config(emulateSdk = 18) @RunWith(RobolectricTestRunner.class) public class NoxViewTest {
 
