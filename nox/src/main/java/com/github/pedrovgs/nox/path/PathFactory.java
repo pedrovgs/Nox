@@ -6,4 +6,9 @@ package com.github.pedrovgs.nox.path;
  * @author Pedro Vicente Gomez Sanchez.
  */
 public class PathFactory {
+
+  public static Path getLinearPath(PathConfig pathConfig){
+    return new LinearPath(pathConfig);
+  }
+
 }

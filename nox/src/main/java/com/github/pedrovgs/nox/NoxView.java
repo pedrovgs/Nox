@@ -27,6 +27,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import com.github.pedrovgs.nox.path.Path;
+import com.github.pedrovgs.nox.path.PathConfig;
+import com.github.pedrovgs.nox.path.PathFactory;
 import java.util.List;
 
 /**
@@ -44,6 +47,7 @@ public class NoxView extends View {
   private List<NoxItem> noxItems;
   private NoxConfig noxConfig;
   private Paint paint = new Paint();
+  private Path path;
 
   public NoxView(Context context) {
     this(context, null);
@@ -87,7 +91,20 @@ public class NoxView extends View {
   public void showNoxItems(List<NoxItem> noxItems) {
     validateNoxItems(noxItems);
     this.noxItems = noxItems;
+    createPath();
     invalidate();
+  }
+
+  private void createPath() {
+    float firstItemMargin = noxConfig.getNoxItemMargin();
+    float firstItemSize = noxConfig.getNoxItemSize();
+    int viewHeight = getMeasuredHeight();
+    int viewWidth = getMeasuredWidth();
+    int numberOfElements = noxItems.size();
+    PathConfig pathConfig =
+        new PathConfig(numberOfElements, viewWidth, viewHeight, firstItemSize, firstItemMargin);
+    path = PathFactory.getLinearPath(pathConfig);
+    path.calculate();
   }
 
   private void validateNoxItems(List<NoxItem> noxItems) {
