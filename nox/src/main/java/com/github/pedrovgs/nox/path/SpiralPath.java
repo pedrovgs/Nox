@@ -14,11 +14,13 @@ class SpiralPath extends Path {
   }
 
   @Override public void calculate() {
-    int numberOfItems = getPathConfig().getNumberOfElements();
+    PathConfig pc = getPathConfig();
+    int numberOfItems = pc.getNumberOfElements();
     float centerY =
-        (getPathConfig().getViewHeight() / 2) - (getPathConfig().getFirstItemSize() / 2);
-    float centerX = (getPathConfig().getViewWidth() / 2) + (getPathConfig().getFirstItemSize() / 2);
-    float angle = getPathConfig().getFirstItemSize();
+        (pc.getViewHeight() / 2) - (pc.getFirstItemSize() / 2) - (pc.getFirstItemMargin() / 2);
+    float centerX =
+        (pc.getViewWidth() / 2) - (pc.getFirstItemSize() / 2) - (pc.getFirstItemMargin() / 2);
+    float angle = pc.getFirstItemSize();
     for (int i = 0; i < numberOfItems; i++) {
       double x = centerX + (angle * i * Math.cos(i));
       setNoxItemLeftPosition(i, (float) x);
