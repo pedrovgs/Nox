@@ -7,7 +7,7 @@ package com.github.pedrovgs.nox.path;
  */
 public abstract class Path {
 
-  private final PathConfig pathConfig;
+  protected final PathConfig pathConfig;
 
   public Path(PathConfig pathConfig) {
     this.pathConfig = pathConfig;
@@ -15,7 +15,7 @@ public abstract class Path {
 
   public abstract float getLeftForItemAtPosition(int position);
 
-  public abstract float getRightForItemAtPosition(int position);
+  public abstract float getTopForItemAtPosition(int position);
 
   public abstract boolean isItemInsideView(int position);
 

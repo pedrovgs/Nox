@@ -78,11 +78,14 @@ public class NoxView extends View {
 
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
-    int y = getMeasuredHeight() / 2;
-    int x = getMeasuredWidth() / 2;
-    Integer resourceId = noxItems.get(0).getResourceId();
-    Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), resourceId);
-    canvas.drawBitmap(bitmap, x, y, paint);
+    for (int i = 0; i < noxItems.size(); i++) {
+      NoxItem noxItem = noxItems.get(i);
+      if (path.isItemInsideView(i)) {
+        float left = path.getLeftForItemAtPosition(i);
+        float top = path.getTopForItemAtPosition(i);
+        drawNoxItem(canvas, noxItem, left, top);
+      }
+    }
   }
 
   /**
@@ -91,8 +94,18 @@ public class NoxView extends View {
   public void showNoxItems(List<NoxItem> noxItems) {
     validateNoxItems(noxItems);
     this.noxItems = noxItems;
-    createPath();
-    invalidate();
+    this.post(new Runnable() {
+      @Override public void run() {
+        createPath();
+        invalidate();
+      }
+    });
+  }
+
+  private void drawNoxItem(Canvas canvas, NoxItem noxItem, float left, float top) {
+    Integer resourceId = noxItem.getResourceId();
+    Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), resourceId);
+    canvas.drawBitmap(bitmap, left, top, paint);
   }
 
   private void createPath() {
