@@ -1,13 +1,14 @@
 package com.github.pedrovgs.nox.path;
 
 /**
- * Linear Path implementation used to place NoxItem objects in a single line centered in NoxView.
+ * Simple linear Path implementation used to place NoxItem objects in a single line centered in
+ * NoxView. NoxItem instances in this path will have the same size.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-class LinearPath extends Path {
+class SimpleLinearPath extends Path {
 
-  LinearPath(PathConfig pathConfig) {
+  SimpleLinearPath(PathConfig pathConfig) {
     super(pathConfig);
   }
 
@@ -17,6 +18,10 @@ class LinearPath extends Path {
 
   @Override public float getRightForItemAtPosition(int position) {
     return 0;
+  }
+
+  @Override public boolean isItemInsideView(int position) {
+    return false;
   }
 
   @Override public void calculate() {

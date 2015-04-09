@@ -8,7 +8,7 @@ package com.github.pedrovgs.nox.path;
 public class PathFactory {
 
   public static Path getLinearPath(PathConfig pathConfig){
-    return new LinearPath(pathConfig);
+    return new SimpleLinearPath(pathConfig);
   }
 
 }

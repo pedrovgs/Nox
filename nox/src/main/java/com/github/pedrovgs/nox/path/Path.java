@@ -17,5 +17,7 @@ public abstract class Path {
 
   public abstract float getRightForItemAtPosition(int position);
 
+  public abstract boolean isItemInsideView(int position);
+
   public abstract void calculate();
 }
