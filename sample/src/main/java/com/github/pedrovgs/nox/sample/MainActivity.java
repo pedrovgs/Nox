@@ -40,6 +40,26 @@ public class MainActivity extends ActionBarActivity {
     NoxView noxView = (NoxView) findViewById(R.id.nox_view);
     List<NoxItem> noxItems = new ArrayList<NoxItem>();
     noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    noxItems.add(new NoxItem(R.drawable.ic_launcher));//21
     noxView.showNoxItems(noxItems);
   }
 }
