@@ -10,4 +10,8 @@ public class PathFactory {
   public static Path getLinearPath(PathConfig pathConfig) {
     return new SimpleLinearPath(pathConfig);
   }
+
+  public static Path getLinearCenteredPath(PathConfig pathConfig) {
+    return new SimpleLinearCenteredPath(pathConfig);
+  }
 }

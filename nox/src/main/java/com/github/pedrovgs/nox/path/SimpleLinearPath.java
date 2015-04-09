@@ -14,17 +14,21 @@ class SimpleLinearPath extends Path {
   }
 
   @Override public void calculate() {
-    int numberOfItems = pathConfig.getNumberOfElements();
-    int height = (int) ((pathConfig.getViewHeight() / 2) - (pathConfig.getFirstItemSize() / 2));
+    int numberOfItems = getPathConfig().getNumberOfElements();
+    float height = (getPathConfig().getViewHeight() / 2) - (getPathConfig().getFirstItemSize() / 2);
 
-    float itemWidth = pathConfig.getFirstItemSize();
-    float viewMargin = pathConfig.getFirstItemMargin();
-    float x = viewMargin;
+    float itemWidth = getPathConfig().getFirstItemSize();
+    float viewMargin = getPathConfig().getFirstItemMargin();
+    float x = getFirstItemLeftPosition();
 
     for (int i = 0; i < numberOfItems; i++) {
-      noxItemsYPositions[i] = height;
-      noxItemsXPositions[i] = x;
+      setNoxItemTopPosition(i, height);
+      setNoxItemLeftPosition(i, x);
       x += itemWidth + viewMargin;
     }
+  }
+
+  protected float getFirstItemLeftPosition() {
+    return getPathConfig().getFirstItemMargin();
   }
 }

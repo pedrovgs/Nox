@@ -4,13 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class SimpleLinearPathTest extends BasePathTestCase {
+public class SimpleLinearCenteredPathTest extends BasePathTestCase {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
@@ -26,7 +24,7 @@ public class SimpleLinearPathTest extends BasePathTestCase {
   }
 
   @Override public Path getPath(PathConfig pathConfig) {
-    return PathFactory.getLinearPath(pathConfig);
+    return PathFactory.getLinearCenteredPath(pathConfig);
   }
 
   @Test public void shouldUseSameTopForEveryElement() {
@@ -44,7 +42,8 @@ public class SimpleLinearPathTest extends BasePathTestCase {
     }
   }
 
-  @Test public void shouldCalculateLeftPositionsUsingOneLinearDistributionUsingItemSizeAndMargin() {
+  @Test
+  public void shouldCalculateLeftPositionsUsingOneCenteredLinearDistributionUsingItemSizeAndMargin() {
     int numberOfElements = 10;
     PathConfig pathConfig =
         givenPathConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
@@ -53,41 +52,29 @@ public class SimpleLinearPathTest extends BasePathTestCase {
 
     path.calculate();
 
-    float expectedLeft = ANY_ITEM_MARGIN;
+    float expectedLeft = getFirstItemLeftPosition(pathConfig);
     for (int i = 0; i < numberOfElements; i++) {
       assertEquals(expectedLeft, path.getLeftForItemAtPosition(i), DELTA);
       expectedLeft += ANY_ITEM_SIZE + ANY_ITEM_MARGIN;
     }
   }
 
-  @Test public void shouldCalculateTheCorrectLeftPositionForOneElement() {
-    path.calculate();
-
-    float left = path.getLeftForItemAtPosition(0);
-
-    assertEquals(ANY_ITEM_MARGIN, left, DELTA);
-  }
-
-  @Test public void shouldReturnTrueJustForTheElementsInsideTheView() {
+  @Test public void shouldReturnTheMiddleOfTheViewAsLeftPositionForJustOneElement() {
     PathConfig pathConfig =
-        givenPathConfig(11, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+        givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
     path = getPath(pathConfig);
 
     path.calculate();
 
-    assertElementsAtPositionAreInsideTheView(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-    assertElementsAtPositionAreOutsizeTheView(10);
+    float expectedLeft = (ANY_VIEW_WIDTH / 2) - (ANY_ITEM_SIZE / 2) - (ANY_ITEM_MARGIN / 2);
+    assertEquals(expectedLeft, path.getLeftForItemAtPosition(0), DELTA);
   }
 
-  private void assertElementsAtPositionAreInsideTheView(int... positions) {
-    for (int position : positions) {
-      assertTrue(path.isItemInsideView(position));
-    }
-  }
-
-  private void assertElementsAtPositionAreOutsizeTheView(int... positions) {
-    for (int position : positions) {
-      assertFalse(path.isItemInsideView(position));
-    }
+  private float getFirstItemLeftPosition(PathConfig pathConfig) {
+    float itemSize = pathConfig.getFirstItemSize();
+    float itemMargin = pathConfig.getFirstItemMargin();
+    float center = pathConfig.getViewWidth() / 2;
+    int numberOfElements = pathConfig.getNumberOfElements();
+    return center - numberOfElements * (itemSize / 2 + itemMargin / 2);
   }
 }

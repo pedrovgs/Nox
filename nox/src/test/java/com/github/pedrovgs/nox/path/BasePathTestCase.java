@@ -12,6 +12,7 @@ public abstract class BasePathTestCase {
 
   private static final int ITEM_SIZE = 10;
   private static final int ITEM_MARGIN = 2;
+  protected static final double DELTA = 0.1;
 
   public abstract Path getPath(PathConfig pathConfig);
 
@@ -43,5 +44,10 @@ public abstract class BasePathTestCase {
     Path path = getPath(pathConfig);
 
     assertTrue(path.isItemInsideView(0));
+  }
+
+  protected PathConfig givenPathConfig(int numberOfElements, int viewWidth, int viewHeight,
+      float itemSize, float itemMargin) {
+    return new PathConfig(numberOfElements, viewWidth, viewHeight, itemSize, itemMargin);
   }
 }
