@@ -14,4 +14,8 @@ public class PathFactory {
   public static Path getLinearCenteredPath(PathConfig pathConfig) {
     return new LinearCenteredPath(pathConfig);
   }
+
+  public static Path getSpiralPath(PathConfig pathConfig) {
+    return new SpiralPath(pathConfig);
+  }
 }
