@@ -2,7 +2,8 @@ package com.github.pedrovgs.nox.path;
 
 /**
  * Spiral Path implementation used to place NoxItem objects in a equiangular spiral starting from
- * the center of the view. NoxItem instances in this path will have the same size.
+ * the center of the view. NoxItem instances in this path will have the same size. This path is
+ * based on the Archimedean Spiral.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
@@ -24,9 +25,5 @@ class SpiralPath extends Path {
       double y = centerY + (angle * i * Math.sin(i));
       setNoxItemTopPosition(i, (float) y);
     }
-  }
-
-  protected float getFirstItemLeftPosition() {
-    return getPathConfig().getFirstItemMargin();
   }
 }
