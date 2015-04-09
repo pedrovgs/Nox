@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class SimpleLinearPathTest extends BasePathTestCase {
+public class LinearPathTest extends BasePathTestCase {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
