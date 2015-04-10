@@ -20,7 +20,7 @@ public class SpiralPathTest extends BasePathTestCase {
     return PathFactory.getSpiralPath(pathConfig);
   }
 
-  @Test public void shouldReturnTheMiddleOfTheViewAsLeftPositionForJustOneElement() {
+  @Test public void shouldReturnTheMiddleOfTheViewAsPositionForJustOneElement() {
     PathConfig pathConfig =
         givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
     path = getPath(pathConfig);
@@ -29,6 +29,8 @@ public class SpiralPathTest extends BasePathTestCase {
 
     float expectedLeft = (ANY_VIEW_WIDTH / 2) - (ANY_ITEM_SIZE / 2) - (ANY_ITEM_MARGIN / 2);
     assertEquals(expectedLeft, path.getLeftForItemAtPosition(0), DELTA);
+    float expectedTop = (ANY_VIEW_HEIGHT / 2) - (ANY_ITEM_SIZE / 2) - (ANY_ITEM_MARGIN / 2);
+    assertEquals(expectedTop, path.getTopForItemAtPosition(0), DELTA);
   }
 
   @Test public void shouldConfigureElementsFollowingAnArchimedeanSpiral() {
