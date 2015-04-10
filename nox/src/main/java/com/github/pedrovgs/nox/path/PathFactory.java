@@ -22,4 +22,8 @@ public class PathFactory {
   public static Path getCircularPath(PathConfig pathConfig) {
     return new CircularPath(pathConfig);
   }
+
+  public static Path getFixedCircularPath(PathConfig pathConfig) {
+    return new FixedCircularPath(pathConfig);
+  }
 }
