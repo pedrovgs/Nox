@@ -28,25 +28,23 @@ class CircularPath extends Path {
     int item = 0;
     int iteration = 0;
     while (item < numberOfItems) {
-      int numberOfElementsPerIteration = Math.max(BASE * iteration, 1);
-      calculatePositionsForIteration(item, numberOfElementsPerIteration, radius, iteration, centerX,
-          centerY);
+      int numberOfElementsPerIteration =
+          calculatePositionsForIteration(item, radius, iteration, centerX, centerY);
       item += numberOfElementsPerIteration;
       iteration++;
     }
   }
 
-  private void calculatePositionsForIteration(int item, int numberOfElementsPerIteration,
-      float radius, float iteration, float centerX, float centerY) {
+  private int calculatePositionsForIteration(int item, float radius, int iteration, float centerX,
+      float centerY) {
+    int numberOfElementsPerIteration = getNumberOfElementsPerIteration(item, iteration);
     if (numberOfElementsPerIteration == 1) {
       setNoxItemLeftPosition(item, centerX);
       setNoxItemTopPosition(item, centerY);
-      return;
+      return 1;
     }
 
     float distance = radius * iteration;
-    int numberOfElements = getPathConfig().getNumberOfElements();
-    numberOfElementsPerIteration = Math.min(numberOfElementsPerIteration, numberOfElements - item);
     for (int i = 0; i < numberOfElementsPerIteration; i++) {
       double angle = RAD * 360 / numberOfElementsPerIteration * i;
       double sin = Math.sin(angle);
@@ -57,5 +55,13 @@ class CircularPath extends Path {
       setNoxItemTopPosition(item, y);
       item++;
     }
+    return numberOfElementsPerIteration;
+  }
+
+  protected int getNumberOfElementsPerIteration(int item, int iteration) {
+    int numberOfElements = getPathConfig().getNumberOfElements();
+    int numberOfElementsPerIteration = Math.max(BASE * iteration, 1);
+    numberOfElementsPerIteration = Math.min(numberOfElementsPerIteration, numberOfElements - item);
+    return numberOfElementsPerIteration;
   }
 }
