@@ -18,4 +18,8 @@ public class PathFactory {
   public static Path getSpiralPath(PathConfig pathConfig) {
     return new SpiralPath(pathConfig);
   }
+
+  public static Path getCircularPath(PathConfig pathConfig) {
+    return new CircularPath(pathConfig);
+  }
 }
