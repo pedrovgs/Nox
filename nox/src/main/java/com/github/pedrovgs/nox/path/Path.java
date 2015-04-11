@@ -41,10 +41,9 @@ public abstract class Path {
   public boolean isItemInsideView(int position) {
     float x = getLeftForItemAtPosition(position);
     float y = getTopForItemAtPosition(position);
-    boolean matchesHorizontally =
-        x >= 0 && (x + pathConfig.getFirstItemSize()) <= pathConfig.getViewWidth();
-    boolean matchesVertically =
-        y >= 0 && (y + pathConfig.getFirstItemSize() <= pathConfig.getViewHeight());
+    float itemSize = pathConfig.getFirstItemSize();
+    boolean matchesHorizontally = x + itemSize >= 0 && x <= pathConfig.getViewWidth();
+    boolean matchesVertically = y + itemSize >= 0 && y <= pathConfig.getViewHeight();
     return matchesHorizontally && matchesVertically;
   }
 

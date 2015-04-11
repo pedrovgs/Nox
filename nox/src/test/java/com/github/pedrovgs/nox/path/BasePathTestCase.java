@@ -2,7 +2,6 @@ package com.github.pedrovgs.nox.path;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -16,27 +15,27 @@ public abstract class BasePathTestCase {
 
   public abstract Path getPath(PathConfig pathConfig);
 
-  @Test public void shouldReturnFalseIfAsForItemsWhenViewWidthIsSmallerThanItemSize() {
+  @Test public void shouldReturnTrueIfViewWidthIsSmallerThanItemSize() {
     int viewWidth = ITEM_SIZE - 1;
     int viewHeight = ITEM_SIZE + ITEM_MARGIN;
     PathConfig pathConfig = new PathConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
 
     Path path = getPath(pathConfig);
 
-    assertFalse(path.isItemInsideView(0));
+    assertTrue(path.isItemInsideView(0));
   }
 
-  @Test public void shouldReturnFalseIfAsForItemsWhenViewHeightIsSmallerThanItemSize() {
+  @Test public void shouldReturnTrueIfViewHeightIsSmallerThanItemSize() {
     int viewWidth = ITEM_SIZE + ITEM_MARGIN;
     int viewHeight = ITEM_SIZE - 1;
     PathConfig pathConfig = new PathConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
 
     Path path = getPath(pathConfig);
 
-    assertFalse(path.isItemInsideView(0));
+    assertTrue(path.isItemInsideView(0));
   }
 
-  @Test public void shouldReturnTrueIfAsForItemsWhenViewIsBiggerThanItemSize() {
+  @Test public void shouldReturnTrueIfViewIsBiggerOrEqualsThanItemSize() {
     int viewWidth = ITEM_SIZE + ITEM_MARGIN;
     int viewHeight = ITEM_SIZE + ITEM_MARGIN;
     PathConfig pathConfig = new PathConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
