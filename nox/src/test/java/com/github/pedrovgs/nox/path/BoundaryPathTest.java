@@ -1,5 +1,6 @@
 package com.github.pedrovgs.nox.path;
 
+import com.github.pedrovgs.nox.path.doubles.FakePath;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -107,30 +108,5 @@ public class BoundaryPathTest {
   private void givenElementsAreInPosition(float x, float y) {
     path.setXPosition(x);
     path.setYPosition(y);
-  }
-
-  private class FakePath extends Path {
-
-    private float xPosition;
-    private float yPosition;
-
-    public FakePath(PathConfig pathConfig) {
-      super(pathConfig);
-    }
-
-    public void setXPosition(float xPosition) {
-      this.xPosition = xPosition;
-    }
-
-    public void setYPosition(float yPosition) {
-      this.yPosition = yPosition;
-    }
-
-    @Override public void calculate() {
-      for (int i = 0; i < getPathConfig().getNumberOfElements(); i++) {
-        setNoxItemLeftPosition(i, xPosition);
-        setNoxItemTopPosition(i, yPosition);
-      }
-    }
   }
 }
