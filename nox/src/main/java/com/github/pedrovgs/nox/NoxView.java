@@ -50,6 +50,8 @@ public class NoxView extends View {
   private Paint paint = new Paint();
   private Path path;
   private Scroller scroller;
+  //TODO: Remove this hack
+  private Bitmap bitmap;
 
   public NoxView(Context context) {
     this(context, null);
@@ -128,8 +130,16 @@ public class NoxView extends View {
 
   private void drawNoxItem(Canvas canvas, NoxItem noxItem, float left, float top) {
     Integer resourceId = noxItem.getResourceId();
-    Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), resourceId);
+    Bitmap bitmap = getBitmap(resourceId);
     canvas.drawBitmap(bitmap, left, top, paint);
+  }
+
+  //TODO: Remove this hack, this is just to check if our code has a performance problem
+  private Bitmap getBitmap(Integer resourceId) {
+    if (bitmap != null) {
+      bitmap = BitmapFactory.decodeResource(getContext().getResources(), resourceId);
+    }
+    return bitmap;
   }
 
   private void createPath() {
