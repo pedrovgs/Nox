@@ -80,19 +80,15 @@ public class NoxView extends View {
 
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
+    updatePathOffset();
     for (int i = 0; i < noxItems.size(); i++) {
       NoxItem noxItem = noxItems.get(i);
       if (path.isItemInsideView(i)) {
-        float left = path.getLeftForItemAtPosition(i) + scroller.getCurrentX();
-        float top = path.getTopForItemAtPosition(i) + scroller.getCurrentY();
+        float left = path.getLeftForItemAtPosition(i);
+        float top = path.getTopForItemAtPosition(i);
         drawNoxItem(canvas, noxItem, left, top);
       }
     }
-  }
-
-  @Override public void computeScroll() {
-    super.computeScroll();
-    scroller.computeScrollOffset();
   }
 
   /**
@@ -111,6 +107,12 @@ public class NoxView extends View {
 
   @Override public boolean onTouchEvent(MotionEvent event) {
     return scroller.getGestureDetector().onTouchEvent(event);
+  }
+
+  private void updatePathOffset() {
+    int offsetX = scroller.getOffsetX();
+    int offsetY = scroller.getOffsetY();
+    path.setOffset(offsetX, offsetY);
   }
 
   private void drawNoxItem(Canvas canvas, NoxItem noxItem, float left, float top) {

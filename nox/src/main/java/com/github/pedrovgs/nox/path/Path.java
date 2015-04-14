@@ -10,6 +10,8 @@ public abstract class Path {
   private final PathConfig pathConfig;
   private float[] noxItemsXPositions;
   private float[] noxItemsYPositions;
+  private int offsetX;
+  private int offsetY;
 
   public Path(PathConfig pathConfig) {
     this.pathConfig = pathConfig;
@@ -18,34 +20,39 @@ public abstract class Path {
     this.noxItemsYPositions = new float[numberOfElements];
   }
 
-  protected PathConfig getPathConfig() {
-    return pathConfig;
+  public void setOffset(int offsetX, int offsetY) {
+    this.offsetX = offsetX;
+    this.offsetY = offsetY;
   }
+
+  public abstract void calculate();
 
   public float getLeftForItemAtPosition(int position) {
     return noxItemsXPositions[position];
-  }
-
-  protected void setNoxItemLeftPosition(int position, float left) {
-    noxItemsXPositions[position] = left;
   }
 
   public float getTopForItemAtPosition(int position) {
     return noxItemsYPositions[position];
   }
 
-  protected void setNoxItemTopPosition(int position, float top) {
-    noxItemsYPositions[position] = top;
-  }
-
   public boolean isItemInsideView(int position) {
-    float x = getLeftForItemAtPosition(position);
-    float y = getTopForItemAtPosition(position);
+    float x = getLeftForItemAtPosition(position) + offsetX;
+    float y = getTopForItemAtPosition(position) + offsetY;
     float itemSize = pathConfig.getFirstItemSize();
     boolean matchesHorizontally = x + itemSize >= 0 && x <= pathConfig.getViewWidth();
     boolean matchesVertically = y + itemSize >= 0 && y <= pathConfig.getViewHeight();
     return matchesHorizontally && matchesVertically;
   }
 
-  public abstract void calculate();
+  protected PathConfig getPathConfig() {
+    return pathConfig;
+  }
+
+  protected void setNoxItemLeftPosition(int position, float left) {
+    noxItemsXPositions[position] = left;
+  }
+
+  protected void setNoxItemTopPosition(int position, float top) {
+    noxItemsYPositions[position] = top;
+  }
 }
