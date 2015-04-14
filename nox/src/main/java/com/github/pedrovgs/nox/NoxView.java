@@ -109,6 +109,11 @@ public class NoxView extends View {
     return scroller.getGestureDetector().onTouchEvent(event);
   }
 
+  @Override public void computeScroll() {
+    super.computeScroll();
+    scroller.computeScroll();
+  }
+
   private void updatePathOffset() {
     int offsetX = scroller.getOffsetX();
     int offsetY = scroller.getOffsetY();
