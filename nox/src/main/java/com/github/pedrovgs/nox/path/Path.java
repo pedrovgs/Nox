@@ -44,7 +44,6 @@ public abstract class Path {
     return matchesHorizontally && matchesVertically;
   }
 
-  //TODO: This methods should be abstract
   public int getMinX() {
     return 0;
   }

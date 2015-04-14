@@ -15,8 +15,20 @@ class LinearCenteredPath extends LinearPath {
   @Override protected float getFirstItemLeftPosition() {
     float itemSize = getPathConfig().getFirstItemSize();
     float itemMargin = getPathConfig().getFirstItemMargin();
-    float center = getPathConfig().getViewWidth() / 2;
+    float center = getCenter();
     int numberOfElements = getPathConfig().getNumberOfElements();
     return center - numberOfElements * (itemSize / 2 + itemMargin / 2);
+  }
+
+  private float getCenter() {
+    return getPathConfig().getViewWidth() / 2;
+  }
+
+  @Override public int getMinX() {
+    return (int) getFirstItemLeftPosition();
+  }
+
+  @Override public int getMaxX() {
+    return (int) getFirstItemLeftPosition() + super.getMaxX();
   }
 }
