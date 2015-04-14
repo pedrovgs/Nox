@@ -20,13 +20,23 @@ class Scroller {
   private static final int VELOCITY_SCALE = 2;
 
   private final View view;
+  private final int minX;
+  private final int maxX;
+  private final int minY;
+  private final int maxY;
+  private final int overSize;
 
   private GestureDetectorCompat gestureDetector;
   private OverScroller overScroller;
 
-  Scroller(View view) {
+  Scroller(View view, int minX, int maxX, int minY, int maxY, int overSize) {
     this.view = view;
     Context context = view.getContext();
+    this.minX = minX;
+    this.maxX = maxX;
+    this.minY = minY;
+    this.maxY = maxY;
+    this.overSize = overSize;
     overScroller = new OverScroller(context);
   }
 
@@ -48,15 +58,15 @@ class Scroller {
   private final GestureDetector.SimpleOnGestureListener mGestureListener =
       new GestureDetector.SimpleOnGestureListener() {
         @Override public boolean onDown(MotionEvent e) {
-          overScroller.forceFinished(true);
+          resetOverScroller();
           ViewCompat.postInvalidateOnAnimation(view);
           return true;
         }
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-          int dX = (int) distanceX;
-          int dY = (int) distanceY;
+          int dX = calculateDx(distanceX);
+          int dY = calculateDy(distanceY);
           view.scrollBy(dX, dY);
           return true;
         }
@@ -68,11 +78,8 @@ class Scroller {
           int startY = view.getScrollY();
           int velX = (int) -velocityX / VELOCITY_SCALE;
           int velY = (int) -velocityY / VELOCITY_SCALE;
-          int minX = -108000;
-          int maxX = 108000;
-          int minY = -108000;
-          int maxY = 108000;
-          overScroller.fling(startX, startY, velX, velY, minX, maxX, minY, maxY, maxX, maxY);
+          overScroller.fling(startX, startY, velX, velY, minX, maxX, minY, maxY, overSize,
+              overSize);
           ViewCompat.postInvalidateOnAnimation(view);
           return true;
         }
@@ -82,9 +89,25 @@ class Scroller {
     if (!overScroller.computeScrollOffset() || overScroller.isFinished()) {
       return;
     }
-    int dX = overScroller.getCurrX() - view.getScrollX();
-    int dY = overScroller.getCurrY() - view.getScrollY();
+    int distanceX = overScroller.getCurrX() - view.getScrollX();
+    int distanceY = overScroller.getCurrY() - view.getScrollY();
+    int dX = calculateDx(distanceX);
+    int dY = calculateDy(distanceY);
     view.scrollBy(dX, dY);
+  }
+
+  private int calculateDx(float distanceX) {
+    int currentX = view.getScrollX();
+    int nextX = (int) (distanceX + currentX);
+    boolean isInsideHorizontally = nextX >= minX && nextX <= maxX;
+    return isInsideHorizontally ? (int) distanceX : 0;
+  }
+
+  private int calculateDy(float distanceY) {
+    int currentY = view.getScrollY();
+    int nextY = (int) (distanceY + currentY);
+    boolean isInsideVertically = nextY >= maxY && nextY <= minY;
+    return isInsideVertically ? (int) distanceY : 0;
   }
 
   private void resetOverScroller() {

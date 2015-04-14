@@ -44,6 +44,27 @@ public abstract class Path {
     return matchesHorizontally && matchesVertically;
   }
 
+  //TODO: This methods should be abstract
+  public int getMinX() {
+    return 0;
+  }
+
+  public int getMaxX() {
+    return 0;
+  }
+
+  public int getMinY() {
+    return 0;
+  }
+
+  public int getMaxY() {
+    return 0;
+  }
+
+  public int getOverSize() {
+    return (int) pathConfig.getFirstItemMargin();
+  }
+
   protected PathConfig getPathConfig() {
     return pathConfig;
   }

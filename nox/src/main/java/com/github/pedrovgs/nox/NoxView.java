@@ -100,9 +100,15 @@ public class NoxView extends View {
     this.post(new Runnable() {
       @Override public void run() {
         createPath();
+        initializeScroller();
         invalidate();
       }
     });
+  }
+
+  private void initializeScroller() {
+    scroller = new Scroller(this, path.getMinX(), path.getMaxX(), path.getMinY(), path.getMaxY(),
+        path.getOverSize());
   }
 
   @Override public boolean onTouchEvent(MotionEvent event) {
@@ -153,12 +159,6 @@ public class NoxView extends View {
     initializeNoxItemMargin(attributes);
     initializeNoxItemPlaceholder(attributes);
     attributes.recycle();
-    //TODO: MOVE THIS TO OTHER METHOD
-    this.post(new Runnable() {
-      @Override public void run() {
-        scroller = new Scroller(NoxView.this);
-      }
-    });
   }
 
   private void initializeNoxItemSize(TypedArray attributes) {
