@@ -26,6 +26,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import com.github.pedrovgs.nox.path.Path;
 import com.github.pedrovgs.nox.path.PathConfig;
@@ -48,6 +49,7 @@ public class NoxView extends View {
   private NoxConfig noxConfig;
   private Paint paint = new Paint();
   private Path path;
+  private Scroller scroller;
 
   public NoxView(Context context) {
     this(context, null);
@@ -81,11 +83,16 @@ public class NoxView extends View {
     for (int i = 0; i < noxItems.size(); i++) {
       NoxItem noxItem = noxItems.get(i);
       if (path.isItemInsideView(i)) {
-        float left = path.getLeftForItemAtPosition(i);
-        float top = path.getTopForItemAtPosition(i);
+        float left = path.getLeftForItemAtPosition(i) + scroller.getCurrentX();
+        float top = path.getTopForItemAtPosition(i) + scroller.getCurrentY();
         drawNoxItem(canvas, noxItem, left, top);
       }
     }
+  }
+
+  @Override public void computeScroll() {
+    super.computeScroll();
+    scroller.computeScrollOffset();
   }
 
   /**
@@ -100,6 +107,10 @@ public class NoxView extends View {
         invalidate();
       }
     });
+  }
+
+  @Override public boolean onTouchEvent(MotionEvent event) {
+    return scroller.getGestureDetector().onTouchEvent(event);
   }
 
   private void drawNoxItem(Canvas canvas, NoxItem noxItem, float left, float top) {
@@ -135,6 +146,12 @@ public class NoxView extends View {
     initializeNoxItemMargin(attributes);
     initializeNoxItemPlaceholder(attributes);
     attributes.recycle();
+    //TODO: MOVE THIS TO OTHER METHOD
+    this.post(new Runnable() {
+      @Override public void run() {
+        scroller = new Scroller(NoxView.this);
+      }
+    });
   }
 
   private void initializeNoxItemSize(TypedArray attributes) {
