@@ -39,7 +39,7 @@ dependencies {
   compile 'com.github.bumptech.glide:glide:3.5.2'
   testCompile 'junit:junit:4.10'
   testCompile 'org.mockito:mockito-all:1.9.5'
-  testCompile 'org.robolectric:robolectric:2.4'
+  testCompile 'org.robolectric:robolectric:3.0-rc2'
 }
 
 task checkstyle(type: Checkstyle) {
