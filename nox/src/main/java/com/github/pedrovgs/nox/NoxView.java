@@ -20,7 +20,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -45,13 +44,11 @@ import java.util.List;
  */
 public class NoxView extends View {
 
-  private List<NoxItem> noxItems;
   private NoxConfig noxConfig;
-  private Paint paint = new Paint();
   private Path path;
   private Scroller scroller;
-  //TODO: Remove this hack
-  private Bitmap bitmap;
+  private NoxItemCatalog noxItemCatalog;
+  private Paint paint = new Paint();
 
   public NoxView(Context context) {
     this(context, null);
@@ -83,12 +80,11 @@ public class NoxView extends View {
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     updatePathOffset();
-    for (int i = 0; i < noxItems.size(); i++) {
-      NoxItem noxItem = noxItems.get(i);
+    for (int i = 0; i < noxItemCatalog.size(); i++) {
       if (path.isItemInsideView(i)) {
         float left = path.getLeftForItemAtPosition(i);
         float top = path.getTopForItemAtPosition(i);
-        drawNoxItem(canvas, noxItem, left, top);
+        drawNoxItem(canvas, i, left, top);
       }
     }
   }
@@ -97,8 +93,7 @@ public class NoxView extends View {
    * Given a List<NoxItem> draws this items keeping the previous view state.
    */
   public void showNoxItems(List<NoxItem> noxItems) {
-    validateNoxItems(noxItems);
-    this.noxItems = noxItems;
+    initializeNoxItemCatalog(noxItems);
     this.post(new Runnable() {
       @Override public void run() {
         createPath();
@@ -106,11 +101,6 @@ public class NoxView extends View {
         invalidate();
       }
     });
-  }
-
-  private void initializeScroller() {
-    scroller = new Scroller(this, path.getMinX(), path.getMaxX(), path.getMinY(), path.getMaxY(),
-        path.getOverSize());
   }
 
   @Override public boolean onTouchEvent(MotionEvent event) {
@@ -122,24 +112,26 @@ public class NoxView extends View {
     scroller.computeScroll();
   }
 
+  private void initializeNoxItemCatalog(List<NoxItem> noxItems) {
+    this.noxItemCatalog = new NoxItemCatalog(noxItems);
+    this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
+    this.noxItemCatalog.loadBitmaps();
+  }
+
+  private void initializeScroller() {
+    scroller = new Scroller(this, path.getMinX(), path.getMaxX(), path.getMinY(), path.getMaxY(),
+        path.getOverSize());
+  }
+
   private void updatePathOffset() {
     int offsetX = scroller.getOffsetX();
     int offsetY = scroller.getOffsetY();
     path.setOffset(offsetX, offsetY);
   }
 
-  private void drawNoxItem(Canvas canvas, NoxItem noxItem, float left, float top) {
-    Integer resourceId = noxItem.getResourceId();
-    Bitmap bitmap = getBitmap(resourceId);
+  private void drawNoxItem(Canvas canvas, int position, float left, float top) {
+    Bitmap bitmap = noxItemCatalog.getBitmap(position);
     canvas.drawBitmap(bitmap, left, top, paint);
-  }
-
-  //TODO: Remove this hack, this is just to check if our code has a performance problem
-  private Bitmap getBitmap(Integer resourceId) {
-    if (bitmap == null) {
-      bitmap = BitmapFactory.decodeResource(getContext().getResources(), resourceId);
-    }
-    return bitmap;
   }
 
   private void createPath() {
@@ -147,17 +139,11 @@ public class NoxView extends View {
     float firstItemSize = noxConfig.getNoxItemSize();
     int viewHeight = getMeasuredHeight();
     int viewWidth = getMeasuredWidth();
-    int numberOfElements = noxItems.size();
+    int numberOfElements = noxItemCatalog.size();
     PathConfig pathConfig =
         new PathConfig(numberOfElements, viewWidth, viewHeight, firstItemSize, firstItemMargin);
     path = PathFactory.getLinearPath(pathConfig);
     path.calculate();
-  }
-
-  private void validateNoxItems(List<NoxItem> noxItems) {
-    if (noxItems == null) {
-      throw new NullPointerException("The list of NoxItem can't be null");
-    }
   }
 
   private void initializeNoxViewConfig(Context context, AttributeSet attrs, int defStyleAttr,
@@ -186,10 +172,6 @@ public class NoxView extends View {
 
   private void initializeNoxItemPlaceholder(TypedArray attributes) {
     Drawable placeholder = attributes.getDrawable(R.styleable.nox_placeholder);
-    if (placeholder == null) {
-      //TODO: Change this with a white circle or another placeholder.
-      placeholder = getContext().getResources().getDrawable(R.drawable.abc_ic_clear_mtrl_alpha);
-    }
     noxConfig.setPlaceholder(placeholder);
   }
 }
