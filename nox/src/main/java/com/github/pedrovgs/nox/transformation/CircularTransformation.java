@@ -8,24 +8,20 @@ import android.graphics.Paint;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
+/**
+ * Glide BitmapTransformation extension created to transform the source bitmap into a circular
+ * bitmap.
+ *
+ * @author Pedro Vicente Gomez Sanchez
+ */
 public class CircularTransformation extends BitmapTransformation {
-  private Context context;
 
   public CircularTransformation(Context context) {
     super(context);
-    this.context = context;
   }
 
   @Override
   protected Bitmap transform(BitmapPool pool, Bitmap source, int outWidth, int outHeight) {
-    return getCircularBitmapImage(source);
-  }
-
-  @Override public String getId() {
-    return "Glide_Circle_Transformation";
-  }
-
-  public static Bitmap getCircularBitmapImage(Bitmap source) {
     int size = Math.min(source.getWidth(), source.getHeight());
     int x = (source.getWidth() - size) / 2;
     int y = (source.getHeight() - size) / 2;
@@ -44,5 +40,9 @@ public class CircularTransformation extends BitmapTransformation {
     canvas.drawCircle(r, r, r, paint);
     squaredBitmap.recycle();
     return bitmap;
+  }
+
+  @Override public String getId() {
+    return "Circular_Transformation";
   }
 }

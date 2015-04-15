@@ -71,14 +71,6 @@ public class NoxView extends View {
     initializeNoxViewConfig(context, attrs, defStyleAttr, defStyleRes);
   }
 
-  @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-  }
-
-  @Override protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-    super.onLayout(changed, left, top, right, bottom);
-  }
-
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     updatePathOffset();
@@ -118,12 +110,12 @@ public class NoxView extends View {
     this.noxItemCatalog =
         new NoxItemCatalog(getContext(), noxItems, (int) noxConfig.getNoxItemSize());
     this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
-    this.noxItemCatalog.loadBitmaps();
     this.noxItemCatalog.addObserver(new Observer() {
       @Override public void update(Observable observable, Object data) {
         invalidate();
       }
     });
+    this.noxItemCatalog.loadBitmaps();
   }
 
   private void initializeScroller() {
@@ -143,6 +135,8 @@ public class NoxView extends View {
       canvas.drawBitmap(bitmap, left, top, paint);
     } else if (noxItemCatalog.isPlaceholderReady(position)) {
       Drawable drawable = noxItemCatalog.getPlaceholder(position);
+      int itemSize = (int) noxConfig.getNoxItemSize();
+      drawable.setBounds((int) left, (int) top, (int) left + itemSize, (int) top + itemSize);
       drawable.draw(canvas);
     }
   }

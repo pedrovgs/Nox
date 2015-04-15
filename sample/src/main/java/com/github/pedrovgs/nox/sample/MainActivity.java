@@ -39,8 +39,9 @@ public class MainActivity extends ActionBarActivity {
   private void configureNoxView() {
     NoxView noxView = (NoxView) findViewById(R.id.nox_view);
     List<NoxItem> noxItems = new ArrayList<NoxItem>();
-    for (int i = 0; i < 31; i++) {
-      noxItems.add(new NoxItem(R.drawable.ic_launcher));
+    for (int i = 0; i < 631; i++) {
+      noxItems.add(new NoxItem("http://api.randomuser.me/portraits/thumb/men/11.jpg",
+          R.drawable.ic_launcher));
     }
     noxView.showNoxItems(noxItems);
   }

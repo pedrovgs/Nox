@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.github.pedrovgs.nox.transformation.CircularTransformation;
 import java.util.List;
 import java.util.Observable;
 
@@ -79,9 +80,18 @@ class NoxItemCatalog extends Observable {
     NoxItemTarget noxItemTarget = getNoxItemTarget(position);
     if (noxItem.hasPlaceholder()) {
       int placeholderId = noxItem.getPlaceholderId();
-      Glide.with(context).load(url).asBitmap().placeholder(placeholderId).into(noxItemTarget);
+      Glide.with(context)
+          .load(url)
+          .asBitmap()
+          .placeholder(placeholderId)
+          .transform(new CircularTransformation(context))
+          .into(noxItemTarget);
     } else {
-      Glide.with(context).load(url).asBitmap().into(noxItemTarget);
+      Glide.with(context)
+          .load(url)
+          .asBitmap()
+          .transform(new CircularTransformation(context))
+          .into(noxItemTarget);
     }
   }
 
@@ -94,9 +104,14 @@ class NoxItemCatalog extends Observable {
           .load(resourceId)
           .asBitmap()
           .placeholder(placeholderId)
+          .transform(new CircularTransformation(context))
           .into(noxItemTarget);
     } else {
-      Glide.with(context).load(resourceId).asBitmap().into(noxItemTarget);
+      Glide.with(context)
+          .load(resourceId)
+          .asBitmap()
+          .transform(new CircularTransformation(context))
+          .into(noxItemTarget);
     }
   }
 
@@ -122,11 +137,20 @@ class NoxItemCatalog extends Observable {
     @Override
     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
       bitmaps[position] = resource;
+      notifyNoxItemReady();
     }
 
     @Override public void onLoadStarted(Drawable placeholder) {
       super.onLoadStarted(placeholder);
       placeholders[position] = placeholder;
+      if (placeholder != null) {
+        notifyNoxItemReady();
+      }
     }
+  }
+
+  private void notifyNoxItemReady() {
+    setChanged();
+    notifyObservers();
   }
 }
