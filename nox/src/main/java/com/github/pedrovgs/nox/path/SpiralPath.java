@@ -11,6 +11,7 @@ class SpiralPath extends Path {
 
   //TODO: Change path implementation related to getMinMaxXY and follow this approach
   //This is easier for Nox library clients.private int minX;
+  private int minX;
   private int maxX;
   private int minY;
   private int maxY;
