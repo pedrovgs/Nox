@@ -137,20 +137,20 @@ class NoxItemCatalog extends Observable {
     @Override
     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
       bitmaps[position] = resource;
-      notifyNoxItemReady();
+      notifyNoxItemReady(position);
     }
 
     @Override public void onLoadStarted(Drawable placeholder) {
       super.onLoadStarted(placeholder);
       placeholders[position] = placeholder;
       if (placeholder != null) {
-        notifyNoxItemReady();
+        notifyNoxItemReady(position);
       }
     }
   }
 
-  private void notifyNoxItemReady() {
+  private void notifyNoxItemReady(int position) {
     setChanged();
-    notifyObservers();
+    notifyObservers(position);
   }
 }

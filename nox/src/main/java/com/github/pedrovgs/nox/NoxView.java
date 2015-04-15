@@ -112,7 +112,11 @@ public class NoxView extends View {
     this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
     this.noxItemCatalog.addObserver(new Observer() {
       @Override public void update(Observable observable, Object data) {
-        invalidate();
+        Integer position = (Integer) data;
+        boolean isNoxItemLoadedInsideTheView = path != null && path.isItemInsideView(position);
+        if (isNoxItemLoadedInsideTheView) {
+          invalidate();
+        }
       }
     });
     this.noxItemCatalog.loadBitmaps();
