@@ -136,7 +136,7 @@ public class NoxView extends View {
 
   //TODO: Remove this hack, this is just to check if our code has a performance problem
   private Bitmap getBitmap(Integer resourceId) {
-    if (bitmap != null) {
+    if (bitmap == null) {
       bitmap = BitmapFactory.decodeResource(getContext().getResources(), resourceId);
     }
     return bitmap;

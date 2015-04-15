@@ -20,11 +20,9 @@ class CircularPath extends Path {
   @Override public void calculate() {
     PathConfig pc = getPathConfig();
     int numberOfItems = pc.getNumberOfElements();
-    final float centerX =
-        pc.getViewWidth() / 2 - pc.getFirstItemSize() / 2 - pc.getFirstItemMargin() / 2;
-    final float centerY =
-        pc.getViewHeight() / 2 - pc.getFirstItemSize() / 2 - pc.getFirstItemMargin() / 2;
-    float radius = pc.getFirstItemSize() + pc.getFirstItemMargin();
+    final float centerX = getCenterX();
+    final float centerY = getCenterY();
+    float radius = getDistance();
     int item = 0;
     int iteration = 0;
     while (item < numberOfItems) {
@@ -33,6 +31,21 @@ class CircularPath extends Path {
       item += numberOfElementsPerIteration;
       iteration++;
     }
+  }
+
+  private float getCenterY() {
+    PathConfig pc = getPathConfig();
+    return pc.getViewHeight() / 2 - pc.getFirstItemSize() / 2 - pc.getFirstItemMargin() / 2;
+  }
+
+  private float getCenterX() {
+    PathConfig pc = getPathConfig();
+    return pc.getViewWidth() / 2 - pc.getFirstItemSize() / 2 - pc.getFirstItemMargin() / 2;
+  }
+
+  private float getDistance() {
+    PathConfig pc = getPathConfig();
+    return pc.getFirstItemSize() + pc.getFirstItemMargin();
   }
 
   private int calculatePositionsForIteration(int item, float radius, int iteration, float centerX,
@@ -63,5 +76,47 @@ class CircularPath extends Path {
     int numberOfElementsPerIteration = Math.max(BASE * iteration, 1);
     numberOfElementsPerIteration = Math.min(numberOfElementsPerIteration, numberOfElements - item);
     return numberOfElementsPerIteration;
+  }
+
+  @Override public int getMinX() {
+    int numberOfIterations = getNumberOfIterations();
+    float iterationDistance = getDistance();
+    float radius = iterationDistance * numberOfIterations;
+    return (int) (getCenterX() - radius);
+  }
+
+  @Override public int getMaxX() {
+    int numberOfIterations = getNumberOfIterations();
+    float iterationDistance = getDistance();
+    float radius = iterationDistance * numberOfIterations;
+    int viewWidth = getPathConfig().getViewWidth();
+    float totalItemSize = getPathConfig().getFirstItemMargin() + getPathConfig().getFirstItemSize();
+    return (int) (getCenterX() + radius - viewWidth + totalItemSize);
+  }
+
+  @Override public int getMinY() {
+    int numberOfIterations = getNumberOfIterations();
+    float iterationDistance = getDistance();
+    float radius = iterationDistance * numberOfIterations;
+    return (int) (getCenterY() - radius);
+  }
+
+  @Override public int getMaxY() {
+    int numberOfIterations = getNumberOfIterations();
+    float iterationDistance = getDistance();
+    float radius = iterationDistance * numberOfIterations;
+    int viewHeight = getPathConfig().getViewHeight();
+    float totalItemSize = getPathConfig().getFirstItemMargin() + getPathConfig().getFirstItemSize();
+    return (int) (getCenterY() + radius - viewHeight + totalItemSize);
+  }
+
+  private int getNumberOfIterations() {
+    int numberOfElements = getPathConfig().getNumberOfElements();
+    int iteration;
+    int item = 0;
+    for (iteration = 1; item < numberOfElements; iteration++) {
+      item += getNumberOfElementsPerIteration(item, iteration);
+    }
+    return iteration - 1;
   }
 }

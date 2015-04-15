@@ -106,7 +106,7 @@ class Scroller {
   private int calculateDy(float distanceY) {
     int currentY = view.getScrollY();
     int nextY = (int) (distanceY + currentY);
-    boolean isInsideVertically = nextY >= maxY && nextY <= minY;
+    boolean isInsideVertically = nextY >= minY && nextY <= maxY;
     return isInsideVertically ? (int) distanceY : 0;
   }
 
