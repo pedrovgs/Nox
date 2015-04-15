@@ -16,8 +16,6 @@ import java.util.Observable;
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-
-//TODO: Add code to release the image loading if needed and remove observables to avoid memory leaks.
 class NoxItemCatalog extends Observable {
 
   private final Context context;
@@ -73,6 +71,14 @@ class NoxItemCatalog extends Observable {
         loadBitmapFromResource(i, noxItem);
       }
     }
+  }
+
+  void resume(){
+    Glide.with(context).resumeRequests();
+  }
+
+  void pause() {
+    Glide.with(context).pauseRequests();
   }
 
   private void loadBitmapFromUrl(int position, NoxItem noxItem) {

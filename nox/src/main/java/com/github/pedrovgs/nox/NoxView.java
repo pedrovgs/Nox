@@ -106,19 +106,44 @@ public class NoxView extends View {
     scroller.computeScroll();
   }
 
+  @Override protected void onVisibilityChanged(View changedView, int visibility) {
+    super.onVisibilityChanged(changedView, visibility);
+    if (changedView != this) {
+      return;
+    }
+
+    if (visibility == View.VISIBLE) {
+      resume();
+    } else {
+      pause();
+    }
+  }
+
+  private void resume() {
+    noxItemCatalog.addObserver(catalogObserver);
+    noxItemCatalog.resume();
+  }
+
+  private void pause() {
+    noxItemCatalog.pause();
+    noxItemCatalog.deleteObserver(catalogObserver);
+  }
+
+  private Observer catalogObserver = new Observer() {
+    @Override public void update(Observable observable, Object data) {
+      Integer position = (Integer) data;
+      boolean isNoxItemLoadedInsideTheView = path != null && path.isItemInsideView(position);
+      if (isNoxItemLoadedInsideTheView) {
+        invalidate();
+      }
+    }
+  };
+
   private void initializeNoxItemCatalog(List<NoxItem> noxItems) {
     this.noxItemCatalog =
         new NoxItemCatalog(getContext(), noxItems, (int) noxConfig.getNoxItemSize());
     this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
-    this.noxItemCatalog.addObserver(new Observer() {
-      @Override public void update(Observable observable, Object data) {
-        Integer position = (Integer) data;
-        boolean isNoxItemLoadedInsideTheView = path != null && path.isItemInsideView(position);
-        if (isNoxItemLoadedInsideTheView) {
-          invalidate();
-        }
-      }
-    });
+    this.noxItemCatalog.addObserver(catalogObserver);
     this.noxItemCatalog.loadBitmaps();
   }
 
