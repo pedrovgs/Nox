@@ -9,7 +9,8 @@ package com.github.pedrovgs.nox.path;
  */
 class SpiralPath extends Path {
 
-  private int minX;
+  //TODO: Change path implementation related to getMinMaxXY and follow this approach
+  //This is easier for Nox library clients.private int minX;
   private int maxX;
   private int minY;
   private int maxY;
