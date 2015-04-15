@@ -73,7 +73,7 @@ class NoxItemCatalog extends Observable {
     }
   }
 
-  void resume(){
+  void resume() {
     Glide.with(context).resumeRequests();
   }
 
