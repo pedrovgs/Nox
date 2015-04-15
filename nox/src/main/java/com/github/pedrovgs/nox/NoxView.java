@@ -113,7 +113,7 @@ public class NoxView extends View {
   }
 
   private void initializeNoxItemCatalog(List<NoxItem> noxItems) {
-    this.noxItemCatalog = new NoxItemCatalog(noxItems);
+    this.noxItemCatalog = new NoxItemCatalog(getContext(), noxItems);
     this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
     this.noxItemCatalog.loadBitmaps();
   }
@@ -130,8 +130,13 @@ public class NoxView extends View {
   }
 
   private void drawNoxItem(Canvas canvas, int position, float left, float top) {
-    Bitmap bitmap = noxItemCatalog.getBitmap(position);
-    canvas.drawBitmap(bitmap, left, top, paint);
+    if (noxItemCatalog.isBitmapReady(position)) {
+      Bitmap bitmap = noxItemCatalog.getBitmap(position);
+      canvas.drawBitmap(bitmap, left, top, paint);
+    } else if (noxItemCatalog.isPlaceholderReady(position)) {
+      Drawable drawable = noxItemCatalog.getPlaceholder(position);
+      drawable.draw(canvas);
+    }
   }
 
   private void createPath() {

@@ -26,25 +26,26 @@ public class NoxItem {
 
   private final String url;
   private final Integer resourceId;
-  private final Integer placeholder;
+  //TODO: check if we can return a null placeholder id without problems with Glide.
+  private final Integer placeholderId;
 
   public NoxItem(String url) {
     validateUrl(url);
     this.url = url;
     this.resourceId = null;
-    this.placeholder = null;
+    this.placeholderId = null;
   }
 
   public NoxItem(int resourceId) {
     this.url = null;
     this.resourceId = resourceId;
-    this.placeholder = null;
+    this.placeholderId = null;
   }
 
-  public NoxItem(String url, int placeholder) {
+  public NoxItem(String url, int placeholderId) {
     validateUrl(url);
     this.url = url;
-    this.placeholder = placeholder;
+    this.placeholderId = placeholderId;
     this.resourceId = null;
   }
 
@@ -57,7 +58,7 @@ public class NoxItem {
   }
 
   public boolean hasPlaceholder() {
-    return placeholder != null;
+    return placeholderId != null;
   }
 
   public String getUrl() {
@@ -66,6 +67,10 @@ public class NoxItem {
 
   public Integer getResourceId() {
     return resourceId;
+  }
+
+  public Integer getPlaceholderId() {
+    return placeholderId;
   }
 
   private void validateUrl(String url) {

@@ -1,7 +1,11 @@
 package com.github.pedrovgs.nox;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import java.util.List;
 
 /**
@@ -10,16 +14,87 @@ import java.util.List;
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
+
+//TODO: Add code to release the image loading if needed.
 class NoxItemCatalog {
 
+  private final Context context;
   private final List<NoxItem> noxItems;
   private final Bitmap[] bitmaps;
+  private final Drawable[] placeholders;
   private Drawable placeholder;
 
-  public NoxItemCatalog(List<NoxItem> noxItems) {
+  NoxItemCatalog(Context context, List<NoxItem> noxItems) {
     validateNoxItems(noxItems);
+    this.context = context;
     this.noxItems = noxItems;
     this.bitmaps = new Bitmap[noxItems.size()];
+    this.placeholders = new Drawable[noxItems.size()];
+  }
+
+  int size() {
+    return noxItems.size();
+  }
+
+  boolean isBitmapReady(int position) {
+    return bitmaps[position] != null;
+  }
+
+  Bitmap getBitmap(int position) {
+    return bitmaps[position];
+  }
+
+  boolean isPlaceholderReady(int position) {
+    return placeholders[position] != null || placeholder != null;
+  }
+
+  Drawable getPlaceholder(int position) {
+    Drawable placeholder = placeholders[position];
+    if (placeholder == null) {
+      placeholder = this.placeholder;
+    }
+    return placeholder;
+  }
+
+  void setPlaceholder(Drawable placeholder) {
+    this.placeholder = placeholder;
+  }
+
+  void loadBitmaps() {
+    for (int i = 0; i < noxItems.size(); i++) {
+      NoxItem noxItem = noxItems.get(i);
+      if (noxItem.hasUrl()) {
+        loadBitmapFromUrl(i, noxItem);
+      } else if (noxItem.hasResourceId()) {
+        loadBitmapFromResource(i, noxItem);
+      }
+    }
+  }
+
+  private void loadBitmapFromUrl(int position, NoxItem noxItem) {
+    String url = noxItem.getUrl();
+    NoxItemTarget noxItemTarget = new NoxItemTarget(position);
+    if (noxItem.hasPlaceholder()) {
+      int placeholderId = noxItem.getPlaceholderId();
+      Glide.with(context).load(url).asBitmap().placeholder(placeholderId).into(noxItemTarget);
+    } else {
+      Glide.with(context).load(url).asBitmap().into(noxItemTarget);
+    }
+  }
+
+  private void loadBitmapFromResource(int position, NoxItem noxItem) {
+    int resourceId = noxItem.getResourceId();
+    NoxItemTarget noxItemTarget = new NoxItemTarget(position);
+    if (noxItem.hasPlaceholder()) {
+      int placeholderId = noxItem.getPlaceholderId();
+      Glide.with(context)
+          .load(resourceId)
+          .asBitmap()
+          .placeholder(placeholderId)
+          .into(noxItemTarget);
+    } else {
+      Glide.with(context).load(resourceId).asBitmap().into(noxItemTarget);
+    }
   }
 
   private void validateNoxItems(List<NoxItem> noxItems) {
@@ -28,19 +103,22 @@ class NoxItemCatalog {
     }
   }
 
-  public int size() {
-    return noxItems.size();
-  }
+  private class NoxItemTarget extends SimpleTarget<Bitmap> {
 
-  public Bitmap getBitmap(int position) {
-    return null;
-  }
+    private final int position;
 
-  public void setPlaceholder(Drawable placeholder) {
-    this.placeholder = placeholder;
-  }
+    public NoxItemTarget(int position) {
+      this.position = position;
+    }
 
-  public void loadBitmaps() {
+    @Override
+    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+      bitmaps[position] = resource;
+    }
 
+    @Override public void onLoadStarted(Drawable placeholder) {
+      super.onLoadStarted(placeholder);
+      placeholders[position] = placeholder;
+    }
   }
 }
