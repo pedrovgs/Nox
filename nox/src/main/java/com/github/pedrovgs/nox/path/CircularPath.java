@@ -58,8 +58,9 @@ class CircularPath extends Path {
     }
 
     float distance = radius * iteration;
+    double fullCircleInRads = RAD * 360;
     for (int i = 0; i < numberOfElementsPerIteration; i++) {
-      double angle = RAD * 360 / numberOfElementsPerIteration * i;
+      double angle = fullCircleInRads / numberOfElementsPerIteration * i;
       double sin = Math.sin(angle);
       double cos = Math.cos(angle);
       float x = (float) (centerX + (sin * distance));
