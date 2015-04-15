@@ -115,7 +115,8 @@ public class NoxView extends View {
   }
 
   private void initializeNoxItemCatalog(List<NoxItem> noxItems) {
-    this.noxItemCatalog = new NoxItemCatalog(getContext(), noxItems);
+    this.noxItemCatalog =
+        new NoxItemCatalog(getContext(), noxItems, (int) noxConfig.getNoxItemSize());
     this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
     this.noxItemCatalog.loadBitmaps();
     this.noxItemCatalog.addObserver(new Observer() {

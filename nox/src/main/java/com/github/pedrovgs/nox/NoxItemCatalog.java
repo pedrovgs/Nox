@@ -21,14 +21,16 @@ class NoxItemCatalog extends Observable {
 
   private final Context context;
   private final List<NoxItem> noxItems;
+  private final int noxItemSize;
   private final Bitmap[] bitmaps;
   private final Drawable[] placeholders;
   private Drawable placeholder;
 
-  NoxItemCatalog(Context context, List<NoxItem> noxItems) {
+  NoxItemCatalog(Context context, List<NoxItem> noxItems, int noxItemSize) {
     validateNoxItems(noxItems);
     this.context = context;
     this.noxItems = noxItems;
+    this.noxItemSize = noxItemSize;
     this.bitmaps = new Bitmap[noxItems.size()];
     this.placeholders = new Drawable[noxItems.size()];
   }
@@ -74,7 +76,7 @@ class NoxItemCatalog extends Observable {
 
   private void loadBitmapFromUrl(int position, NoxItem noxItem) {
     String url = noxItem.getUrl();
-    NoxItemTarget noxItemTarget = new NoxItemTarget(position);
+    NoxItemTarget noxItemTarget = getNoxItemTarget(position);
     if (noxItem.hasPlaceholder()) {
       int placeholderId = noxItem.getPlaceholderId();
       Glide.with(context).load(url).asBitmap().placeholder(placeholderId).into(noxItemTarget);
@@ -85,7 +87,7 @@ class NoxItemCatalog extends Observable {
 
   private void loadBitmapFromResource(int position, NoxItem noxItem) {
     int resourceId = noxItem.getResourceId();
-    NoxItemTarget noxItemTarget = new NoxItemTarget(position);
+    NoxItemTarget noxItemTarget = getNoxItemTarget(position);
     if (noxItem.hasPlaceholder()) {
       int placeholderId = noxItem.getPlaceholderId();
       Glide.with(context)
@@ -104,11 +106,16 @@ class NoxItemCatalog extends Observable {
     }
   }
 
+  private NoxItemTarget getNoxItemTarget(int position) {
+    return new NoxItemTarget(position, noxItemSize);
+  }
+
   private class NoxItemTarget extends SimpleTarget<Bitmap> {
 
     private final int position;
 
-    public NoxItemTarget(int position) {
+    public NoxItemTarget(int position, int size) {
+      super(size, size);
       this.position = position;
     }
 
