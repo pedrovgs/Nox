@@ -51,7 +51,7 @@ class SpiralPath extends Path {
   }
 
   @Override public int getMaxX() {
-    return (int) (maxX + getPathConfig().getFirstItemSize());
+    return maxX;
   }
 
   @Override public int getMinY() {
@@ -59,6 +59,6 @@ class SpiralPath extends Path {
   }
 
   @Override public int getMaxY() {
-    return (int) (maxY + getPathConfig().getFirstItemSize());
+    return maxY;
   }
 }
