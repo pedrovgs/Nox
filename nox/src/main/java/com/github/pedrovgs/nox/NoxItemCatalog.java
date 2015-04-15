@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Processes NoxItem instances to download the images associated to a set of NoxItem instances
@@ -15,8 +16,8 @@ import java.util.List;
  * @author Pedro Vicente Gomez Sanchez.
  */
 
-//TODO: Add code to release the image loading if needed.
-class NoxItemCatalog {
+//TODO: Add code to release the image loading if needed and remove observables to avoid memory leaks.
+class NoxItemCatalog extends Observable {
 
   private final Context context;
   private final List<NoxItem> noxItems;

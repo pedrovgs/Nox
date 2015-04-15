@@ -31,6 +31,8 @@ import com.github.pedrovgs.nox.path.Path;
 import com.github.pedrovgs.nox.path.PathConfig;
 import com.github.pedrovgs.nox.path.PathFactory;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Main library component. This custom view is going to receive a List of Nox objects and create a
@@ -116,6 +118,11 @@ public class NoxView extends View {
     this.noxItemCatalog = new NoxItemCatalog(getContext(), noxItems);
     this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
     this.noxItemCatalog.loadBitmaps();
+    this.noxItemCatalog.addObserver(new Observer() {
+      @Override public void update(Observable observable, Object data) {
+        invalidate();
+      }
+    });
   }
 
   private void initializeScroller() {
