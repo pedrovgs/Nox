@@ -56,14 +56,13 @@ import static org.junit.Assert.assertTrue;
   }
 
   @Test
-  public void shouldReturnFalseCheckingIfPlaceholdersAreReadyIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasNotConfigured() {
+  public void shouldReturnFalseIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasNotConfigured() {
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
 
     assertFalse(noxItemCatalog.isPlaceholderReady(0));
   }
 
-  @Test
-  public void shouldReturnTrueCheckingIfPlaceholdersAreReadyIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasConfigured() {
+  @Test public void shouldReturnTrueIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasConfigured() {
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
 
     noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
@@ -71,15 +70,14 @@ import static org.junit.Assert.assertTrue;
     assertTrue(noxItemCatalog.isPlaceholderReady(0));
   }
 
-  @Test
-  public void shouldReturnNullGettingOnePlaceholdersIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasNotConfigured() {
+  @Test public void shouldReturnNullIfNoxCatalogWasNotLoadedAndOnePlaceholderWasNotConfigured() {
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
 
     assertNull(noxItemCatalog.getPlaceholder(0));
   }
 
   @Test
-  public void shouldReturnTheGeneralPlaceholderGettingOnePlaceholdersIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasConfigured() {
+  public void shouldReturnPlaceholderIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasConfigured() {
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
 
     noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
