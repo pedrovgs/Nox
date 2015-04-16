@@ -58,12 +58,12 @@ class NoxItemCatalog extends Observable {
     return bitmaps[position] != null;
   }
 
-  Bitmap getBitmap(int position) {
-    return bitmaps[position];
-  }
-
   boolean isPlaceholderReady(int position) {
     return placeholders[position] != null || placeholder != null;
+  }
+
+  Bitmap getBitmap(int position) {
+    return bitmaps[position];
   }
 
   Drawable getPlaceholder(int position) {
@@ -78,7 +78,7 @@ class NoxItemCatalog extends Observable {
     this.placeholder = placeholder;
   }
 
-  void loadBitmaps() {
+  void load() {
     for (int i = 0; i < noxItems.size(); i++) {
       NoxItem noxItem = noxItems.get(i);
       if (noxItem.hasUrl()) {

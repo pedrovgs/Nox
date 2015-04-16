@@ -144,7 +144,7 @@ public class NoxView extends View {
         new NoxItemCatalog(getContext(), noxItems, (int) noxConfig.getNoxItemSize());
     this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
     this.noxItemCatalog.addObserver(catalogObserver);
-    this.noxItemCatalog.loadBitmaps();
+    this.noxItemCatalog.load();
   }
 
   private void initializeScroller() {
@@ -164,9 +164,11 @@ public class NoxView extends View {
       canvas.drawBitmap(bitmap, left, top, paint);
     } else if (noxItemCatalog.isPlaceholderReady(position)) {
       Drawable drawable = noxItemCatalog.getPlaceholder(position);
-      int itemSize = (int) noxConfig.getNoxItemSize();
-      drawable.setBounds((int) left, (int) top, (int) left + itemSize, (int) top + itemSize);
-      drawable.draw(canvas);
+      if (drawable != null) {
+        int itemSize = (int) noxConfig.getNoxItemSize();
+        drawable.setBounds((int) left, (int) top, (int) left + itemSize, (int) top + itemSize);
+        drawable.draw(canvas);
+      }
     }
   }
 

@@ -16,11 +16,19 @@
 
 package com.github.pedrovgs.nox;
 
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import java.util.LinkedList;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -28,7 +36,64 @@ import static org.junit.Assert.assertTrue;
  */
 @Config(emulateSdk = 18) @RunWith(RobolectricTestRunner.class) public class NoxItemCatalogTest {
 
-  @Test public void test() {
-    assertTrue(true);
+  private static final int ANY_NOX_ITEM_SIZE = 100;
+  private static final NoxItem ANY_NOX_ITEM = new NoxItem("http://anyimage.com/1");
+  private static final Drawable ANY_PLACEHOLDER = new ColorDrawable();
+
+  @Test public void shouldBaseNoxCatalogSizeInTheListPassedInConstruction() {
+    List<NoxItem> noxItems = new LinkedList<NoxItem>();
+    noxItems.add(ANY_NOX_ITEM);
+
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
+
+    assertEquals(noxItems.size(), noxItemCatalog.size());
+  }
+
+  @Test public void shouldReturnFalseCheckingIfBitmapsAreReadyIfNoxCatalogWasNotLoaded() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+
+    assertFalse(noxItemCatalog.isBitmapReady(0));
+  }
+
+  @Test
+  public void shouldReturnFalseCheckingIfPlaceholdersAreReadyIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasNotConfigured() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+
+    assertFalse(noxItemCatalog.isPlaceholderReady(0));
+  }
+
+  @Test
+  public void shouldReturnTrueCheckingIfPlaceholdersAreReadyIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasConfigured() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+
+    noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
+
+    assertTrue(noxItemCatalog.isPlaceholderReady(0));
+  }
+
+  @Test
+  public void shouldReturnNullGettingOnePlaceholdersIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasNotConfigured() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+
+    assertNull(noxItemCatalog.getPlaceholder(0));
+  }
+
+  @Test
+  public void shouldReturnTheGeneralPlaceholderGettingOnePlaceholdersIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasConfigured() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+
+    noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
+
+    assertEquals(ANY_PLACEHOLDER, noxItemCatalog.getPlaceholder(0));
+  }
+
+  private NoxItemCatalog givenOneNoxItemCatalog() {
+    LinkedList<NoxItem> noxItems = new LinkedList<NoxItem>();
+    noxItems.add(ANY_NOX_ITEM);
+    return givenOneNoxItemCatalog(noxItems);
+  }
+
+  private NoxItemCatalog givenOneNoxItemCatalog(List<NoxItem> noxItems) {
+    return new NoxItemCatalog(RuntimeEnvironment.application, noxItems, ANY_NOX_ITEM_SIZE);
   }
 }
