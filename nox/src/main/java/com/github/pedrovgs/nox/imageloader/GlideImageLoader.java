@@ -121,6 +121,13 @@ class GlideImageLoader implements ImageLoader {
         super.onLoadStarted(placeholder);
         listener.onPlaceholderLoaded(placeholder);
       }
+
+      @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
+        super.onLoadFailed(e, errorDrawable);
+        if (e.getMessage().contains("404")) {
+          listener.onResourceNotFound();
+        }
+      }
     };
   }
 

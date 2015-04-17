@@ -39,9 +39,20 @@ public class MainActivity extends ActionBarActivity {
   private void configureNoxView() {
     NoxView noxView = (NoxView) findViewById(R.id.nox_view);
     List<NoxItem> noxItems = new ArrayList<NoxItem>();
-    for (int i = 0; i < 631; i++) {
-      noxItems.add(new NoxItem("http://api.randomuser.me/portraits/med/women/11.jpg",
-          R.drawable.ic_launcher));
+    for (int i = 0; i < 600; i++) {
+      if (i < 100) {
+        noxItems.add(new NoxItem("http://api.randomuser.me/portraits/med/women/" + i + ".jpg",
+            R.drawable.ic_launcher));
+      } else if (i < 200) {
+        noxItems.add(new NoxItem("http://api.randomuser.me/portraits/med/men/" + (i - 100) + ".jpg",
+            R.drawable.ic_launcher));
+      } else if (i < 300) {
+        noxItems.add(new NoxItem("http://api.randomuser.me/portraits/men/" + (i - 200) + ".jpg",
+            R.drawable.ic_launcher));
+      } else {
+        noxItems.add(new NoxItem("http://api.randomuser.me/portraits/women/" + (i - 200) + ".jpg",
+            R.drawable.ic_launcher));
+      }
     }
     noxView.showNoxItems(noxItems);
   }

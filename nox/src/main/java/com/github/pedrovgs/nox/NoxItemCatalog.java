@@ -16,7 +16,6 @@
 
 package com.github.pedrovgs.nox;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import com.github.pedrovgs.nox.imageloader.ImageLoader;
@@ -31,23 +30,22 @@ import java.util.Observable;
  */
 class NoxItemCatalog extends Observable {
 
-  private final Context context;
   private final List<NoxItem> noxItems;
   private final int noxItemSize;
   private final ImageLoader imageLoader;
   private final Bitmap[] bitmaps;
   private final Drawable[] placeholders;
+  private final boolean[] resourceNotFound;
   private Drawable placeholder;
 
-  NoxItemCatalog(Context context, List<NoxItem> noxItems, int noxItemSize,
-      ImageLoader imageLoader) {
+  NoxItemCatalog(List<NoxItem> noxItems, int noxItemSize, ImageLoader imageLoader) {
     validateNoxItems(noxItems);
-    this.context = context;
     this.noxItems = noxItems;
     this.noxItemSize = noxItemSize;
     this.imageLoader = imageLoader;
     this.bitmaps = new Bitmap[noxItems.size()];
     this.placeholders = new Drawable[noxItems.size()];
+    this.resourceNotFound = new boolean[noxItems.size()];
   }
 
   int size() {
@@ -60,6 +58,10 @@ class NoxItemCatalog extends Observable {
 
   boolean isPlaceholderReady(int position) {
     return placeholders[position] != null || placeholder != null;
+  }
+
+  boolean isResourceAvailable(int position) {
+    return !resourceNotFound[position];
   }
 
   Bitmap getBitmap(int position) {
@@ -78,10 +80,10 @@ class NoxItemCatalog extends Observable {
     this.placeholder = placeholder;
   }
 
-  void load() {
-    for (int i = 0; i < noxItems.size(); i++) {
-      NoxItem noxItem = noxItems.get(i);
-      loadNoxItem(i, noxItem);
+  void load(int position) {
+    if (!isBitmapReady(position) && isResourceAvailable(position)) {
+      NoxItem noxItem = noxItems.get(position);
+      loadNoxItem(position, noxItem);
     }
   }
 
@@ -112,6 +114,10 @@ class NoxItemCatalog extends Observable {
       @Override public void onImageLoaded(Bitmap image) {
         bitmaps[position] = image;
         notifyNoxItemReady(position);
+      }
+
+      @Override public void onResourceNotFound() {
+        resourceNotFound[position] = true;
       }
     };
   }

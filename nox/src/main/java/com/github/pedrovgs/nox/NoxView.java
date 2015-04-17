@@ -78,6 +78,7 @@ public class NoxView extends View {
     updatePathOffset();
     for (int i = 0; i < noxItemCatalog.size(); i++) {
       if (path.isItemInsideView(i)) {
+        noxItemCatalog.load(i);
         float left = path.getLeftForItemAtPosition(i);
         float top = path.getTopForItemAtPosition(i);
         drawNoxItem(canvas, i, left, top);
@@ -88,10 +89,10 @@ public class NoxView extends View {
   /**
    * Given a List<NoxItem> draws this items keeping the previous view state.
    */
-  public void showNoxItems(List<NoxItem> noxItems) {
-    initializeNoxItemCatalog(noxItems);
+  public void showNoxItems(final List<NoxItem> noxItems) {
     this.post(new Runnable() {
       @Override public void run() {
+        initializeNoxItemCatalog(noxItems);
         createPath();
         initializeScroller();
         invalidate();
@@ -144,10 +145,9 @@ public class NoxView extends View {
   private void initializeNoxItemCatalog(List<NoxItem> noxItems) {
     ImageLoader imageLoader = ImageLoaderFactory.getGlideImageLoader(getContext());
     this.noxItemCatalog =
-        new NoxItemCatalog(getContext(), noxItems, (int) noxConfig.getNoxItemSize(), imageLoader);
+        new NoxItemCatalog(noxItems, (int) noxConfig.getNoxItemSize(), imageLoader);
     this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
     this.noxItemCatalog.addObserver(catalogObserver);
-    this.noxItemCatalog.load();
   }
 
   private void initializeScroller() {

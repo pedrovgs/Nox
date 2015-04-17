@@ -49,5 +49,7 @@ public interface ImageLoader {
     void onPlaceholderLoaded(Drawable placeholder);
 
     void onImageLoaded(Bitmap image);
+
+    void onResourceNotFound();
   }
 }
