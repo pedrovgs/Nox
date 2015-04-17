@@ -89,6 +89,41 @@ public class GlideImageLoader implements ImageLoader {
     Glide.with(context).resumeRequests();
   }
 
+  private void loadImage() {
+    Transformation[] transformations = prepareTransformations();
+    boolean hasUrl = url != null;
+    boolean hasResourceId = resourceId != null;
+    Target listenerTarget = getLinearTarget(listener);
+    if (hasUrl) {
+      BitmapTypeRequest<String> bitmapRequest = Glide.with(context).load(url).asBitmap();
+      applyPlaceholder(bitmapRequest).override(size, size)
+          .transform(transformations)
+          .into(listenerTarget);
+    } else if (hasResourceId) {
+      BitmapTypeRequest<Integer> bitmapRequest = Glide.with(context).load(resourceId).asBitmap();
+      applyPlaceholder(bitmapRequest).override(size, size)
+          .transform(transformations)
+          .into(listenerTarget);
+    } else {
+      throw new IllegalArgumentException(
+          "Review your request, you are trying to load an image without a url or a resource id.");
+    }
+  }
+
+  private Target getLinearTarget(final Listener listener) {
+    return new SimpleTarget<Bitmap>(size, size) {
+      @Override
+      public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+        listener.onImageLoaded(resource);
+      }
+
+      @Override public void onLoadStarted(Drawable placeholder) {
+        super.onLoadStarted(placeholder);
+        listener.onPlaceholderLoaded(placeholder);
+      }
+    };
+  }
+
   private Transformation[] prepareTransformations() {
     Transformation[] transformations;
     if (useCircularTransformation) {
@@ -100,17 +135,11 @@ public class GlideImageLoader implements ImageLoader {
     return transformations;
   }
 
-  private Target getLinearTarget(final Listener listener) {
-    return new SimpleTarget<Bitmap>(size, size) {
-      @Override
-      public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-        listener.onImageLoaded(resource);
-      }
-
-      @Override public void onLoadStarted(Drawable placeholder) {
-        listener.onPlaceholderLoaded(placeholder);
-      }
-    };
+  private BitmapRequestBuilder applyPlaceholder(BitmapRequestBuilder bitmapRequest) {
+    if (placeholderId != null) {
+      bitmapRequest.placeholder(placeholderId);
+    }
+    return bitmapRequest;
   }
 
   private void validateListener(Listener listener) {
@@ -118,30 +147,5 @@ public class GlideImageLoader implements ImageLoader {
       throw new NullPointerException(
           "You can't pass a null instance of GlideImageLoader.Listener.");
     }
-  }
-
-  private void loadImage() {
-    Transformation[] transformations = prepareTransformations();
-    boolean hasUrl = url != null;
-    boolean hasResourceId = resourceId != null;
-    Target listenerTarget = getLinearTarget(listener);
-    if (hasUrl) {
-      BitmapTypeRequest<String> bitmapRequest = Glide.with(context).load(url).asBitmap();
-      applyPlaceholder(bitmapRequest).transform(transformations).into(listenerTarget);
-    } else if (hasResourceId) {
-      BitmapTypeRequest<Integer> bitmapRequest = Glide.with(context).load(resourceId).asBitmap();
-      applyPlaceholder(bitmapRequest)//placeholder can't be null
-          .transform(transformations).into(listenerTarget);
-    } else {
-      throw new IllegalArgumentException(
-          "Review your request, you are trying to load an image without a url or a resource id.");
-    }
-  }
-
-  private BitmapRequestBuilder applyPlaceholder(BitmapRequestBuilder bitmapRequest) {
-    if (placeholderId != null) {
-      bitmapRequest.placeholder(placeholderId);
-    }
-    return bitmapRequest;
   }
 }
