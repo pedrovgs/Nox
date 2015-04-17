@@ -97,8 +97,8 @@ class NoxItemCatalog extends Observable {
     imageLoader.load(noxItem.getResourceId())
         .load(noxItem.getUrl())
         .withPlaceholder(noxItem.getPlaceholderId())
-        .useCircularTransformation()
         .size(noxItemSize)
+        .useCircularTransformation()
         .notify(getImageLoaderListener(position));
   }
 

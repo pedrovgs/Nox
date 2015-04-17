@@ -22,8 +22,12 @@ import com.github.pedrovgs.nox.doubles.FakeImageLoader;
 import com.github.pedrovgs.nox.imageloader.ImageLoader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observer;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -33,6 +37,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Pedro Vicente Gómez Sánchez.
@@ -40,10 +46,17 @@ import static org.junit.Assert.assertTrue;
 @Config(emulateSdk = 18) @RunWith(RobolectricTestRunner.class) public class NoxItemCatalogTest {
 
   private static final int ANY_NOX_ITEM_SIZE = 100;
-  private static final NoxItem ANY_NOX_ITEM = new NoxItem("http://anyimage.com/1");
+  private static final String ANY_URL = "http://anyimage.com/1";
+  private static final String ANY_URL_2 = "http://anyimage.com/2";
+  private static final NoxItem ANY_NOX_ITEM = new NoxItem(ANY_URL);
   private static final Drawable ANY_PLACEHOLDER = new ColorDrawable();
 
   @Spy private ImageLoader imageLoader = new FakeImageLoader();
+  @Mock Observer observer;
+
+  @Before public void setUp() {
+    MockitoAnnotations.initMocks(this);
+  }
 
   @Test public void shouldBaseNoxCatalogSizeInTheListPassedInConstruction() {
     List<NoxItem> noxItems = new LinkedList<NoxItem>();
@@ -88,6 +101,60 @@ import static org.junit.Assert.assertTrue;
     noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
 
     assertEquals(ANY_PLACEHOLDER, noxItemCatalog.getPlaceholder(0));
+  }
+
+  @Test public void shouldPauseImageLoadingWhenNoxItemCatalogIsPaused() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+
+    noxItemCatalog.pause();
+
+    verify(imageLoader).pause();
+  }
+
+  @Test public void shouldResumeImageLoadingWhenNoxItemCatalogIsResumed() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+
+    noxItemCatalog.resume();
+
+    verify(imageLoader).resume();
+  }
+
+  @Test public void shouldUseNoxItemCatalogSizeToLoadNoxItemImages() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+
+    noxItemCatalog.load();
+
+    verify(imageLoader).size(ANY_NOX_ITEM_SIZE);
+  }
+
+  @Test public void shouldUseCircularTransformationToLoadNoxItemImages() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+
+    noxItemCatalog.load();
+
+    verify(imageLoader).useCircularTransformation();
+  }
+
+  @Test
+  public void shouldNotifyObserversWhenAnImageAndPlaceholderAreLoadedIndicatingNoxItemPosition() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+    noxItemCatalog.addObserver(observer);
+
+    noxItemCatalog.load();
+
+    verify(observer, times(2)).update(noxItemCatalog, 0);
+  }
+
+  @Test public void shouldLoadImagesForEveryNoxItemUsingNoxItemUrl() {
+    List<NoxItem> noxItems = new LinkedList<NoxItem>();
+    noxItems.add(new NoxItem(ANY_URL));
+    noxItems.add(new NoxItem(ANY_URL_2));
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
+
+    noxItemCatalog.load();
+
+    verify(imageLoader).load(ANY_URL);
+    verify(imageLoader).load(ANY_URL_2);
   }
 
   private NoxItemCatalog givenOneNoxItemCatalog() {

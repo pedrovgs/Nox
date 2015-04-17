@@ -27,24 +27,25 @@ import com.github.pedrovgs.nox.imageloader.ImageLoader;
  * @author Pedro Vicente Gomez Sanchez.
  */
 public class FakeImageLoader implements ImageLoader {
+
   @Override public ImageLoader load(String url) {
-    return null;
+    return this;
   }
 
   @Override public ImageLoader load(Integer resourceId) {
-    return null;
+    return this;
   }
 
   @Override public ImageLoader withPlaceholder(Integer resourceId) {
-    return null;
+    return this;
   }
 
   @Override public ImageLoader useCircularTransformation() {
-    return null;
+    return this;
   }
 
   @Override public ImageLoader size(int size) {
-    return null;
+    return this;
   }
 
   @Override public void notify(Listener listener) {
