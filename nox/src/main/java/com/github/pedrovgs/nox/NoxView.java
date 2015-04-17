@@ -53,6 +53,7 @@ public class NoxView extends View {
   private Scroller scroller;
   private NoxItemCatalog noxItemCatalog;
   private Paint paint = new Paint();
+  private boolean wasInvalidatedBefore;
 
   public NoxView(Context context) {
     this(context, null);
@@ -84,6 +85,7 @@ public class NoxView extends View {
         drawNoxItem(canvas, i, left, top);
       }
     }
+    wasInvalidatedBefore = false;
   }
 
   /**
@@ -95,7 +97,7 @@ public class NoxView extends View {
         initializeNoxItemCatalog(noxItems);
         createPath();
         initializeScroller();
-        invalidate();
+        refreshView();
       }
     });
   }
@@ -137,10 +139,17 @@ public class NoxView extends View {
       Integer position = (Integer) data;
       boolean isNoxItemLoadedInsideTheView = path != null && path.isItemInsideView(position);
       if (isNoxItemLoadedInsideTheView) {
-        invalidate();
+        refreshView();
       }
     }
   };
+
+  private void refreshView() {
+    if (!wasInvalidatedBefore) {
+      wasInvalidatedBefore = true;
+      invalidate();
+    }
+  }
 
   private void initializeNoxItemCatalog(List<NoxItem> noxItems) {
     ImageLoader imageLoader = ImageLoaderFactory.getGlideImageLoader(getContext());

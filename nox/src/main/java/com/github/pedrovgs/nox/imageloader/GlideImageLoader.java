@@ -37,6 +37,8 @@ import com.github.pedrovgs.nox.transformation.CircularTransformation;
  */
 class GlideImageLoader implements ImageLoader {
 
+  private static final String RESOURCE_NOT_FOUND_ERROR = "404";
+
   private final Context context;
 
   private String url;
@@ -124,7 +126,7 @@ class GlideImageLoader implements ImageLoader {
 
       @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
         super.onLoadFailed(e, errorDrawable);
-        if (e.getMessage().contains("404")) {
+        if (e.getMessage() != null && e.getMessage().contains(RESOURCE_NOT_FOUND_ERROR)) {
           listener.onResourceNotFound();
         }
       }
