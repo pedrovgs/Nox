@@ -18,10 +18,13 @@ package com.github.pedrovgs.nox;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import com.github.pedrovgs.nox.imageloader.GlideImageLoader;
+import com.github.pedrovgs.nox.imageloader.ImageLoader;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Spy;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -39,6 +42,8 @@ import static org.junit.Assert.assertTrue;
   private static final int ANY_NOX_ITEM_SIZE = 100;
   private static final NoxItem ANY_NOX_ITEM = new NoxItem("http://anyimage.com/1");
   private static final Drawable ANY_PLACEHOLDER = new ColorDrawable();
+
+  @Spy private ImageLoader imageLoader = new GlideImageLoader(RuntimeEnvironment.application);
 
   @Test public void shouldBaseNoxCatalogSizeInTheListPassedInConstruction() {
     List<NoxItem> noxItems = new LinkedList<NoxItem>();
@@ -92,6 +97,7 @@ import static org.junit.Assert.assertTrue;
   }
 
   private NoxItemCatalog givenOneNoxItemCatalog(List<NoxItem> noxItems) {
-    return new NoxItemCatalog(RuntimeEnvironment.application, noxItems, ANY_NOX_ITEM_SIZE);
+    return new NoxItemCatalog(RuntimeEnvironment.application, noxItems, ANY_NOX_ITEM_SIZE,
+        imageLoader);
   }
 }

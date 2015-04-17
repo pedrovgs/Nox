@@ -19,6 +19,8 @@ package com.github.pedrovgs.nox.imageloader;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import com.bumptech.glide.BitmapRequestBuilder;
+import com.bumptech.glide.BitmapTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -118,22 +120,22 @@ public class GlideImageLoader implements ImageLoader {
     boolean hasResourceId = resourceId != null;
     Target listenerTarget = getLinearTarget(listener);
     if (hasUrl) {
-      Glide.with(context)
-          .load(url)
-          .asBitmap()
-          .placeholder(placeholderId)
-          .transform(transformations)
-          .into(listenerTarget);
+      BitmapTypeRequest<String> bitmapRequest = Glide.with(context).load(url).asBitmap();
+      applyPlaceholder(bitmapRequest).transform(transformations).into(listenerTarget);
     } else if (hasResourceId) {
-      Glide.with(context)
-          .load(resourceId)
-          .asBitmap()
-          .placeholder(placeholderId)
-          .transform(transformations)
-          .into(listenerTarget);
+      BitmapTypeRequest<Integer> bitmapRequest = Glide.with(context).load(resourceId).asBitmap();
+      applyPlaceholder(bitmapRequest)//placeholder can't be null
+          .transform(transformations).into(listenerTarget);
     } else {
       throw new IllegalArgumentException(
           "Review your request, you are trying to load an image without a url or a resource id.");
     }
+  }
+
+  private BitmapRequestBuilder applyPlaceholder(BitmapRequestBuilder bitmapRequest) {
+    if (placeholderId != null) {
+      bitmapRequest.placeholder(placeholderId);
+    }
+    return bitmapRequest;
   }
 }
