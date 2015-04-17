@@ -16,7 +16,7 @@
 
 package com.github.pedrovgs.nox.path;
 
-import com.github.pedrovgs.nox.path.doubles.FakePath;
+import com.github.pedrovgs.nox.doubles.FakePath;
 import org.junit.Before;
 import org.junit.Test;
 

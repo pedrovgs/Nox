@@ -18,7 +18,7 @@ package com.github.pedrovgs.nox;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import com.github.pedrovgs.nox.imageloader.GlideImageLoader;
+import com.github.pedrovgs.nox.doubles.FakeImageLoader;
 import com.github.pedrovgs.nox.imageloader.ImageLoader;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +43,7 @@ import static org.junit.Assert.assertTrue;
   private static final NoxItem ANY_NOX_ITEM = new NoxItem("http://anyimage.com/1");
   private static final Drawable ANY_PLACEHOLDER = new ColorDrawable();
 
-  @Spy private ImageLoader imageLoader = new GlideImageLoader(RuntimeEnvironment.application);
+  @Spy private ImageLoader imageLoader = new FakeImageLoader();
 
   @Test public void shouldBaseNoxCatalogSizeInTheListPassedInConstruction() {
     List<NoxItem> noxItems = new LinkedList<NoxItem>();

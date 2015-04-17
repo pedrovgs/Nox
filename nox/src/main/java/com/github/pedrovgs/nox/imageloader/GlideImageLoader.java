@@ -35,7 +35,7 @@ import com.github.pedrovgs.nox.transformation.CircularTransformation;
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class GlideImageLoader implements ImageLoader {
+class GlideImageLoader implements ImageLoader {
 
   private final Context context;
 
@@ -46,7 +46,7 @@ public class GlideImageLoader implements ImageLoader {
   private int size;
   private Listener listener;
 
-  public GlideImageLoader(Context context) {
+  GlideImageLoader(Context context) {
     this.context = context;
   }
 
