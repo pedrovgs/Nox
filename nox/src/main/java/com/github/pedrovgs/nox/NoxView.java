@@ -27,6 +27,8 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import com.github.pedrovgs.nox.imageloader.ImageLoader;
+import com.github.pedrovgs.nox.imageloader.ImageLoaderFactory;
 import com.github.pedrovgs.nox.path.Path;
 import com.github.pedrovgs.nox.path.PathConfig;
 import com.github.pedrovgs.nox.path.PathFactory;
@@ -140,8 +142,9 @@ public class NoxView extends View {
   };
 
   private void initializeNoxItemCatalog(List<NoxItem> noxItems) {
+    ImageLoader imageLoader = ImageLoaderFactory.getGlideImageLoader(getContext());
     this.noxItemCatalog =
-        new NoxItemCatalog(getContext(), noxItems, (int) noxConfig.getNoxItemSize());
+        new NoxItemCatalog(getContext(), noxItems, (int) noxConfig.getNoxItemSize(), imageLoader);
     this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
     this.noxItemCatalog.addObserver(catalogObserver);
     this.noxItemCatalog.load();
