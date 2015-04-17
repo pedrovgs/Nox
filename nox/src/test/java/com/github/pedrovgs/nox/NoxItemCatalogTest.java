@@ -35,6 +35,7 @@ import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
@@ -50,6 +51,8 @@ import static org.mockito.Mockito.verify;
   private static final String ANY_URL_2 = "http://anyimage.com/2";
   private static final NoxItem ANY_NOX_ITEM = new NoxItem(ANY_URL);
   private static final Drawable ANY_PLACEHOLDER = new ColorDrawable();
+  private static final int ANY_PLACEHOLDER_ID = 2;
+  private static final int ANY_RESOURCE_ID = 1;
 
   @Spy private ImageLoader imageLoader = new FakeImageLoader();
   @Mock Observer observer;
@@ -155,6 +158,39 @@ import static org.mockito.Mockito.verify;
 
     verify(imageLoader).load(ANY_URL);
     verify(imageLoader).load(ANY_URL_2);
+  }
+
+  @Test public void shouldReturnANotNullBitmapWhenNoxItemsAreLoadedUsingUrl() {
+    List<NoxItem> noxItems = new LinkedList<NoxItem>();
+    noxItems.add(new NoxItem(ANY_URL));
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
+
+    noxItemCatalog.load();
+
+    assertTrue(noxItemCatalog.isBitmapReady(0));
+    assertNotNull(noxItemCatalog.getBitmap(0));
+  }
+
+  @Test public void shouldReturnANotNullBitmapWhenNoxItemsAreLoadedUsingResourceId() {
+    List<NoxItem> noxItems = new LinkedList<NoxItem>();
+    noxItems.add(new NoxItem(ANY_RESOURCE_ID));
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
+
+    noxItemCatalog.load();
+
+    assertTrue(noxItemCatalog.isBitmapReady(0));
+    assertNotNull(noxItemCatalog.getBitmap(0));
+  }
+
+  @Test public void shouldReturnANotNullPlaceholderWhenNoxItemsAreLoaded() {
+    List<NoxItem> noxItems = new LinkedList<NoxItem>();
+    noxItems.add(new NoxItem(ANY_URL, ANY_PLACEHOLDER_ID));
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
+
+    noxItemCatalog.load();
+
+    assertTrue(noxItemCatalog.isPlaceholderReady(0));
+    assertNotNull(noxItemCatalog.getPlaceholder(0));
   }
 
   private NoxItemCatalog givenOneNoxItemCatalog() {
