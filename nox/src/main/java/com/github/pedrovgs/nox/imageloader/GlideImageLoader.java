@@ -128,6 +128,8 @@ class GlideImageLoader implements ImageLoader {
         super.onLoadFailed(e, errorDrawable);
         if (e.getMessage() != null && e.getMessage().contains(RESOURCE_NOT_FOUND_ERROR)) {
           listener.onResourceNotFound();
+        } else {
+          listener.onError();
         }
       }
     };

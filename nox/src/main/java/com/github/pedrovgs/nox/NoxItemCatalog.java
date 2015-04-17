@@ -36,6 +36,7 @@ class NoxItemCatalog extends Observable {
   private final Bitmap[] bitmaps;
   private final Drawable[] placeholders;
   private final boolean[] resourceNotFound;
+  private final boolean[] loading;
   private Drawable placeholder;
 
   NoxItemCatalog(List<NoxItem> noxItems, int noxItemSize, ImageLoader imageLoader) {
@@ -46,6 +47,7 @@ class NoxItemCatalog extends Observable {
     this.bitmaps = new Bitmap[noxItems.size()];
     this.placeholders = new Drawable[noxItems.size()];
     this.resourceNotFound = new boolean[noxItems.size()];
+    this.loading = new boolean[noxItems.size()];
   }
 
   int size() {
@@ -81,7 +83,8 @@ class NoxItemCatalog extends Observable {
   }
 
   void load(int position) {
-    if (!isBitmapReady(position) && isResourceAvailable(position)) {
+    if (!isBitmapReady(position) && isResourceAvailable(position) && !isDownloading(position)) {
+      loading[position] = true;
       NoxItem noxItem = noxItems.get(position);
       loadNoxItem(position, noxItem);
     }
@@ -114,12 +117,21 @@ class NoxItemCatalog extends Observable {
       @Override public void onImageLoaded(Bitmap image) {
         bitmaps[position] = image;
         notifyNoxItemReady(position);
+        loading[position] = false;
+      }
+
+      @Override public void onError() {
+        loading[position] = false;
       }
 
       @Override public void onResourceNotFound() {
         resourceNotFound[position] = true;
       }
     };
+  }
+
+  private boolean isDownloading(int position) {
+    return loading[position];
   }
 
   private void validateNoxItems(List<NoxItem> noxItems) {
