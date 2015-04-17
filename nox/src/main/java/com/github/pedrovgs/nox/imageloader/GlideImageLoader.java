@@ -43,6 +43,7 @@ public class GlideImageLoader implements ImageLoader {
   private Integer resourceId;
   private Integer placeholderId;
   private boolean useCircularTransformation;
+  private int size;
   private Listener listener;
 
   public GlideImageLoader(Context context) {
@@ -66,6 +67,11 @@ public class GlideImageLoader implements ImageLoader {
 
   @Override public ImageLoader useCircularTransformation() {
     this.useCircularTransformation = true;
+    return this;
+  }
+
+  @Override public ImageLoader size(int size) {
+    this.size = size;
     return this;
   }
 
@@ -95,7 +101,7 @@ public class GlideImageLoader implements ImageLoader {
   }
 
   private Target getLinearTarget(final Listener listener) {
-    return new SimpleTarget<Bitmap>() {
+    return new SimpleTarget<Bitmap>(size, size) {
       @Override
       public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
         listener.onImageLoaded(resource);

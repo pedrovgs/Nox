@@ -36,6 +36,8 @@ public interface ImageLoader {
 
   ImageLoader useCircularTransformation();
 
+  ImageLoader size(int size);
+
   void notify(Listener listener);
 
   void pause();
