@@ -32,7 +32,7 @@ public interface ImageLoader {
 
   ImageLoader load(Integer resourceId);
 
-  ImageLoader withPlaceholder(Integer resourceId);
+  ImageLoader withPlaceholder(Integer placeholderId);
 
   ImageLoader useCircularTransformation();
 

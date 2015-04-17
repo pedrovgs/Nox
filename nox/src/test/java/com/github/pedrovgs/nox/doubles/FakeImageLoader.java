@@ -28,15 +28,32 @@ import com.github.pedrovgs.nox.imageloader.ImageLoader;
  */
 public class FakeImageLoader implements ImageLoader {
 
+  private String url;
+  private Integer resourceId;
+  private Integer placeholderId;
+  private Listener listener;
+  private boolean loadOnDemand;
+
+  public FakeImageLoader() {
+
+  }
+
+  public FakeImageLoader(boolean loadOnDemand) {
+    this.loadOnDemand = loadOnDemand;
+  }
+
   @Override public ImageLoader load(String url) {
+    this.url = url;
     return this;
   }
 
   @Override public ImageLoader load(Integer resourceId) {
+    this.resourceId = resourceId;
     return this;
   }
 
-  @Override public ImageLoader withPlaceholder(Integer resourceId) {
+  @Override public ImageLoader withPlaceholder(Integer placeholderId) {
+    this.placeholderId = placeholderId;
     return this;
   }
 
@@ -49,9 +66,15 @@ public class FakeImageLoader implements ImageLoader {
   }
 
   @Override public void notify(Listener listener) {
-    Drawable fakeDrawable = new ColorDrawable();
+    this.listener = listener;
+    if (loadOnDemand) {
+      return;
+    }
+    Drawable fakeDrawable = placeholderId != null ? new ColorDrawable() : null;
     listener.onPlaceholderLoaded(fakeDrawable);
-    Bitmap fakeBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ALPHA_8);
+
+    boolean hasResourceToLoad = url != null || resourceId != null;
+    Bitmap fakeBitmap = hasResourceToLoad ? Bitmap.createBitmap(1, 1, Bitmap.Config.ALPHA_8) : null;
     listener.onImageLoaded(fakeBitmap);
   }
 
@@ -61,5 +84,10 @@ public class FakeImageLoader implements ImageLoader {
 
   @Override public void resume() {
 
+  }
+
+  public void forceLoad() {
+    loadOnDemand = false;
+    notify(listener);
   }
 }

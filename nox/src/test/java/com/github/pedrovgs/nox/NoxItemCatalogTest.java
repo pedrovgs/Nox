@@ -148,6 +148,20 @@ import static org.mockito.Mockito.verify;
     verify(observer, times(2)).update(noxItemCatalog, 0);
   }
 
+  @Test
+  public void shouldNotifyObserversWhenNoxItemsAreLoadedIndicatingNoxItemPositionWithSomeElements() {
+    List<NoxItem> noxItems = new LinkedList<NoxItem>();
+    noxItems.add(new NoxItem(ANY_URL));
+    noxItems.add(new NoxItem(ANY_URL_2));
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
+    noxItemCatalog.addObserver(observer);
+
+    noxItemCatalog.load();
+
+    verify(observer, times(2)).update(noxItemCatalog, 0);
+    verify(observer, times(2)).update(noxItemCatalog, 1);
+  }
+
   @Test public void shouldLoadImagesForEveryNoxItemUsingNoxItemUrl() {
     List<NoxItem> noxItems = new LinkedList<NoxItem>();
     noxItems.add(new NoxItem(ANY_URL));
@@ -169,6 +183,29 @@ import static org.mockito.Mockito.verify;
 
     assertTrue(noxItemCatalog.isBitmapReady(0));
     assertNotNull(noxItemCatalog.getBitmap(0));
+  }
+
+  @Test public void shouldReturnNullPlaceholdersWhenNoxItemsAreLoadedUsingUrl() {
+    List<NoxItem> noxItems = new LinkedList<NoxItem>();
+    noxItems.add(new NoxItem(ANY_URL));
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
+
+    noxItemCatalog.load();
+
+    assertFalse(noxItemCatalog.isPlaceholderReady(0));
+    assertNull(noxItemCatalog.getPlaceholder(0));
+  }
+
+  @Test public void shouldReturnPlaceholdersWhenNoxItemsAreLoadedUsingUrlWithGeneralPlaceholder() {
+    List<NoxItem> noxItems = new LinkedList<NoxItem>();
+    noxItems.add(new NoxItem(ANY_URL));
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
+    noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
+
+    noxItemCatalog.load();
+
+    assertTrue(noxItemCatalog.isPlaceholderReady(0));
+    assertEquals(ANY_PLACEHOLDER, noxItemCatalog.getPlaceholder(0));
   }
 
   @Test public void shouldReturnANotNullBitmapWhenNoxItemsAreLoadedUsingResourceId() {
@@ -193,13 +230,50 @@ import static org.mockito.Mockito.verify;
     assertNotNull(noxItemCatalog.getPlaceholder(0));
   }
 
+  @Test public void shouldReturnNullBitmapsOrPlaceholdersUntilImagesAreLoaded() {
+    FakeImageLoader imageLoader = new FakeImageLoader(true);
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(imageLoader);
+
+    noxItemCatalog.load();
+
+    assertFalse(noxItemCatalog.isPlaceholderReady(0));
+    assertNull(noxItemCatalog.getPlaceholder(0));
+    assertFalse(noxItemCatalog.isBitmapReady(0));
+    assertNull(noxItemCatalog.getBitmap(0));
+  }
+
+  @Test public void shouldReturnBitmapsAndPlaceholdersWhenImagesAreLoaded() {
+    FakeImageLoader imageLoader = new FakeImageLoader(true);
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(imageLoader);
+    noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
+
+    noxItemCatalog.load();
+    imageLoader.forceLoad();
+
+    assertTrue(noxItemCatalog.isPlaceholderReady(0));
+    assertEquals(ANY_PLACEHOLDER, noxItemCatalog.getPlaceholder(0));
+    assertTrue(noxItemCatalog.isBitmapReady(0));
+    assertNotNull(noxItemCatalog.getBitmap(0));
+  }
+
   private NoxItemCatalog givenOneNoxItemCatalog() {
     LinkedList<NoxItem> noxItems = new LinkedList<NoxItem>();
     noxItems.add(ANY_NOX_ITEM);
     return givenOneNoxItemCatalog(noxItems);
   }
 
+  private NoxItemCatalog givenOneNoxItemCatalog(ImageLoader imageLoader) {
+    LinkedList<NoxItem> noxItems = new LinkedList<NoxItem>();
+    noxItems.add(ANY_NOX_ITEM);
+    return givenOneNoxItemCatalog(noxItems, imageLoader);
+  }
+
   private NoxItemCatalog givenOneNoxItemCatalog(List<NoxItem> noxItems) {
+    return new NoxItemCatalog(RuntimeEnvironment.application, noxItems, ANY_NOX_ITEM_SIZE,
+        imageLoader);
+  }
+
+  private NoxItemCatalog givenOneNoxItemCatalog(List<NoxItem> noxItems, ImageLoader imageLoader) {
     return new NoxItemCatalog(RuntimeEnvironment.application, noxItems, ANY_NOX_ITEM_SIZE,
         imageLoader);
   }
