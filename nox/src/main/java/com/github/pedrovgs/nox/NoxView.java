@@ -198,7 +198,7 @@ public class NoxView extends View {
     int numberOfElements = noxItemCatalog.size();
     PathConfig pathConfig =
         new PathConfig(numberOfElements, viewWidth, viewHeight, firstItemSize, firstItemMargin);
-    path = PathFactory.getLinearPath(pathConfig);
+    path = PathFactory.getFixedCircularPath(pathConfig);
     path.calculate();
   }
 
