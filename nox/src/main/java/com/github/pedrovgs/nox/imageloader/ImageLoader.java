@@ -52,6 +52,5 @@ public interface ImageLoader {
 
     void onError();
 
-    void onResourceNotFound();
   }
 }

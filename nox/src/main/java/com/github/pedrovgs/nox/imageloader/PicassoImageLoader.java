@@ -93,12 +93,7 @@ class PicassoImageLoader implements ImageLoader {
       }
 
       @Override public void onBitmapFailed(Drawable errorDrawable) {
-        //TODO: Review if with picasso we can get the error to do this or remove onResourceNotFound.
-        if (false) {
-          listener.onResourceNotFound();
-        } else {
-          listener.onError();
-        }
+        listener.onError();
       }
 
       @Override public void onPrepareLoad(Drawable placeHolderDrawable) {
