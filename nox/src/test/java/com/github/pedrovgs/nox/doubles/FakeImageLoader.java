@@ -90,4 +90,8 @@ public class FakeImageLoader implements ImageLoader {
     loadOnDemand = false;
     notify(listener);
   }
+
+  public void forceError() {
+    listener.onError();
+  }
 }

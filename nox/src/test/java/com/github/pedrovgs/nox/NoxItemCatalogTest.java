@@ -37,6 +37,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -255,6 +256,38 @@ import static org.mockito.Mockito.verify;
     assertEquals(ANY_PLACEHOLDER, noxItemCatalog.getPlaceholder(0));
     assertTrue(noxItemCatalog.isBitmapReady(0));
     assertNotNull(noxItemCatalog.getBitmap(0));
+  }
+
+  @Test public void shouldNotLoadNoxItemIfBitmapIsReady() {
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
+
+    noxItemCatalog.load(0);
+    noxItemCatalog.load(0);
+
+    verify(imageLoader).load(ANY_URL);
+  }
+
+  @Test public void shouldNotLoadNoxItemIfBitmapIsBeingLoaded() {
+    ImageLoader imageLoader = new FakeImageLoader(true);
+    imageLoader = spy(imageLoader);
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(imageLoader);
+
+    noxItemCatalog.load(0);
+    noxItemCatalog.load(0);
+
+    verify(imageLoader).load(ANY_URL);
+  }
+
+  @Test public void shouldRetryLoadIfLoadFailedBefore() {
+    FakeImageLoader imageLoader = new FakeImageLoader(true);
+    imageLoader = spy(imageLoader);
+    NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(imageLoader);
+
+    noxItemCatalog.load(0);
+    imageLoader.forceError();
+    noxItemCatalog.load(0);
+
+    verify(imageLoader, times(2)).load(ANY_URL);
   }
 
   private NoxItemCatalog givenOneNoxItemCatalog() {
