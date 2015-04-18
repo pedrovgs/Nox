@@ -19,6 +19,7 @@ package com.github.pedrovgs.nox;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import com.github.pedrovgs.nox.imageloader.ImageLoader;
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Observable;
 
@@ -33,8 +34,8 @@ class NoxItemCatalog extends Observable {
   private final List<NoxItem> noxItems;
   private final int noxItemSize;
   private final ImageLoader imageLoader;
-  private final Bitmap[] bitmaps;
-  private final Drawable[] placeholders;
+  private final WeakReference<Bitmap>[] bitmaps;
+  private final WeakReference<Drawable>[] placeholders;
   private final boolean[] resourceNotFound;
   private final boolean[] loading;
   private Drawable placeholder;
@@ -44,8 +45,8 @@ class NoxItemCatalog extends Observable {
     this.noxItems = noxItems;
     this.noxItemSize = noxItemSize;
     this.imageLoader = imageLoader;
-    this.bitmaps = new Bitmap[noxItems.size()];
-    this.placeholders = new Drawable[noxItems.size()];
+    this.bitmaps = new WeakReference[noxItems.size()];
+    this.placeholders = new WeakReference[noxItems.size()];
     this.resourceNotFound = new boolean[noxItems.size()];
     this.loading = new boolean[noxItems.size()];
   }
@@ -55,11 +56,12 @@ class NoxItemCatalog extends Observable {
   }
 
   boolean isBitmapReady(int position) {
-    return bitmaps[position] != null;
+    return bitmaps[position] != null && bitmaps[position].get() != null;
   }
 
   boolean isPlaceholderReady(int position) {
-    return placeholders[position] != null || placeholder != null;
+    return (placeholders[position] != null && placeholders[position].get() != null)
+        || placeholder != null;
   }
 
   boolean isResourceAvailable(int position) {
@@ -67,11 +69,14 @@ class NoxItemCatalog extends Observable {
   }
 
   Bitmap getBitmap(int position) {
-    return bitmaps[position];
+    return bitmaps[position] != null ? bitmaps[position].get() : null;
   }
 
   Drawable getPlaceholder(int position) {
-    Drawable placeholder = placeholders[position];
+    Drawable placeholder = null;
+    if (placeholders[position] != null) {
+      placeholder = placeholders[position].get();
+    }
     if (placeholder == null) {
       placeholder = this.placeholder;
     }
@@ -110,12 +115,12 @@ class NoxItemCatalog extends Observable {
   private ImageLoader.Listener getImageLoaderListener(final int position) {
     return new ImageLoader.Listener() {
       @Override public void onPlaceholderLoaded(Drawable placeholder) {
-        placeholders[position] = placeholder;
+        placeholders[position] = new WeakReference<Drawable>(placeholder);
         notifyNoxItemReady(position);
       }
 
       @Override public void onImageLoaded(Bitmap image) {
-        bitmaps[position] = image;
+        bitmaps[position] = new WeakReference<Bitmap>(image);
         notifyNoxItemReady(position);
         loading[position] = false;
       }

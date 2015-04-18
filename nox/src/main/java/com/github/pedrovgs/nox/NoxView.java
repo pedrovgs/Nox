@@ -152,7 +152,7 @@ public class NoxView extends View {
   }
 
   private void initializeNoxItemCatalog(List<NoxItem> noxItems) {
-    ImageLoader imageLoader = ImageLoaderFactory.getGlideImageLoader(getContext());
+    ImageLoader imageLoader = ImageLoaderFactory.getPicassoImageLoader(getContext());
     this.noxItemCatalog =
         new NoxItemCatalog(noxItems, (int) noxConfig.getNoxItemSize(), imageLoader);
     this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());

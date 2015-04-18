@@ -25,7 +25,7 @@ import android.content.Context;
  */
 public class ImageLoaderFactory {
 
-  public static ImageLoader getGlideImageLoader(Context context) {
-    return new GlideImageLoader(context);
+  public static ImageLoader getPicassoImageLoader(Context context) {
+    return new PicassoImageLoader(context);
   }
 }
