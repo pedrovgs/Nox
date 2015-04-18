@@ -79,7 +79,7 @@ public class NoxView extends View {
     updatePathOffset();
     for (int i = 0; i < noxItemCatalog.size(); i++) {
       if (path.isItemInsideView(i)) {
-        noxItemCatalog.load(i);
+        loadNoxItem(i);
         float left = path.getLeftForItemAtPosition(i);
         float top = path.getTopForItemAtPosition(i);
         drawNoxItem(canvas, i, left, top);
@@ -121,6 +121,12 @@ public class NoxView extends View {
       resume();
     } else {
       pause();
+    }
+  }
+
+  private void loadNoxItem(int position) {
+    if (!scroller.isScrollingFast()) {
+      noxItemCatalog.load(position);
     }
   }
 

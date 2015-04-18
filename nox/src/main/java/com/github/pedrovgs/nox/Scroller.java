@@ -44,6 +44,7 @@ class Scroller {
 
   private GestureDetectorCompat gestureDetector;
   private OverScroller overScroller;
+  private boolean isScrollingFast;
 
   Scroller(View view, int minX, int maxX, int minY, int maxY, int overSize) {
     this.view = view;
@@ -53,7 +54,7 @@ class Scroller {
     this.minY = minY;
     this.maxY = maxY;
     this.overSize = overSize;
-    overScroller = new OverScroller(context);
+    this.overScroller = new OverScroller(context);
   }
 
   GestureDetectorCompat getGestureDetector() {
@@ -103,13 +104,23 @@ class Scroller {
 
   void computeScroll() {
     if (!overScroller.computeScrollOffset() || overScroller.isFinished()) {
+      isScrollingFast = false;
       return;
     }
+    isScrollingFast = true;
     int distanceX = overScroller.getCurrX() - view.getScrollX();
     int distanceY = overScroller.getCurrY() - view.getScrollY();
     int dX = calculateDx(distanceX);
     int dY = calculateDy(distanceY);
+    boolean stopScrolling = dX == 0 && dY == 0;
+    if (stopScrolling) {
+      isScrollingFast = false;
+    }
     view.scrollBy(dX, dY);
+  }
+
+  boolean isScrollingFast() {
+    return isScrollingFast;
   }
 
   private int calculateDx(float distanceX) {
@@ -128,5 +139,6 @@ class Scroller {
 
   private void resetOverScroller() {
     overScroller.forceFinished(true);
+    isScrollingFast = false;
   }
 }
