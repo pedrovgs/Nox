@@ -37,6 +37,7 @@ class NoxItemCatalog extends Observable {
   private final WeakReference<Bitmap>[] bitmaps;
   private final WeakReference<Drawable>[] placeholders;
   private final boolean[] loading;
+  private ImageLoader.Listener[] listeners;
   private Drawable placeholder;
 
   NoxItemCatalog(List<NoxItem> noxItems, int noxItemSize, ImageLoader imageLoader) {
@@ -47,6 +48,7 @@ class NoxItemCatalog extends Observable {
     this.bitmaps = new WeakReference[noxItems.size()];
     this.placeholders = new WeakReference[noxItems.size()];
     this.loading = new boolean[noxItems.size()];
+    this.listeners = new ImageLoader.Listener[noxItems.size()];
   }
 
   int size() {
@@ -97,6 +99,23 @@ class NoxItemCatalog extends Observable {
     imageLoader.pause();
   }
 
+  void notifyNoxItemReady(int position) {
+    setChanged();
+    notifyObservers(position);
+  }
+
+  void setBitmap(int position, Bitmap image) {
+    bitmaps[position] = new WeakReference<Bitmap>(image);
+  }
+
+  void setLoading(int position, boolean isLoading) {
+    loading[position] = isLoading;
+  }
+
+  void setPlaceholder(int position, Drawable placeholder) {
+    placeholders[position] = new WeakReference<Drawable>(placeholder);
+  }
+
   private void loadNoxItem(final int position, NoxItem noxItem) {
     imageLoader.load(noxItem.getResourceId())
         .load(noxItem.getUrl())
@@ -107,22 +126,10 @@ class NoxItemCatalog extends Observable {
   }
 
   private ImageLoader.Listener getImageLoaderListener(final int position) {
-    return new ImageLoader.Listener() {
-      @Override public void onPlaceholderLoaded(Drawable placeholder) {
-        placeholders[position] = new WeakReference<Drawable>(placeholder);
-        notifyNoxItemReady(position);
-      }
-
-      @Override public void onImageLoaded(Bitmap image) {
-        bitmaps[position] = new WeakReference<Bitmap>(image);
-        notifyNoxItemReady(position);
-        loading[position] = false;
-      }
-
-      @Override public void onError() {
-        loading[position] = false;
-      }
-    };
+    if (listeners[position] == null) {
+      listeners[position] = new NoxItemCatalogImageLoaderListener(position, this);
+    }
+    return listeners[position];
   }
 
   private boolean isDownloading(int position) {
@@ -133,10 +140,5 @@ class NoxItemCatalog extends Observable {
     if (noxItems == null) {
       throw new NullPointerException("The list of NoxItem can't be null");
     }
-  }
-
-  private void notifyNoxItemReady(int position) {
-    setChanged();
-    notifyObservers(position);
   }
 }

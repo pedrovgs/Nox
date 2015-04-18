@@ -10,6 +10,7 @@ import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.WeakHashMap;
 
 /**
  * ImageLoader implementation based on Picasso, a third party library implemented by
@@ -29,9 +30,11 @@ class PicassoImageLoader implements ImageLoader {
   private boolean useCircularTransformation;
   private int size;
   private Listener listener;
+  private final WeakHashMap<Listener, Target> targets;
 
   PicassoImageLoader(Context context) {
     this.context = context;
+    this.targets = new WeakHashMap<Listener, Target>();
   }
 
   @Override public ImageLoader load(String url) {
@@ -71,12 +74,13 @@ class PicassoImageLoader implements ImageLoader {
     boolean hasResourceId = resourceId != null;
     Target listenerTarget = getLinearTarget(listener);
     if (hasUrl) {
-      RequestCreator bitmapRequest = Picasso.with(context).load(url);
+      RequestCreator bitmapRequest = Picasso.with(context).load(url).tag(PICASSO_IMAGE_LOADER_TAG);
       applyPlaceholder(bitmapRequest).resize(size, size)
           .transform(transformations)
           .into(listenerTarget);
     } else if (hasResourceId) {
-      RequestCreator bitmapRequest = Picasso.with(context).load(resourceId);
+      RequestCreator bitmapRequest =
+          Picasso.with(context).load(resourceId).tag(PICASSO_IMAGE_LOADER_TAG);
       applyPlaceholder(bitmapRequest).resize(size, size)
           .transform(transformations)
           .into(listenerTarget);
@@ -87,19 +91,24 @@ class PicassoImageLoader implements ImageLoader {
   }
 
   private Target getLinearTarget(final Listener listener) {
-    return new Target() {
-      @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-        listener.onImageLoaded(bitmap);
-      }
+    Target target = targets.get(listener);
+    if (target == null) {
+      target = new Target() {
+        @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+          listener.onImageLoaded(bitmap);
+        }
 
-      @Override public void onBitmapFailed(Drawable errorDrawable) {
-        listener.onError();
-      }
+        @Override public void onBitmapFailed(Drawable errorDrawable) {
+          listener.onError();
+        }
 
-      @Override public void onPrepareLoad(Drawable placeHolderDrawable) {
-        listener.onPlaceholderLoaded(placeHolderDrawable);
-      }
-    };
+        @Override public void onPrepareLoad(Drawable placeHolderDrawable) {
+          listener.onPlaceholderLoaded(placeHolderDrawable);
+        }
+      };
+      targets.put(listener, target);
+    }
+    return target;
   }
 
   private RequestCreator applyPlaceholder(RequestCreator bitmapRequest) {
