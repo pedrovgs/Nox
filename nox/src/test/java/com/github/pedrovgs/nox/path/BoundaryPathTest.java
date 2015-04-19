@@ -127,32 +127,32 @@ public class BoundaryPathTest {
   }
 
   @Test public void shouldUseMinXConfiguredPositionForEveryElementAsMinXUsingItemAndViewSize() {
-    path.setNoxItemLeftPosition(ANY_ITEM_POSITION, ANY_X_POSITION);
-    path.setNoxItemLeftPosition(ANY_ITEM_POSITION, ANY_X_POSITION - 1);
+    path.setNoxItemXPosition(ANY_ITEM_POSITION, ANY_X_POSITION);
+    path.setNoxItemXPosition(ANY_ITEM_POSITION, ANY_X_POSITION - 1);
 
     float expectedX = ANY_X_POSITION - 1 - ANY_ITEM_MARGIN;
     assertEquals(expectedX, path.getMinX(), DELTA);
   }
 
   @Test public void shouldUseMaxXConfiguredPositionForEveryElementAsMaxXUsingItemAndViewSize() {
-    path.setNoxItemLeftPosition(ANY_ITEM_POSITION, ANY_X_POSITION);
-    path.setNoxItemLeftPosition(ANY_ITEM_POSITION, ANY_X_POSITION + 1);
+    path.setNoxItemXPosition(ANY_ITEM_POSITION, ANY_X_POSITION);
+    path.setNoxItemXPosition(ANY_ITEM_POSITION, ANY_X_POSITION + 1);
 
     float expectedX = ANY_X_POSITION + 1 + ANY_ITEM_MARGIN + ANY_ITEM_SIZE - ANY_VIEW_WIDTH;
     assertEquals(expectedX, path.getMaxX(), DELTA);
   }
 
   @Test public void shouldUseMinYConfiguredPositionForEveryElementAsMinYUsingItemAndViewSize() {
-    path.setNoxItemTopPosition(ANY_ITEM_POSITION, ANY_Y_POSITION);
-    path.setNoxItemTopPosition(ANY_ITEM_POSITION, ANY_Y_POSITION - 1);
+    path.setNoxItemYPosition(ANY_ITEM_POSITION, ANY_Y_POSITION);
+    path.setNoxItemYPosition(ANY_ITEM_POSITION, ANY_Y_POSITION - 1);
 
     float expectedY = ANY_Y_POSITION - 1 - ANY_ITEM_MARGIN;
     assertEquals(expectedY, path.getMinY(), DELTA);
   }
 
   @Test public void shouldUseMaxYConfiguredPositionForEveryElementAsMaxYUsingItemAndViewSize() {
-    path.setNoxItemTopPosition(ANY_ITEM_POSITION, ANY_Y_POSITION);
-    path.setNoxItemTopPosition(ANY_ITEM_POSITION, ANY_Y_POSITION + 1);
+    path.setNoxItemYPosition(ANY_ITEM_POSITION, ANY_Y_POSITION);
+    path.setNoxItemYPosition(ANY_ITEM_POSITION, ANY_Y_POSITION + 1);
 
     float expected = ANY_Y_POSITION + 1 + ANY_ITEM_MARGIN + ANY_ITEM_SIZE - ANY_VIEW_HEIGHT;
     assertEquals(expected, path.getMaxY(), DELTA);

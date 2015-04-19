@@ -44,9 +44,9 @@ public class SpiralPathTest extends BasePathTestCase {
     path.calculate();
 
     float expectedLeft = (ANY_VIEW_WIDTH / 2) - (ANY_ITEM_SIZE / 2) - (ANY_ITEM_MARGIN / 2);
-    assertEquals(expectedLeft, path.getLeftForItemAtPosition(0), DELTA);
+    assertEquals(expectedLeft, path.getXForItemAtPosition(0), DELTA);
     float expectedTop = (ANY_VIEW_HEIGHT / 2) - (ANY_ITEM_SIZE / 2) - (ANY_ITEM_MARGIN / 2);
-    assertEquals(expectedTop, path.getTopForItemAtPosition(0), DELTA);
+    assertEquals(expectedTop, path.getYForItemAtPosition(0), DELTA);
   }
 
   @Test public void shouldConfigureElementsFollowingAnArchimedeanSpiral() {
@@ -63,8 +63,8 @@ public class SpiralPathTest extends BasePathTestCase {
     for (int i = 0; i < pathConfig.getNumberOfElements(); i++) {
       float expectedLeft = getExpectedLeftAtPosition(i, pathConfig);
       float expectedTop = getExpectedTopAtPosition(i, pathConfig);
-      assertEquals(expectedLeft, path.getLeftForItemAtPosition(i), DELTA);
-      assertEquals(expectedTop, path.getTopForItemAtPosition(i), DELTA);
+      assertEquals(expectedLeft, path.getXForItemAtPosition(i), DELTA);
+      assertEquals(expectedTop, path.getYForItemAtPosition(i), DELTA);
     }
   }
 

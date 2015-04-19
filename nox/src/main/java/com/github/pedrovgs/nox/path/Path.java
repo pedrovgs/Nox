@@ -48,17 +48,17 @@ public abstract class Path {
 
   public abstract void calculate();
 
-  public float getLeftForItemAtPosition(int position) {
+  public float getXForItemAtPosition(int position) {
     return noxItemsXPositions[position];
   }
 
-  public float getTopForItemAtPosition(int position) {
+  public float getYForItemAtPosition(int position) {
     return noxItemsYPositions[position];
   }
 
   public boolean isItemInsideView(int position) {
-    float x = getLeftForItemAtPosition(position) + offsetX;
-    float y = getTopForItemAtPosition(position) + offsetY;
+    float x = getXForItemAtPosition(position) + offsetX;
+    float y = getYForItemAtPosition(position) + offsetY;
     float itemSize = pathConfig.getFirstItemSize();
     boolean matchesHorizontally = x + itemSize >= 0 && x <= pathConfig.getViewWidth();
     boolean matchesVertically = y + itemSize >= 0 && y <= pathConfig.getViewHeight();
@@ -91,15 +91,15 @@ public abstract class Path {
     return pathConfig;
   }
 
-  protected final void setNoxItemLeftPosition(int position, float left) {
-    noxItemsXPositions[position] = left;
-    minX = (int) Math.min(left, minX);
-    maxX = (int) Math.max(left, maxX);
+  protected final void setNoxItemXPosition(int position, float x) {
+    noxItemsXPositions[position] = x;
+    minX = (int) Math.min(x, minX);
+    maxX = (int) Math.max(x, maxX);
   }
 
-  protected final void setNoxItemTopPosition(int position, float top) {
-    noxItemsYPositions[position] = top;
-    minY = (int) Math.min(top, minY);
-    maxY = (int) Math.max(top, maxY);
+  protected final void setNoxItemYPosition(int position, float y) {
+    noxItemsYPositions[position] = y;
+    minY = (int) Math.min(y, minY);
+    maxY = (int) Math.max(y, maxY);
   }
 }

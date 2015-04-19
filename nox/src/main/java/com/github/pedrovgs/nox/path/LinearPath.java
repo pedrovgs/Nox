@@ -38,8 +38,8 @@ class LinearPath extends Path {
     float x = getFirstItemLeftPosition();
 
     for (int i = 0; i < numberOfItems; i++) {
-      setNoxItemTopPosition(i, height);
-      setNoxItemLeftPosition(i, x);
+      setNoxItemYPosition(i, height);
+      setNoxItemXPosition(i, x);
       x += itemWidth + viewMargin;
     }
   }

@@ -68,8 +68,8 @@ class CircularPath extends Path {
       float centerY) {
     int numberOfElementsPerIteration = getNumberOfElementsPerIteration(item, iteration);
     if (numberOfElementsPerIteration == 1) {
-      setNoxItemLeftPosition(item, centerX);
-      setNoxItemTopPosition(item, centerY);
+      setNoxItemXPosition(item, centerX);
+      setNoxItemYPosition(item, centerY);
       return 1;
     }
 
@@ -81,8 +81,8 @@ class CircularPath extends Path {
       double cos = Math.cos(angle);
       float x = (float) (centerX + (sin * distance));
       float y = (float) (centerY + (cos * distance));
-      setNoxItemLeftPosition(item, x);
-      setNoxItemTopPosition(item, y);
+      setNoxItemXPosition(item, x);
+      setNoxItemYPosition(item, y);
       item++;
     }
     return numberOfElementsPerIteration;

@@ -56,7 +56,7 @@ public class LinearPathTest extends BasePathTestCase {
 
     float expectedTop = (ANY_VIEW_HEIGHT / 2) - (ANY_ITEM_SIZE / 2);
     for (int i = 0; i < numberOfElements; i++) {
-      assertEquals(expectedTop, path.getTopForItemAtPosition(i), DELTA);
+      assertEquals(expectedTop, path.getYForItemAtPosition(i), DELTA);
     }
   }
 
@@ -71,7 +71,7 @@ public class LinearPathTest extends BasePathTestCase {
 
     float expectedLeft = ANY_ITEM_MARGIN;
     for (int i = 0; i < numberOfElements; i++) {
-      assertEquals(expectedLeft, path.getLeftForItemAtPosition(i), DELTA);
+      assertEquals(expectedLeft, path.getXForItemAtPosition(i), DELTA);
       expectedLeft += ANY_ITEM_SIZE + ANY_ITEM_MARGIN;
     }
   }
@@ -79,7 +79,7 @@ public class LinearPathTest extends BasePathTestCase {
   @Test public void shouldCalculateTheCorrectLeftPositionForOneElement() {
     path.calculate();
 
-    float left = path.getLeftForItemAtPosition(0);
+    float left = path.getXForItemAtPosition(0);
 
     assertEquals(ANY_ITEM_MARGIN, left, DELTA);
   }

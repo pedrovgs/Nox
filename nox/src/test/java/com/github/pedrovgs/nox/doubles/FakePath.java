@@ -44,8 +44,8 @@ public class FakePath extends Path {
 
   @Override public void calculate() {
     for (int i = 0; i < getPathConfig().getNumberOfElements(); i++) {
-      setNoxItemLeftPosition(i, xPosition);
-      setNoxItemTopPosition(i, yPosition);
+      setNoxItemXPosition(i, xPosition);
+      setNoxItemYPosition(i, yPosition);
     }
   }
 }

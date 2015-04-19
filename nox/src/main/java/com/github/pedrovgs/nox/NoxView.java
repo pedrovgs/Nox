@@ -80,8 +80,8 @@ public class NoxView extends View {
     for (int i = 0; i < noxItemCatalog.size(); i++) {
       if (path.isItemInsideView(i)) {
         loadNoxItem(i);
-        float left = path.getLeftForItemAtPosition(i);
-        float top = path.getTopForItemAtPosition(i);
+        float left = path.getXForItemAtPosition(i);
+        float top = path.getYForItemAtPosition(i);
         drawNoxItem(canvas, i, left, top);
       }
     }

@@ -45,11 +45,11 @@ class SpiralPath extends Path {
 
   private void setX(float centerX, float angle, int i) {
     double x = centerX + (angle * i * Math.cos(i));
-    setNoxItemLeftPosition(i, (float) x);
+    setNoxItemXPosition(i, (float) x);
   }
 
   private void setY(float centerY, float angle, int i) {
     double y = centerY + (angle * i * Math.sin(i));
-    setNoxItemTopPosition(i, (float) y);
+    setNoxItemYPosition(i, (float) y);
   }
 }
