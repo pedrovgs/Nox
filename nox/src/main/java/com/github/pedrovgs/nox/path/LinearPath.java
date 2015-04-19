@@ -47,12 +47,4 @@ class LinearPath extends Path {
   protected float getFirstItemLeftPosition() {
     return getPathConfig().getFirstItemMargin();
   }
-
-  @Override public int getMaxX() {
-    int numberOfItems = getPathConfig().getNumberOfElements();
-    float itemMargin = getPathConfig().getFirstItemMargin();
-    float itemSize = getPathConfig().getFirstItemSize();
-    float totalItemsSize = numberOfItems * (itemSize + itemMargin) + itemMargin;
-    return (int) totalItemsSize - getPathConfig().getViewWidth();
-  }
 }

@@ -24,10 +24,15 @@ package com.github.pedrovgs.nox.path;
 public abstract class Path {
 
   private final PathConfig pathConfig;
-  private float[] noxItemsXPositions;
-  private float[] noxItemsYPositions;
+  private final float[] noxItemsXPositions;
+  private final float[] noxItemsYPositions;
+
   private int offsetX;
   private int offsetY;
+  private int minX;
+  private int maxX;
+  private int minY;
+  private int maxY;
 
   public Path(PathConfig pathConfig) {
     this.pathConfig = pathConfig;
@@ -61,19 +66,21 @@ public abstract class Path {
   }
 
   public int getMinX() {
-    return 0;
+    return (int) (minX - getPathConfig().getFirstItemMargin());
   }
 
   public int getMaxX() {
-    return 0;
+    return (int) (maxX + +getPathConfig().getFirstItemSize() + getPathConfig().getFirstItemMargin()
+        - getPathConfig().getViewWidth());
   }
 
   public int getMinY() {
-    return 0;
+    return (int) (minY - getPathConfig().getFirstItemMargin());
   }
 
   public int getMaxY() {
-    return 0;
+    return (int) (maxY + getPathConfig().getFirstItemMargin() + getPathConfig().getFirstItemSize()
+        - getPathConfig().getViewHeight());
   }
 
   public int getOverSize() {
@@ -84,11 +91,15 @@ public abstract class Path {
     return pathConfig;
   }
 
-  protected void setNoxItemLeftPosition(int position, float left) {
+  protected final void setNoxItemLeftPosition(int position, float left) {
     noxItemsXPositions[position] = left;
+    minX = (int) Math.min(left, minX);
+    maxX = (int) Math.max(left, maxX);
   }
 
-  protected void setNoxItemTopPosition(int position, float top) {
+  protected final void setNoxItemTopPosition(int position, float top) {
     noxItemsYPositions[position] = top;
+    minY = (int) Math.min(top, minY);
+    maxY = (int) Math.max(top, maxY);
   }
 }

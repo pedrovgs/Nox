@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 /**
@@ -32,6 +33,10 @@ public class BoundaryPathTest {
   private static final int ANY_VIEW_HEIGHT = 100;
   private static final float ANY_ITEM_SIZE = 8;
   private static final float ANY_ITEM_MARGIN = 2;
+  private static final float ANY_X_POSITION = 1;
+  private static final double DELTA = 0.1;
+  private static final float ANY_Y_POSITION = 1;
+  private static final int ANY_ITEM_POSITION = 0;
 
   private FakePath path;
 
@@ -119,6 +124,38 @@ public class BoundaryPathTest {
     path.calculate();
 
     assertTrue(path.isItemInsideView(0));
+  }
+
+  @Test public void shouldUseMinXConfiguredPositionForEveryElementAsMinXUsingItemAndViewSize() {
+    path.setNoxItemLeftPosition(ANY_ITEM_POSITION, ANY_X_POSITION);
+    path.setNoxItemLeftPosition(ANY_ITEM_POSITION, ANY_X_POSITION - 1);
+
+    float expectedX = ANY_X_POSITION - 1 - ANY_ITEM_MARGIN;
+    assertEquals(expectedX, path.getMinX(), DELTA);
+  }
+
+  @Test public void shouldUseMaxXConfiguredPositionForEveryElementAsMaxXUsingItemAndViewSize() {
+    path.setNoxItemLeftPosition(ANY_ITEM_POSITION, ANY_X_POSITION);
+    path.setNoxItemLeftPosition(ANY_ITEM_POSITION, ANY_X_POSITION + 1);
+
+    float expectedX = ANY_X_POSITION + 1 + ANY_ITEM_MARGIN + ANY_ITEM_SIZE - ANY_VIEW_WIDTH;
+    assertEquals(expectedX, path.getMaxX(), DELTA);
+  }
+
+  @Test public void shouldUseMinYConfiguredPositionForEveryElementAsMinYUsingItemAndViewSize() {
+    path.setNoxItemTopPosition(ANY_ITEM_POSITION, ANY_Y_POSITION);
+    path.setNoxItemTopPosition(ANY_ITEM_POSITION, ANY_Y_POSITION - 1);
+
+    float expectedY = ANY_Y_POSITION - 1 - ANY_ITEM_MARGIN;
+    assertEquals(expectedY, path.getMinY(), DELTA);
+  }
+
+  @Test public void shouldUseMaxYConfiguredPositionForEveryElementAsMaxYUsingItemAndViewSize() {
+    path.setNoxItemTopPosition(ANY_ITEM_POSITION, ANY_Y_POSITION);
+    path.setNoxItemTopPosition(ANY_ITEM_POSITION, ANY_Y_POSITION + 1);
+
+    float expected = ANY_Y_POSITION + 1 + ANY_ITEM_MARGIN + ANY_ITEM_SIZE - ANY_VIEW_HEIGHT;
+    assertEquals(expected, path.getMaxY(), DELTA);
   }
 
   private void givenElementsAreInPosition(float x, float y) {

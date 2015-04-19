@@ -25,13 +25,6 @@ package com.github.pedrovgs.nox.path;
  */
 class SpiralPath extends Path {
 
-  //TODO: Change path implementation related to getMinMaxXY and follow this approach
-  //This is easier for Nox library clients.private int minX;
-  private int minX;
-  private int maxX;
-  private int minY;
-  private int maxY;
-
   SpiralPath(PathConfig pathConfig) {
     super(pathConfig);
   }
@@ -53,30 +46,10 @@ class SpiralPath extends Path {
   private void setX(float centerX, float angle, int i) {
     double x = centerX + (angle * i * Math.cos(i));
     setNoxItemLeftPosition(i, (float) x);
-    minX = (int) Math.min(x, minX);
-    maxX = (int) Math.max(x, maxX);
   }
 
   private void setY(float centerY, float angle, int i) {
     double y = centerY + (angle * i * Math.sin(i));
     setNoxItemTopPosition(i, (float) y);
-    minY = (int) Math.min(y, minY);
-    maxY = (int) Math.max(y, maxY);
-  }
-
-  @Override public int getMinX() {
-    return minX;
-  }
-
-  @Override public int getMaxX() {
-    return maxX;
-  }
-
-  @Override public int getMinY() {
-    return minY;
-  }
-
-  @Override public int getMaxY() {
-    return maxY;
   }
 }

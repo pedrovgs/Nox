@@ -39,12 +39,4 @@ class LinearCenteredPath extends LinearPath {
   private float getCenter() {
     return getPathConfig().getViewWidth() / 2;
   }
-
-  @Override public int getMinX() {
-    return (int) getFirstItemLeftPosition();
-  }
-
-  @Override public int getMaxX() {
-    return (int) getFirstItemLeftPosition() + super.getMaxX();
-  }
 }

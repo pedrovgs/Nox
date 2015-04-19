@@ -94,46 +94,4 @@ class CircularPath extends Path {
     numberOfElementsPerIteration = Math.min(numberOfElementsPerIteration, numberOfElements - item);
     return numberOfElementsPerIteration;
   }
-
-  @Override public int getMinX() {
-    int numberOfIterations = getNumberOfIterations();
-    float iterationDistance = getDistance();
-    float radius = iterationDistance * numberOfIterations;
-    return (int) (getCenterX() - radius);
-  }
-
-  @Override public int getMaxX() {
-    int numberOfIterations = getNumberOfIterations();
-    float iterationDistance = getDistance();
-    float radius = iterationDistance * numberOfIterations;
-    int viewWidth = getPathConfig().getViewWidth();
-    float totalItemSize = getPathConfig().getFirstItemMargin() + getPathConfig().getFirstItemSize();
-    return (int) (getCenterX() + radius - viewWidth + totalItemSize);
-  }
-
-  @Override public int getMinY() {
-    int numberOfIterations = getNumberOfIterations();
-    float iterationDistance = getDistance();
-    float radius = iterationDistance * numberOfIterations;
-    return (int) (getCenterY() - radius);
-  }
-
-  @Override public int getMaxY() {
-    int numberOfIterations = getNumberOfIterations();
-    float iterationDistance = getDistance();
-    float radius = iterationDistance * numberOfIterations;
-    int viewHeight = getPathConfig().getViewHeight();
-    float totalItemSize = getPathConfig().getFirstItemMargin() + getPathConfig().getFirstItemSize();
-    return (int) (getCenterY() + radius - viewHeight + totalItemSize);
-  }
-
-  private int getNumberOfIterations() {
-    int numberOfElements = getPathConfig().getNumberOfElements();
-    int iteration;
-    int item = 0;
-    for (iteration = 1; item < numberOfElements; iteration++) {
-      item += getNumberOfElementsPerIteration(item, iteration);
-    }
-    return iteration - 1;
-  }
 }
