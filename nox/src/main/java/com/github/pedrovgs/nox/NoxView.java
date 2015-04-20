@@ -38,8 +38,8 @@ import java.util.Observer;
 
 /**
  * Main library component. This custom view is going to receive a List of Nox objects and create a
- * awesome panel full of images. This new UI component is going to simulate the Apple's watch main
- * menu user interface http://cdni.wired.co.uk/1240x826/a_c/apple-watch-6_1.jpg
+ * awesome panel full of images. This new UI component is going to be similar to the Apple's watch
+ * main menu user interface http://cdni.wired.co.uk/1240x826/a_c/apple-watch-6_1.jpg
  *
  * NoxItem objects are going to be used to render the user interface using the resource used
  * to render inside each element and a view holder.
@@ -74,8 +74,13 @@ public class NoxView extends View {
     initializeNoxViewConfig(context, attrs, defStyleAttr, defStyleRes);
   }
 
+  /**
+   * Given a List<NoxItem> instances configured previously gets the associated resource to draw the
+   * view.
+   */
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
+    //TODO: Check if we can move to onScroll or computeScroll method
     updatePathOffset();
     for (int i = 0; i < noxItemCatalog.size(); i++) {
       if (path.isItemInsideView(i)) {
@@ -89,7 +94,7 @@ public class NoxView extends View {
   }
 
   /**
-   * Given a List<NoxItem> draws this items keeping the previous view state.
+   * Configures a of List<NoxItem> instances to draw this items.
    */
   public void showNoxItems(final List<NoxItem> noxItems) {
     this.post(new Runnable() {
@@ -102,15 +107,26 @@ public class NoxView extends View {
     });
   }
 
+  /**
+   * Delegates touch events to the scroller instance initialized previously to implement the scroll
+   * effect.
+   */
   @Override public boolean onTouchEvent(MotionEvent event) {
     return scroller.getGestureDetector().onTouchEvent(event);
   }
 
+  /**
+   * Delegates computeScroll method to the scroller instance to implement the scroll effect.
+   */
   @Override public void computeScroll() {
     super.computeScroll();
     scroller.computeScroll();
   }
 
+  /**
+   * Controls visibility changes to pause or resume this custom view and avoid preformance
+   * problems.
+   */
   @Override protected void onVisibilityChanged(View changedView, int visibility) {
     super.onVisibilityChanged(changedView, visibility);
     if (changedView != this) {
@@ -124,22 +140,35 @@ public class NoxView extends View {
     }
   }
 
+  /**
+   * Given a NoxItem position try to load this NoxItem if the view is not performing a fast scroll
+   * after a fling gesture.
+   */
   private void loadNoxItem(int position) {
     if (!scroller.isScrollingFast()) {
       noxItemCatalog.load(position);
     }
   }
 
+  /**
+   * Resumes NoxItemCatalog and adds a observer to be notified when a NoxItem is ready to be drawn.
+   */
   private void resume() {
     noxItemCatalog.addObserver(catalogObserver);
     noxItemCatalog.resume();
   }
 
+  /**
+   * Pauses NoxItemCatalog and removes the observer previously configured.
+   */
   private void pause() {
     noxItemCatalog.pause();
     noxItemCatalog.deleteObserver(catalogObserver);
   }
 
+  /**
+   * Observer implementation used to be notified when a NoxItem has been loaded.
+   */
   private Observer catalogObserver = new Observer() {
     @Override public void update(Observable observable, Object data) {
       Integer position = (Integer) data;
@@ -150,6 +179,9 @@ public class NoxView extends View {
     }
   };
 
+  /**
+   * Tries to post a invalidate() event if another one was previously posted.
+   */
   private void refreshView() {
     if (!wasInvalidatedBefore) {
       wasInvalidatedBefore = true;
@@ -170,12 +202,18 @@ public class NoxView extends View {
         path.getOverSize());
   }
 
+  /**
+   * Checks the X and Y scroll offset to update that values into the Path configured previously.
+   */
   private void updatePathOffset() {
     int offsetX = scroller.getOffsetX();
     int offsetY = scroller.getOffsetY();
     path.setOffset(offsetX, offsetY);
   }
 
+  /**
+   * Draws a NoxItem during the onDraw method.
+   */
   private void drawNoxItem(Canvas canvas, int position, float left, float top) {
     if (noxItemCatalog.isBitmapReady(position)) {
       Bitmap bitmap = noxItemCatalog.getBitmap(position);
@@ -190,6 +228,10 @@ public class NoxView extends View {
     }
   }
 
+  /**
+   * Initializes a Path instance given the NoxView configuration provided programmatically or using
+   * XML styleable attributes.
+   */
   private void createPath() {
     float firstItemMargin = noxConfig.getNoxItemMargin();
     float firstItemSize = noxConfig.getNoxItemSize();
@@ -202,6 +244,10 @@ public class NoxView extends View {
     path.calculate();
   }
 
+  /**
+   * Initializes a NoxConfig instance given the NoxView configuration provided programmatically or
+   * using XML styleable attributes.
+   */
   private void initializeNoxViewConfig(Context context, AttributeSet attrs, int defStyleAttr,
       int defStyleRes) {
     noxConfig = new NoxConfig();
@@ -213,12 +259,20 @@ public class NoxView extends View {
     attributes.recycle();
   }
 
+  /**
+   * Configures the nox item default size used in NoxConfig, Path and NoxItemCatalog to draw nox
+   * item instances during the onDraw execution.
+   */
   private void initializeNoxItemSize(TypedArray attributes) {
     float noxItemSizeDefaultValue = getResources().getDimension(R.dimen.default_nox_item_size);
     float noxItemSize = attributes.getDimension(R.styleable.nox_item_size, noxItemSizeDefaultValue);
     noxConfig.setNoxItemSize(noxItemSize);
   }
 
+  /**
+   * Configures the nox item default margin used in NoxConfig, Path and NoxItemCatalog to draw nox
+   * item instances during the onDraw execution.
+   */
   private void initializeNoxItemMargin(TypedArray attributes) {
     float noxItemMarginDefaultValue = getResources().getDimension(R.dimen.default_nox_item_margin);
     float noxItemMargin =
@@ -226,6 +280,10 @@ public class NoxView extends View {
     noxConfig.setNoxItemMargin(noxItemMargin);
   }
 
+  /**
+   * Configures the placeholder used if there is no another placeholder configured in the NoxItem
+   * instances during the onDraw execution.
+   */
   private void initializeNoxItemPlaceholder(TypedArray attributes) {
     Drawable placeholder = attributes.getDrawable(R.styleable.nox_placeholder);
     noxConfig.setPlaceholder(placeholder);
