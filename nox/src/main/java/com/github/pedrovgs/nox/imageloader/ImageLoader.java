@@ -22,35 +22,66 @@ import android.graphics.drawable.Drawable;
 /**
  * Download images in background and notifies the result using a listener mechanism. This
  * abstraction is needed to hide the usage of concrete image management libraries and to improve
- * the project testability.
+ * the project testability. This ImageLoader interface offers a fluent API similar to the most used
+ * Android libraries. The resource will be downloaded asynchronously.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
 public interface ImageLoader {
 
+  /**
+   * Configures an url to be downloaded.
+   */
   ImageLoader load(String url);
 
+  /**
+   * Configures a resource id to be loaded.
+   */
   ImageLoader load(Integer resourceId);
 
+  /**
+   * Loads a placeholder using a resource id to be shown while the external resource is being
+   * downloaded.
+   */
   ImageLoader withPlaceholder(Integer placeholderId);
 
+  /**
+   * Applies a circular transformation to transform the source bitmap into a circular one.
+   */
   ImageLoader useCircularTransformation();
 
+  /**
+   * Changes the external resource size once it downloaded and before to notify the listener.
+   */
   ImageLoader size(int size);
 
+  /**
+   * Configures a listener where the ImageLoader will notify once the resource be loaded. This
+   * method has to be called to start the resource download. The listener used can't be null.
+   */
   void notify(Listener listener);
 
+  /**
+   * Pauses all the resource downloads associated to this library.
+   */
   void pause();
 
+  /**
+   * Resumes all the resource downloads associated to this library.
+   */
   void resume();
 
-  public interface Listener {
+  /**
+   * Declares some methods which will be called during the resource download process implemented by
+   * the ImageLoader. Use this interface to be notified when the placeholder and the final resource
+   * be ready to be used.
+   */
+  interface Listener {
 
     void onPlaceholderLoaded(Drawable placeholder);
 
     void onImageLoaded(Bitmap image);
 
     void onError();
-
   }
 }
