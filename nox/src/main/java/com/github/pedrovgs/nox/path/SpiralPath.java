@@ -32,10 +32,8 @@ class SpiralPath extends Path {
   @Override public void calculate() {
     PathConfig pc = getPathConfig();
     int numberOfItems = pc.getNumberOfElements();
-    float centerY =
-        (pc.getViewHeight() / 2) - (pc.getItemSize() / 2) - (pc.getItemMargin() / 2);
-    float centerX =
-        (pc.getViewWidth() / 2) - (pc.getItemSize() / 2) - (pc.getItemMargin() / 2);
+    float centerY = (pc.getViewHeight() / 2) - (pc.getItemSize() / 2) - (pc.getItemMargin() / 2);
+    float centerX = (pc.getViewWidth() / 2) - (pc.getItemSize() / 2) - (pc.getItemMargin() / 2);
     float angle = pc.getItemSize();
     for (int i = 0; i < numberOfItems; i++) {
       setX(centerX, angle, i);
