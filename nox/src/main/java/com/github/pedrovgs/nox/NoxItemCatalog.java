@@ -24,8 +24,9 @@ import java.util.List;
 import java.util.Observable;
 
 /**
- * Processes NoxItem instances to download the images associated to a set of NoxItem instances
- * asynchronously. Notifies when a new bitmap is ready to be used to the class clients.
+ * Processes NoxItem instances to download the images associated to a list of NoxItem instances
+ * asynchronously. This object notifies observer previously added when the resource associated to
+ * the NoxItem is ready to be used.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
@@ -37,6 +38,7 @@ class NoxItemCatalog extends Observable {
   private final WeakReference<Bitmap>[] bitmaps;
   private final WeakReference<Drawable>[] placeholders;
   private final boolean[] loading;
+
   private ImageLoader.Listener[] listeners;
   private Drawable placeholder;
 
@@ -51,23 +53,41 @@ class NoxItemCatalog extends Observable {
     this.listeners = new ImageLoader.Listener[noxItems.size()];
   }
 
+  /**
+   * Returns the number of nox items to be loaded.
+   */
   int size() {
     return noxItems.size();
   }
 
+  /**
+   * Returns true if the resource associated to the NoxItem given a position has been downloaded.
+   */
   boolean isBitmapReady(int position) {
     return bitmaps[position] != null && bitmaps[position].get() != null;
   }
 
+  /**
+   * Returns true if the placeholder associated to the NoxItem given a position has been
+   * loaded.
+   */
   boolean isPlaceholderReady(int position) {
     return (placeholders[position] != null && placeholders[position].get() != null)
         || placeholder != null;
   }
 
+  /**
+   * Returns the bitmap associated to a NoxItem instance given a position or null if the resource
+   * wasn't downloaded.
+   */
   Bitmap getBitmap(int position) {
     return bitmaps[position] != null ? bitmaps[position].get() : null;
   }
 
+  /**
+   * Returns the placeholder associated to a NoxItem instance given a position or null if the
+   * resource wasn't downloaded or previously configured.
+   */
   Drawable getPlaceholder(int position) {
     Drawable placeholder = null;
     if (placeholders[position] != null) {
@@ -79,10 +99,18 @@ class NoxItemCatalog extends Observable {
     return placeholder;
   }
 
+  /**
+   * Configures a placeholder to be used if the NoxItem has no placeholder configured.
+   */
   void setPlaceholder(Drawable placeholder) {
     this.placeholder = placeholder;
   }
 
+  /**
+   * Given a position associated to a NoxItem starts the NoxItem resources download. This load will
+   * download the resources associated to the NoxItem only if wasn't previously downloaded or the
+   * download is not being performed.
+   */
   void load(int position) {
     if (!isBitmapReady(position) && !isDownloading(position)) {
       loading[position] = true;
@@ -91,31 +119,52 @@ class NoxItemCatalog extends Observable {
     }
   }
 
+  /**
+   * Resumes the NoxItem downloads if was previously paused.
+   */
   void resume() {
     imageLoader.resume();
   }
 
+  /**
+   * Pauses the NoxItem downloads.
+   */
   void pause() {
     imageLoader.pause();
   }
 
+  /**
+   * Called by NoxItemCatalogImageLoaderListener when a NoxItem is ready to be used.
+   */
   void notifyNoxItemReady(int position) {
     setChanged();
     notifyObservers(position);
   }
 
+  /**
+   * Configures the bitmap associated to a NoxItem given a position.
+   */
   void setBitmap(int position, Bitmap image) {
     bitmaps[position] = new WeakReference<Bitmap>(image);
   }
 
+  /**
+   * Indicates a NoxItem is being loaded given a position.
+   */
   void setLoading(int position, boolean isLoading) {
     loading[position] = isLoading;
   }
 
+  /**
+   * Configures the placeholder associated to a NoxItem given a position.
+   */
   void setPlaceholder(int position, Drawable placeholder) {
     placeholders[position] = new WeakReference<Drawable>(placeholder);
   }
 
+  /**
+   * Starts the resource download given a NoxItem instance and a given position.
+   */
   private void loadNoxItem(final int position, NoxItem noxItem) {
     imageLoader.load(noxItem.getResourceId())
         .load(noxItem.getUrl())
@@ -125,6 +174,10 @@ class NoxItemCatalog extends Observable {
         .notify(getImageLoaderListener(position));
   }
 
+  /**
+   * Returns the ImageLoader.Listener associated to a NoxItem given a position. If the
+   * ImageLoader.Listener wasn't previously created, creates a new instance.
+   */
   private ImageLoader.Listener getImageLoaderListener(final int position) {
     if (listeners[position] == null) {
       listeners[position] = new NoxItemCatalogImageLoaderListener(position, this);
@@ -132,6 +185,9 @@ class NoxItemCatalog extends Observable {
     return listeners[position];
   }
 
+  /**
+   * Returns true if a NoxItem is being downloaded given a NoxItem position.
+   */
   private boolean isDownloading(int position) {
     return loading[position];
   }
