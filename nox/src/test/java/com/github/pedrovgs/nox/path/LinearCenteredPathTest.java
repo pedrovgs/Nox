@@ -87,8 +87,8 @@ public class LinearCenteredPathTest extends BasePathTestCase {
   }
 
   private float getFirstItemLeftPosition(PathConfig pathConfig) {
-    float itemSize = pathConfig.getFirstItemSize();
-    float itemMargin = pathConfig.getFirstItemMargin();
+    float itemSize = pathConfig.getItemSize();
+    float itemMargin = pathConfig.getItemMargin();
     float center = pathConfig.getViewWidth() / 2;
     int numberOfElements = pathConfig.getNumberOfElements();
     return center - numberOfElements * (itemSize / 2 + itemMargin / 2);

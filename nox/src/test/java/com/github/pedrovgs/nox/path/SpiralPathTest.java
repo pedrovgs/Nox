@@ -69,18 +69,18 @@ public class SpiralPathTest extends BasePathTestCase {
   }
 
   private float getExpectedLeftAtPosition(int i, PathConfig pathConfig) {
-    float angle = pathConfig.getFirstItemSize();
+    float angle = pathConfig.getItemSize();
     float centerX = (pathConfig.getViewWidth() / 2)
-        - (pathConfig.getFirstItemSize() / 2)
-        - (pathConfig.getFirstItemMargin() / 2);
+        - (pathConfig.getItemSize() / 2)
+        - (pathConfig.getItemMargin() / 2);
     return (float) (centerX + (angle * i * Math.cos(i)));
   }
 
   private float getExpectedTopAtPosition(int i, PathConfig pathConfig) {
-    float angle = pathConfig.getFirstItemSize();
+    float angle = pathConfig.getItemSize();
     float centerY = (pathConfig.getViewHeight() / 2)
-        - (pathConfig.getFirstItemSize() / 2)
-        - (pathConfig.getFirstItemMargin() / 2);
+        - (pathConfig.getItemSize() / 2)
+        - (pathConfig.getItemMargin() / 2);
     return (float) (centerY + (angle * i * Math.sin(i)));
   }
 }

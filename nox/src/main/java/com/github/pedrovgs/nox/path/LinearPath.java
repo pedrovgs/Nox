@@ -31,10 +31,10 @@ class LinearPath extends Path {
 
   @Override public void calculate() {
     int numberOfItems = getPathConfig().getNumberOfElements();
-    float height = (getPathConfig().getViewHeight() / 2) - (getPathConfig().getFirstItemSize() / 2);
+    float height = (getPathConfig().getViewHeight() / 2) - (getPathConfig().getItemSize() / 2);
 
-    float itemWidth = getPathConfig().getFirstItemSize();
-    float viewMargin = getPathConfig().getFirstItemMargin();
+    float itemWidth = getPathConfig().getItemSize();
+    float viewMargin = getPathConfig().getItemMargin();
     float x = getFirstItemLeftPosition();
 
     for (int i = 0; i < numberOfItems; i++) {
@@ -45,6 +45,6 @@ class LinearPath extends Path {
   }
 
   protected float getFirstItemLeftPosition() {
-    return getPathConfig().getFirstItemMargin();
+    return getPathConfig().getItemMargin();
   }
 }

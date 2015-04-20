@@ -81,7 +81,7 @@ public abstract class Path {
   public final boolean isItemInsideView(int position) {
     float x = getXForItemAtPosition(position) + offsetX;
     float y = getYForItemAtPosition(position) + offsetY;
-    float itemSize = pathConfig.getFirstItemSize();
+    float itemSize = pathConfig.getItemSize();
     boolean matchesHorizontally = x + itemSize >= 0 && x <= pathConfig.getViewWidth();
     boolean matchesVertically = y + itemSize >= 0 && y <= pathConfig.getViewHeight();
     return matchesHorizontally && matchesVertically;
@@ -91,14 +91,14 @@ public abstract class Path {
    * Returns the minimum X position the view should show during the scroll process.
    */
   public final int getMinX() {
-    return (int) (minX - getPathConfig().getFirstItemMargin());
+    return (int) (minX - getPathConfig().getItemMargin());
   }
 
   /**
    * Returns the maximum X position the view should show during the scroll process.
    */
   public final int getMaxX() {
-    return (int) (maxX + +getPathConfig().getFirstItemSize() + getPathConfig().getFirstItemMargin()
+    return (int) (maxX + +getPathConfig().getItemSize() + getPathConfig().getItemMargin()
         - getPathConfig().getViewWidth());
   }
 
@@ -106,14 +106,14 @@ public abstract class Path {
    * Returns the minimum Y position the view should show during the scroll process.
    */
   public final int getMinY() {
-    return (int) (minY - getPathConfig().getFirstItemMargin());
+    return (int) (minY - getPathConfig().getItemMargin());
   }
 
   /**
    * Returns the maximum Y position the view should show during the scroll process.
    */
   public final int getMaxY() {
-    return (int) (maxY + getPathConfig().getFirstItemMargin() + getPathConfig().getFirstItemSize()
+    return (int) (maxY + getPathConfig().getItemMargin() + getPathConfig().getItemSize()
         - getPathConfig().getViewHeight());
   }
 
@@ -121,7 +121,7 @@ public abstract class Path {
    * Returns the over scroll used by the view during the fling process.
    */
   public int getOverSize() {
-    return (int) pathConfig.getFirstItemMargin();
+    return (int) pathConfig.getItemMargin();
   }
 
   /**

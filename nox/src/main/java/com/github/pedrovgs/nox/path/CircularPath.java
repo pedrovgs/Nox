@@ -51,17 +51,17 @@ class CircularPath extends Path {
 
   private float getCenterY() {
     PathConfig pc = getPathConfig();
-    return pc.getViewHeight() / 2 - pc.getFirstItemSize() / 2 - pc.getFirstItemMargin() / 2;
+    return pc.getViewHeight() / 2 - pc.getItemSize() / 2 - pc.getItemMargin() / 2;
   }
 
   private float getCenterX() {
     PathConfig pc = getPathConfig();
-    return pc.getViewWidth() / 2 - pc.getFirstItemSize() / 2 - pc.getFirstItemMargin() / 2;
+    return pc.getViewWidth() / 2 - pc.getItemSize() / 2 - pc.getItemMargin() / 2;
   }
 
   private float getDistance() {
     PathConfig pc = getPathConfig();
-    return pc.getFirstItemSize() + pc.getFirstItemMargin();
+    return pc.getItemSize() + pc.getItemMargin();
   }
 
   private int calculatePositionsForIteration(int item, float radius, int iteration, float centerX,

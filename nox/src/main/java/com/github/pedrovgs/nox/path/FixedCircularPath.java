@@ -32,7 +32,7 @@ class FixedCircularPath extends CircularPath {
 
   @Override protected int getNumberOfElementsPerIteration(int item, int iteration) {
     int numberOfElementsPerIteration = 0;
-    float itemSize = getPathConfig().getFirstItemSize() + getPathConfig().getFirstItemMargin();
+    float itemSize = getPathConfig().getItemSize() + getPathConfig().getItemMargin();
     float radius = iteration * itemSize;
     float circumferenceLong = (float) (2 * Math.PI * radius);
     if (itemSize >= circumferenceLong) {

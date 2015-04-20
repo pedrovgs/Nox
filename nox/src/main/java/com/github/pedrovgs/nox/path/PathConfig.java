@@ -26,16 +26,16 @@ public class PathConfig {
   private final int numberOfElements;
   private final int viewWidth;
   private final int viewHeight;
-  private final float firstItemSize;
-  private final float firstItemMargin;
+  private final float itemSize;
+  private final float itemMargin;
 
-  public PathConfig(int numberOfElements, int viewWidth, int viewHeight, float firstItemSize,
-      float firstItemMargin) {
+  public PathConfig(int numberOfElements, int viewWidth, int viewHeight, float itemSize,
+      float itemMargin) {
     this.numberOfElements = numberOfElements;
     this.viewWidth = viewWidth;
     this.viewHeight = viewHeight;
-    this.firstItemSize = firstItemSize;
-    this.firstItemMargin = firstItemMargin;
+    this.itemSize = itemSize;
+    this.itemMargin = itemMargin;
   }
 
   public int getNumberOfElements() {
@@ -50,11 +50,11 @@ public class PathConfig {
     return viewHeight;
   }
 
-  public float getFirstItemSize() {
-    return firstItemSize;
+  public float getItemSize() {
+    return itemSize;
   }
 
-  public float getFirstItemMargin() {
-    return firstItemMargin;
+  public float getItemMargin() {
+    return itemMargin;
   }
 }
