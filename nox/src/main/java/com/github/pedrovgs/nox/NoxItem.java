@@ -17,8 +17,10 @@
 package com.github.pedrovgs.nox;
 
 /**
- * Data container used by NoxView to render UI elements based on the URL or URI or resource
+ * Presentation model used by NoxView to render UI elements based on the URL or the resource id
  * configured in this class. NoxView will receive a list of this objects to be painted in the UI.
+ * The placeholder id will be used to load a resource if the NoxView doesn't receive a placeholder
+ * id by xml configuration or is programmatically configured.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
@@ -26,7 +28,6 @@ public class NoxItem {
 
   private final String url;
   private final Integer resourceId;
-  //TODO: check if we can return a null placeholder id without problems with Glide.
   private final Integer placeholderId;
 
   public NoxItem(String url) {
