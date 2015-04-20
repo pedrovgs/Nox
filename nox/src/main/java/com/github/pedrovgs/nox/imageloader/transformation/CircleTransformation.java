@@ -23,7 +23,7 @@ import android.graphics.Paint;
 import com.squareup.picasso.Transformation;
 
 /**
- * Glide BitmapTransformation extension created to transform the source bitmap into a circular
+ * Picasso Transformation implementation created to transform the source bitmap into a circular
  * bitmap.
  *
  * @author Pedro Vicente Gomez Sanchez
