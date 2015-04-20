@@ -25,7 +25,7 @@ import android.view.View;
 import android.widget.OverScroller;
 
 /**
- * Controls the NoxView scroll and performs all the visual effects needed to indicate the user the
+ * Controls the View scroll and performs all the visual effects needed to indicate the user the
  * view is being scrolled. This implementation is based on GestureDetectorCompat and OverScroller
  * class to implement scroll and fling gestures.
  *
@@ -57,22 +57,34 @@ class Scroller {
     this.overScroller = new OverScroller(context);
   }
 
+  /**
+   * Returns the GestureDetectorCompat instance where the view should delegate touch events.
+   */
   GestureDetectorCompat getGestureDetector() {
     if (gestureDetector == null) {
-      gestureDetector = new GestureDetectorCompat(view.getContext(), mGestureListener);
+      gestureDetector = new GestureDetectorCompat(view.getContext(), gestureListener);
     }
     return gestureDetector;
   }
 
+  /**
+   * Returns the current X scroll offset.
+   */
   int getOffsetX() {
     return -view.getScrollX();
   }
 
+  /**
+   * Returns the current Y scroll offset.
+   */
   int getOffsetY() {
     return -view.getScrollY();
   }
 
-  private final GestureDetector.SimpleOnGestureListener mGestureListener =
+  /**
+   * SimpleOnGestureListener used to perform the scroll effect.
+   */
+  private final GestureDetector.SimpleOnGestureListener gestureListener =
       new GestureDetector.SimpleOnGestureListener() {
         @Override public boolean onDown(MotionEvent e) {
           resetOverScroller();
@@ -102,6 +114,10 @@ class Scroller {
         }
       };
 
+  /**
+   * Computes the current scroll using a OverScroller instance and the time lapsed from the
+   * previous call. Also controls if the view is performing a fast scroll after a fling gesture.
+   */
   void computeScroll() {
     if (!overScroller.computeScrollOffset() || overScroller.isFinished()) {
       isScrollingFast = false;
@@ -119,10 +135,17 @@ class Scroller {
     view.scrollBy(dX, dY);
   }
 
+  /**
+   * Returns true if the view is performing a scroll after a fling gesture.
+   */
   boolean isScrollingFast() {
     return isScrollingFast;
   }
 
+  /**
+   * Returns the distance in the X axes to perform the scroll taking into account the view
+   * boundary.
+   */
   private int calculateDx(float distanceX) {
     int currentX = view.getScrollX();
     int nextX = (int) (distanceX + currentX);
@@ -130,6 +153,10 @@ class Scroller {
     return isInsideHorizontally ? (int) distanceX : 0;
   }
 
+  /**
+   * Returns the distance in the Y axes to perform the scroll taking into account the view
+   * boundary.
+   */
   private int calculateDy(float distanceY) {
     int currentY = view.getScrollY();
     int nextY = (int) (distanceY + currentY);
