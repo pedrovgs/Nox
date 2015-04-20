@@ -19,7 +19,9 @@ package com.github.pedrovgs.nox.imageloader;
 import android.content.Context;
 
 /**
- * Provides ImageLoader instances based on third party libraries.
+ * Provides ImageLoader instances based on third party libraries. An example could be
+ * PicassoImageLoader, an ImageLoader implementation based on Picasso, a third party library
+ * implemented by Square.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
