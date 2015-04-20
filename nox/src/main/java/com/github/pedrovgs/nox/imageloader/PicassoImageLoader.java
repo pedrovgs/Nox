@@ -10,11 +10,12 @@ import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
  * ImageLoader implementation based on Picasso, a third party library implemented by
- * https://github.com/square. Official repository: https://github.com/square/picasso
+ * https://github.com/square. Official repository: https://github.com/square/picasso.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
@@ -30,7 +31,8 @@ class PicassoImageLoader implements ImageLoader {
   private boolean useCircularTransformation;
   private int size;
   private Listener listener;
-  private final WeakHashMap<Listener, Target> targets;
+  private final Map<Listener, Target> targets;
+  private List<Transformation> transformations;
 
   PicassoImageLoader(Context context) {
     this.context = context;
@@ -68,6 +70,18 @@ class PicassoImageLoader implements ImageLoader {
     loadImage();
   }
 
+  @Override public void pause() {
+    Picasso.with(context).pauseTag(PICASSO_IMAGE_LOADER_TAG);
+  }
+
+  @Override public void resume() {
+    Picasso.with(context).resumeTag(PICASSO_IMAGE_LOADER_TAG);
+  }
+
+  /**
+   * Uses the configuration previously applied using this ImageLoader builder to download a
+   * resource asynchronously and notify the result to the listener.
+   */
   private void loadImage() {
     List<Transformation> transformations = prepareTransformations();
     boolean hasUrl = url != null;
@@ -90,6 +104,15 @@ class PicassoImageLoader implements ImageLoader {
     }
   }
 
+  /**
+   * Given a listener passed as argument creates or returns a lazy instance of a Picasso Target.
+   * This implementation is needed because Picasso doesn't keep a strong reference to the target
+   * passed as parameter. Without this method Picasso looses the reference to the target and never
+   * notifies when the resource has been downloaded.
+   *
+   * Listener and Target instances are going to be stored into a WeakHashMap to avoid a memory leak
+   * when ImageLoader client code is garbage collected.
+   */
   private Target getLinearTarget(final Listener listener) {
     Target target = targets.get(listener);
     if (target == null) {
@@ -118,20 +141,17 @@ class PicassoImageLoader implements ImageLoader {
     return bitmapRequest;
   }
 
+  /**
+   * Lazy instantiation of the list of transformations used during the image download. This method
+   * returns a List<Transformation> because Picasso doesn't support a null instance as
+   * transformation.
+   */
   private List<Transformation> prepareTransformations() {
-    List<Transformation> transformations = new LinkedList<Transformation>();
-    if (useCircularTransformation) {
+    if (useCircularTransformation && transformations == null) {
+      transformations = new LinkedList<Transformation>();
       transformations.add(new CircleTransformation());
     }
     return transformations;
-  }
-
-  @Override public void pause() {
-    Picasso.with(context).pauseTag(PICASSO_IMAGE_LOADER_TAG);
-  }
-
-  @Override public void resume() {
-    Picasso.with(context).resumeTag(PICASSO_IMAGE_LOADER_TAG);
   }
 
   private void validateListener(Listener listener) {
