@@ -49,6 +49,13 @@ class CircularPath extends Path {
     }
   }
 
+  protected int getNumberOfElementsPerIteration(int item, int iteration) {
+    int numberOfElements = getPathConfig().getNumberOfElements();
+    int numberOfElementsPerIteration = Math.max(BASE * iteration, 1);
+    numberOfElementsPerIteration = Math.min(numberOfElementsPerIteration, numberOfElements - item);
+    return numberOfElementsPerIteration;
+  }
+
   private float getCenterY() {
     PathConfig pc = getPathConfig();
     return pc.getViewHeight() / 2 - pc.getItemSize() / 2 - pc.getItemMargin() / 2;
@@ -85,13 +92,6 @@ class CircularPath extends Path {
       setNoxItemYPosition(item, y);
       item++;
     }
-    return numberOfElementsPerIteration;
-  }
-
-  protected int getNumberOfElementsPerIteration(int item, int iteration) {
-    int numberOfElements = getPathConfig().getNumberOfElements();
-    int numberOfElementsPerIteration = Math.max(BASE * iteration, 1);
-    numberOfElementsPerIteration = Math.min(numberOfElementsPerIteration, numberOfElements - item);
     return numberOfElementsPerIteration;
   }
 }
