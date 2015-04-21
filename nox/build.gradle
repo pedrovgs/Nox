@@ -9,6 +9,7 @@ buildscript {
 }
 apply plugin: 'com.android.library'
 apply plugin: 'checkstyle'
+apply plugin: 'jacoco'
 
 repositories {
   jcenter()
@@ -51,5 +52,21 @@ task checkstyle(type: Checkstyle) {
   classpath = files()
 }
 
+def coverageSourceDirs = ['src/main/java',
+                          'src/gen']
+task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
+  group = "Reporting"
+  description = "Generate Jacoco coverage reports after running tests."
+  reports {
+    html.enabled = true
+  }
+
+  // Class R is used, but usage will not be covered, so ignore this class from report
+  classDirectories = fileTree(dir: './build/intermediates/classes/debug',
+      excludes: ['**/R.class',
+                 '**/R$*.class'])
+  sourceDirectories = files(coverageSourceDirs)
+  executionData = files('build/jacoco/testDebug.exec')
+}
 
 apply from: 'https://raw.githubusercontent.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
