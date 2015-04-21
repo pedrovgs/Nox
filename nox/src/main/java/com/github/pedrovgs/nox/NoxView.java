@@ -108,6 +108,16 @@ public class NoxView extends View {
   }
 
   /**
+   * Changes the Path used to the one passed as argument. This method will refresh the view.
+   */
+  public void setPath(Path path) {
+    validatePath(path);
+    this.path = path;
+    initializeScroller();
+    refreshView();
+  }
+
+  /**
    * Delegates touch events to the scroller instance initialized previously to implement the scroll
    * effect.
    */
@@ -233,14 +243,18 @@ public class NoxView extends View {
    * XML styleable attributes.
    */
   private void createPath() {
-    float firstItemMargin = noxConfig.getNoxItemMargin();
-    float firstItemSize = noxConfig.getNoxItemSize();
-    int viewHeight = getMeasuredHeight();
-    int viewWidth = getMeasuredWidth();
-    int numberOfElements = noxItemCatalog.size();
-    PathConfig pathConfig =
-        new PathConfig(numberOfElements, viewWidth, viewHeight, firstItemSize, firstItemMargin);
-    path = PathFactory.getFixedCircularPath(pathConfig);
+    if (path == null) {
+      float firstItemMargin = noxConfig.getNoxItemMargin();
+      float firstItemSize = noxConfig.getNoxItemSize();
+      int viewHeight = getMeasuredHeight();
+      int viewWidth = getMeasuredWidth();
+      int numberOfElements = noxItemCatalog.size();
+      PathConfig pathConfig =
+          new PathConfig(numberOfElements, viewWidth, viewHeight, firstItemSize, firstItemMargin);
+      path = PathFactory.getFixedCircularPath(pathConfig);
+    }else {
+      path.setNumberOfElements(noxItemCatalog.size());
+    }
     path.calculate();
   }
 
@@ -287,5 +301,23 @@ public class NoxView extends View {
   private void initializeNoxItemPlaceholder(TypedArray attributes) {
     Drawable placeholder = attributes.getDrawable(R.styleable.nox_placeholder);
     noxConfig.setPlaceholder(placeholder);
+  }
+
+  private void validatePath(Path path) {
+    if (path == null) {
+      throw new NullPointerException("You can't pass a null Path instance as argument.");
+    }
+    if (noxItemCatalog != null && path.getNumberOfElements() != noxItemCatalog.size()) {
+      throw new IllegalArgumentException(
+          "The number of items in the Path instance passed as argument doesn't match with the current number of NoxItems.");
+    }
+  }
+
+  /**
+   * Method created for testing purposes. Returns the scroller used internally to implement the
+   * scroll effect.
+   */
+  Scroller getScroller() {
+    return scroller;
   }
 }

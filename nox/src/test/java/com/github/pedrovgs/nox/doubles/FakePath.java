@@ -29,6 +29,7 @@ public class FakePath extends Path {
 
   private float xPosition;
   private float yPosition;
+  private int overSize;
 
   public FakePath(PathConfig pathConfig) {
     super(pathConfig);
@@ -47,5 +48,17 @@ public class FakePath extends Path {
       setNoxItemXPosition(i, xPosition);
       setNoxItemYPosition(i, yPosition);
     }
+  }
+
+  public void setBoundaries(int minX, int maxX, int minY, int maxY, int overSize) {
+    setNoxItemXPosition(0, minX);
+    setNoxItemXPosition(0, maxX);
+    setNoxItemYPosition(0, minY);
+    setNoxItemYPosition(0, maxY);
+    this.overSize = overSize;
+  }
+
+  @Override public int getOverSize() {
+    return overSize;
   }
 }

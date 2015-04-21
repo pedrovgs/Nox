@@ -29,9 +29,9 @@ package com.github.pedrovgs.nox.path;
 public abstract class Path {
 
   private final PathConfig pathConfig;
-  private final float[] noxItemsXPositions;
-  private final float[] noxItemsYPositions;
 
+  private float[] noxItemsXPositions;
+  private float[] noxItemsYPositions;
   private int offsetX;
   private int offsetY;
   private int minX;
@@ -127,8 +127,24 @@ public abstract class Path {
   /**
    * Returns the PathConfig used to create this path.
    */
-  protected final PathConfig getPathConfig() {
+  public final PathConfig getPathConfig() {
     return pathConfig;
+  }
+
+  /**
+   * Returns the number of elements the Path is using to calculate NoxItems positions.
+   */
+  public int getNumberOfElements() {
+    return getPathConfig().getNumberOfElements();
+  }
+
+  /**
+   * Configures the number of element the Path is going to use to calculate NoxItems positions.
+   * This method resets the previous position calculus.
+   */
+  public void setNumberOfElements(int numberOfElements) {
+    this.noxItemsXPositions = new float[numberOfElements];
+    this.noxItemsYPositions = new float[numberOfElements];
   }
 
   /**

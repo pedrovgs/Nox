@@ -136,6 +136,41 @@ class Scroller {
   }
 
   /**
+   * Returns the minimum X position configured in construction.
+   */
+  int getMinX() {
+    return minX;
+  }
+
+  /**
+   * Returns the maximum X position configured in construction.
+   */
+  int getMaxX() {
+    return maxX;
+  }
+
+  /**
+   * Returns the minimum Y position configured in construction.
+   */
+  int getMinY() {
+    return minY;
+  }
+
+  /**
+   * Returns the maximum X position configured in construction.
+   */
+  int getMaxY() {
+    return maxY;
+  }
+
+  /**
+   * Returns the over size configured in construction.
+   */
+  int getOverSize() {
+    return overSize;
+  }
+
+  /**
    * Returns true if the view is performing a scroll after a fling gesture.
    */
   boolean isScrollingFast() {
