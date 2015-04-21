@@ -22,7 +22,7 @@ import android.graphics.drawable.Drawable;
 import com.github.pedrovgs.nox.imageloader.ImageLoader;
 
 /**
- * ImageLoader testo double created to simulate an asynchronous image loading in test time.
+ * ImageLoader test double created to simulate an asynchronous image loading in test time.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
