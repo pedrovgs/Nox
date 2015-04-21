@@ -113,6 +113,7 @@ public class NoxView extends View {
   public void setPath(Path path) {
     validatePath(path);
     this.path = path;
+    this.path.calculate();
     initializeScroller();
     refreshView();
   }
@@ -166,6 +167,13 @@ public class NoxView extends View {
 
   public int getOverSize() {
     return scroller.getOverSize();
+  }
+
+  /**
+   * Returns the current Path used in to draw this view.
+   */
+  public Path getPath() {
+    return path;
   }
 
   /**
@@ -344,7 +352,8 @@ public class NoxView extends View {
     }
     if (noxItemCatalog != null && path.getNumberOfElements() != noxItemCatalog.size()) {
       throw new IllegalArgumentException(
-          "The number of items in the Path instance passed as argument doesn't match with the current number of NoxItems.");
+          "The number of items in the Path instance passed as argument doesn't match with "
+              + "the current number of NoxItems.");
     }
   }
 

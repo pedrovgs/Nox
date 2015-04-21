@@ -17,6 +17,10 @@
 package com.github.pedrovgs.nox;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
 import com.github.pedrovgs.nox.doubles.FakePath;
@@ -34,6 +38,9 @@ import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -50,6 +57,10 @@ import static org.mockito.Mockito.verify;
   private static final int ANY_MIN_Y = -70;
   private static final int ANY_MAX_Y = 70;
   private static final int ANY_OVER_SIZE = 10;
+  private static final int ANY_VIEW_WIDTH = 100;
+  private static final int ANY_VIEW_HEIGHT = 100;
+  private static final int ANY_ITEM_SIZE = 8;
+  private static final int ANY_ITEM_MARGIN = 2;
 
   private NoxView noxView;
 
@@ -204,6 +215,74 @@ import static org.mockito.Mockito.verify;
     verify(noxView, never()).invalidate();
   }
 
+  @Test public void shouldNotDrawAnyNoxItemIfNoxItemCatalogHasNotDownloadAnyResource() {
+    Canvas canvas = mock(Canvas.class);
+    List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
+
+    noxView.showNoxItems(noxItems);
+    noxView.draw(canvas);
+
+    verify(canvas, never()).drawBitmap(any(Bitmap.class), anyInt(), anyInt(), any(Paint.class));
+  }
+
+  @Test public void shouldNotDrawAnyNoxItemIfTheNoxItemCatalogIsEmpty() {
+    Canvas canvas = mock(Canvas.class);
+
+    noxView.showNoxItems(Collections.EMPTY_LIST);
+    noxView.onDraw(canvas);
+
+    verify(canvas, never()).drawBitmap(any(Bitmap.class), anyInt(), anyInt(), any(Paint.class));
+  }
+
+  @Test public void shouldDrawNoxItemResourcesIfAreDownloaded() {
+    Canvas canvas = mock(Canvas.class);
+    Bitmap bitmap = mock(Bitmap.class);
+    List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
+
+    noxView.showNoxItems(noxItems);
+    NoxItemCatalog noxItemCatalog = noxView.getNoxItemCatalog();
+    noxItemCatalog.setBitmap(0, bitmap);
+    noxItemCatalog.notifyNoxItemReady(0);
+    noxView.onDraw(canvas);
+
+    verify(canvas).drawBitmap(eq(bitmap), anyInt(), anyInt(), any(Paint.class));
+  }
+
+  @Test public void shouldNotDrawNoxItemsOutOfTheViewEvenIfAreReadyToDraw() {
+    Canvas canvas = mock(Canvas.class);
+    List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
+    Path path = givenPathToPositionElementsOutOfTheView();
+
+    noxView.setPath(path);
+    noxView.showNoxItems(noxItems);
+    NoxItemCatalog noxItemCatalog = noxView.getNoxItemCatalog();
+    noxItemCatalog.setBitmap(0, mock(Bitmap.class));
+    noxItemCatalog.notifyNoxItemReady(0);
+    noxView.onDraw(canvas);
+
+    verify(canvas, never()).drawBitmap(any(Bitmap.class), anyInt(), anyInt(), any(Paint.class));
+  }
+
+  @Test public void shouldDrawNoxItemPlaceholdersIfResourcesAreDownloaded() {
+    Canvas canvas = mock(Canvas.class);
+    Drawable drawable = mock(Drawable.class);
+    List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
+
+    noxView.showNoxItems(noxItems);
+    NoxItemCatalog noxItemCatalog = noxView.getNoxItemCatalog();
+    noxItemCatalog.setPlaceholder(drawable);
+    noxItemCatalog.notifyNoxItemReady(0);
+    noxView.onDraw(canvas);
+
+    Path path = noxView.getPath();
+    int expectedLeft = (int) path.getXForItemAtPosition(0);
+    int expectedTop = (int) path.getYForItemAtPosition(0);
+    int expectedRight = (int) (expectedLeft + path.getPathConfig().getItemSize());
+    int expectedBottom = (int) (expectedTop + path.getPathConfig().getItemSize());
+    verify(drawable).setBounds(expectedLeft, expectedTop, expectedRight, expectedBottom);
+    verify(drawable).draw(canvas);
+  }
+
   private List<NoxItem> givenOneListWithJustOneNoxItem() {
     List<NoxItem> noxItems = new ArrayList<NoxItem>();
     noxItems.add(new NoxItem(ANY_RESOURCE_ID));
@@ -211,8 +290,19 @@ import static org.mockito.Mockito.verify;
   }
 
   private Path givenPathWithNumberOfElements(int numberOfElements) {
-    PathConfig pathConfig = new PathConfig(numberOfElements, 0, 0, 0, 0);
+    PathConfig pathConfig =
+        new PathConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
+            ANY_ITEM_MARGIN);
     return new FakePath(pathConfig);
+  }
+
+  private Path givenPathToPositionElementsOutOfTheView() {
+    PathConfig pathConfig =
+        new PathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    FakePath path = new FakePath(pathConfig);
+    path.setXPosition(-100);
+    path.setYPosition(-200);
+    return path;
   }
 
   private Path givenPathConfiguredToReturn(int minX, int maxX, int minY, int maxY, int overSize) {
