@@ -41,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
     List<NoxItem> noxItems = new ArrayList<NoxItem>();
     for (int i = 0; i < 90; i++) {
       noxItems.add(new NoxItem("http://api.randomuser.me/portraits/thumb/women/" + i + ".jpg",
-          R.drawable.ic_launcher));
+          R.drawable.ic_nox));
     }
     noxView.showNoxItems(noxItems);
   }
