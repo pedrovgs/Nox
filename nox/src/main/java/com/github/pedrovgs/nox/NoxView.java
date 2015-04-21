@@ -133,9 +133,39 @@ public class NoxView extends View {
    */
   @Override public void computeScroll() {
     super.computeScroll();
-    if (scroller != null) {
-      scroller.computeScroll();
-    }
+    scroller.computeScroll();
+  }
+
+  /**
+   * Returns the minimum X position the view can get taking into account the scroll offset.
+   */
+  public int getMinX() {
+    return scroller.getMinX();
+  }
+
+  /**
+   * Returns the maximum X position the view can get taking into account the scroll offset.
+   */
+  public int getMaxX() {
+    return scroller.getMaxX();
+  }
+
+  /**
+   * Returns the minimum Y position the view can get taking into account the scroll offset.
+   */
+  public int getMinY() {
+    return scroller.getMinY();
+  }
+
+  /**
+   * Returns the minimum Y position the view can get taking into account the scroll offset.
+   */
+  public int getMaxY() {
+    return scroller.getMaxY();
+  }
+
+  public int getOverSize() {
+    return scroller.getOverSize();
   }
 
   /**
@@ -319,33 +349,26 @@ public class NoxView extends View {
   }
 
   /**
-   * Method created for testing purposes. Returns the Scroller used internally to implement the
-   * scroll effect.
-   */
-  Scroller getScroller() {
-    return scroller;
-  }
-
-  /**
    * Method created for testing purposes. Configures the Scroller to be used by NoxView.
+   * This method is needed because we don't have access to the view constructor.
    */
   void setScroller(Scroller scroller) {
     this.scroller = scroller;
   }
 
   /**
-   * Method created for testing purposes. Returns the NoxItemCatalog used internally to implement
-   * the
-   * scroll effect.
-   */
-  NoxItemCatalog getNoxItemCatalog() {
-    return noxItemCatalog;
-  }
-
-  /**
    * Method created for testing purposes. Configures the NoxItemCatalog to be used by NoxView.
+   * This method is needed because we don't have access to the view constructor.
    */
   void setNoxItemCatalog(NoxItemCatalog noxItemCatalog) {
     this.noxItemCatalog = noxItemCatalog;
+  }
+
+  /**
+   * Method created for testing purposes. Returns the NoxItemCatalog to be used by NoxView.
+   * This method is needed because we don't have access to the view constructor.
+   */
+  NoxItemCatalog getNoxItemCatalog() {
+    return noxItemCatalog;
   }
 }

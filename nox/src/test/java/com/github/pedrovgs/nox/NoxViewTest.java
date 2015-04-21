@@ -78,11 +78,11 @@ import static org.mockito.Mockito.verify;
 
     noxView.setPath(path);
 
-    assertEquals(ANY_MIN_X, noxView.getScroller().getMinX());
-    assertEquals(ANY_MAX_X, noxView.getScroller().getMaxX());
-    assertEquals(ANY_MIN_Y, noxView.getScroller().getMinY());
-    assertEquals(ANY_MAX_Y, noxView.getScroller().getMaxY());
-    assertEquals(ANY_OVER_SIZE, noxView.getScroller().getOverSize());
+    assertEquals(ANY_MIN_X, noxView.getMinX());
+    assertEquals(ANY_MAX_X, noxView.getMaxX());
+    assertEquals(ANY_MIN_Y, noxView.getMinY());
+    assertEquals(ANY_MAX_Y, noxView.getMaxY());
+    assertEquals(ANY_OVER_SIZE, noxView.getOverSize());
   }
 
   @Test public void shouldInvalidateViewOnNewPathConfigured() {
