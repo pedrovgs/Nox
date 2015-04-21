@@ -17,6 +17,7 @@
 package com.github.pedrovgs.nox;
 
 import android.app.Activity;
+import android.view.MotionEvent;
 import com.github.pedrovgs.nox.doubles.FakePath;
 import com.github.pedrovgs.nox.path.Path;
 import com.github.pedrovgs.nox.path.PathConfig;
@@ -26,12 +27,14 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -62,8 +65,7 @@ import static org.mockito.Mockito.verify;
   }
 
   @Test public void shouldAcceptANonEmptyListOfNoxItems() {
-    List<NoxItem> noxItems = new ArrayList<NoxItem>();
-    noxItems.add(new NoxItem(ANY_RESOURCE_ID));
+    List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
 
     noxView.showNoxItems(noxItems);
   }
@@ -82,7 +84,7 @@ import static org.mockito.Mockito.verify;
   }
 
   @Test public void shouldInvalidateViewOnNewPathConfigured() {
-    noxView = Mockito.spy(noxView);
+    noxView = spy(noxView);
     Path path =
         givenPathConfiguredToReturn(ANY_MIN_X, ANY_MAX_X, ANY_MIN_Y, ANY_MAX_Y, ANY_OVER_SIZE);
 
@@ -98,19 +100,60 @@ import static org.mockito.Mockito.verify;
   @Test(expected = IllegalArgumentException.class)
   public void shouldNotAcceptANewPathWithDifferentNumberOfElementsThanThePreviousConfigured() {
     Path path = givenPathWithNumberOfElements(2);
-    List<NoxItem> noxItems = new ArrayList<NoxItem>();
-    noxItems.add(new NoxItem(ANY_RESOURCE_ID));
+    List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
 
     noxView.showNoxItems(noxItems);
     noxView.setPath(path);
   }
 
   @Test public void shouldInvalidateViewOnNewNoxItemsConfigured() {
-    noxView = Mockito.spy(noxView);
+    noxView = spy(noxView);
 
     noxView.showNoxItems(Collections.EMPTY_LIST);
 
     verify(noxView).invalidate();
+  }
+
+  @Test public void shouldChangePathNumberOfElementsIfNoxItemsWherePreviouslyConfigured() {
+    List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
+    Path path = givenPathWithNumberOfElements(noxItems.size() + 1);
+    path = spy(path);
+
+    noxView.setPath(path);
+    noxView.showNoxItems(noxItems);
+
+    verify(path).setNumberOfElements(noxItems.size());
+  }
+
+  @Test public void shouldNotHandleOnTouchEventIfNoNoxItemHaveBeenShown() {
+    boolean handled = noxView.onTouchEvent(mock(MotionEvent.class));
+
+    assertFalse(handled);
+  }
+
+  @Test public void shouldDelegateOnTouchEventsToScroller() {
+    Scroller scroller = mock(Scroller.class);
+    noxView.setScroller(scroller);
+
+    MotionEvent touchEvent = mock(MotionEvent.class);
+    noxView.onTouchEvent(touchEvent);
+
+    verify(scroller).onTouchEvent(touchEvent);
+  }
+
+  @Test public void shouldDelegateComputeScrollMethodToScroller() {
+    Scroller scroller = mock(Scroller.class);
+    noxView.setScroller(scroller);
+
+    noxView.computeScroll();
+
+    verify(scroller).computeScroll();
+  }
+
+  private List<NoxItem> givenOneListWithJustOneNoxItem() {
+    List<NoxItem> noxItems = new ArrayList<NoxItem>();
+    noxItems.add(new NoxItem(ANY_RESOURCE_ID));
+    return noxItems;
   }
 
   private Path givenPathWithNumberOfElements(int numberOfElements) {

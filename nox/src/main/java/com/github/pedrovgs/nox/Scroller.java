@@ -58,16 +58,6 @@ class Scroller {
   }
 
   /**
-   * Returns the GestureDetectorCompat instance where the view should delegate touch events.
-   */
-  GestureDetectorCompat getGestureDetector() {
-    if (gestureDetector == null) {
-      gestureDetector = new GestureDetectorCompat(view.getContext(), gestureListener);
-    }
-    return gestureDetector;
-  }
-
-  /**
    * Returns the current X scroll offset.
    */
   int getOffsetX() {
@@ -82,37 +72,11 @@ class Scroller {
   }
 
   /**
-   * SimpleOnGestureListener used to perform the scroll effect.
+   * Given a MotionEvent instance performs the scroll effect.
    */
-  private final GestureDetector.SimpleOnGestureListener gestureListener =
-      new GestureDetector.SimpleOnGestureListener() {
-        @Override public boolean onDown(MotionEvent e) {
-          resetOverScroller();
-          ViewCompat.postInvalidateOnAnimation(view);
-          return true;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-          int dX = calculateDx(distanceX);
-          int dY = calculateDy(distanceY);
-          view.scrollBy(dX, dY);
-          return true;
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-          resetOverScroller();
-          int startX = view.getScrollX();
-          int startY = view.getScrollY();
-          int velX = (int) -velocityX / VELOCITY_SCALE;
-          int velY = (int) -velocityY / VELOCITY_SCALE;
-          overScroller.fling(startX, startY, velX, velY, minX, maxX, minY, maxY, overSize,
-              overSize);
-          ViewCompat.postInvalidateOnAnimation(view);
-          return true;
-        }
-      };
+  boolean onTouchEvent(MotionEvent event) {
+    return getGestureDetector().onTouchEvent(event);
+  }
 
   /**
    * Computes the current scroll using a OverScroller instance and the time lapsed from the
@@ -176,6 +140,49 @@ class Scroller {
   boolean isScrollingFast() {
     return isScrollingFast;
   }
+
+  /**
+   * Returns the GestureDetectorCompat instance where the view should delegate touch events.
+   */
+  private GestureDetectorCompat getGestureDetector() {
+    if (gestureDetector == null) {
+      gestureDetector = new GestureDetectorCompat(view.getContext(), gestureListener);
+    }
+    return gestureDetector;
+  }
+
+  /**
+   * SimpleOnGestureListener used to perform the scroll effect.
+   */
+  private final GestureDetector.SimpleOnGestureListener gestureListener =
+      new GestureDetector.SimpleOnGestureListener() {
+        @Override public boolean onDown(MotionEvent e) {
+          resetOverScroller();
+          ViewCompat.postInvalidateOnAnimation(view);
+          return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+          int dX = calculateDx(distanceX);
+          int dY = calculateDy(distanceY);
+          view.scrollBy(dX, dY);
+          return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+          resetOverScroller();
+          int startX = view.getScrollX();
+          int startY = view.getScrollY();
+          int velX = (int) -velocityX / VELOCITY_SCALE;
+          int velY = (int) -velocityY / VELOCITY_SCALE;
+          overScroller.fling(startX, startY, velX, velY, minX, maxX, minY, maxY, overSize,
+              overSize);
+          ViewCompat.postInvalidateOnAnimation(view);
+          return true;
+        }
+      };
 
   /**
    * Returns the distance in the X axes to perform the scroll taking into account the view

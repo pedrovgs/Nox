@@ -143,6 +143,7 @@ public abstract class Path {
    * This method resets the previous position calculus.
    */
   public void setNumberOfElements(int numberOfElements) {
+    this.pathConfig.setNumberOfElements(numberOfElements);
     this.noxItemsXPositions = new float[numberOfElements];
     this.noxItemsYPositions = new float[numberOfElements];
   }

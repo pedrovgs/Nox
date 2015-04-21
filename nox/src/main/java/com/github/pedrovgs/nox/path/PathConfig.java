@@ -23,7 +23,7 @@ package com.github.pedrovgs.nox.path;
  */
 public class PathConfig {
 
-  private final int numberOfElements;
+  private int numberOfElements;
   private final int viewWidth;
   private final int viewHeight;
   private final float itemSize;
@@ -56,5 +56,9 @@ public class PathConfig {
 
   public float getItemMargin() {
     return itemMargin;
+  }
+
+  public void setNumberOfElements(int numberOfElements) {
+    this.numberOfElements = numberOfElements;
   }
 }

@@ -122,7 +122,10 @@ public class NoxView extends View {
    * effect.
    */
   @Override public boolean onTouchEvent(MotionEvent event) {
-    return scroller.getGestureDetector().onTouchEvent(event);
+    if (scroller == null) {
+      return false;
+    }
+    return scroller.onTouchEvent(event);
   }
 
   /**
@@ -130,7 +133,9 @@ public class NoxView extends View {
    */
   @Override public void computeScroll() {
     super.computeScroll();
-    scroller.computeScroll();
+    if (scroller != null) {
+      scroller.computeScroll();
+    }
   }
 
   /**
@@ -252,7 +257,7 @@ public class NoxView extends View {
       PathConfig pathConfig =
           new PathConfig(numberOfElements, viewWidth, viewHeight, firstItemSize, firstItemMargin);
       path = PathFactory.getFixedCircularPath(pathConfig);
-    }else {
+    } else {
       path.setNumberOfElements(noxItemCatalog.size());
     }
     path.calculate();
@@ -319,5 +324,12 @@ public class NoxView extends View {
    */
   Scroller getScroller() {
     return scroller;
+  }
+
+  /**
+   * Method created for testing purposes. Configures the scroller to be used by NoxView.
+   */
+  void setScroller(Scroller scroller) {
+    this.scroller = scroller;
   }
 }
