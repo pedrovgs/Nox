@@ -319,7 +319,7 @@ public class NoxView extends View {
   }
 
   /**
-   * Method created for testing purposes. Returns the scroller used internally to implement the
+   * Method created for testing purposes. Returns the Scroller used internally to implement the
    * scroll effect.
    */
   Scroller getScroller() {
@@ -327,9 +327,25 @@ public class NoxView extends View {
   }
 
   /**
-   * Method created for testing purposes. Configures the scroller to be used by NoxView.
+   * Method created for testing purposes. Configures the Scroller to be used by NoxView.
    */
   void setScroller(Scroller scroller) {
     this.scroller = scroller;
+  }
+
+  /**
+   * Method created for testing purposes. Returns the NoxItemCatalog used internally to implement
+   * the
+   * scroll effect.
+   */
+  NoxItemCatalog getNoxItemCatalog() {
+    return noxItemCatalog;
+  }
+
+  /**
+   * Method created for testing purposes. Configures the NoxItemCatalog to be used by NoxView.
+   */
+  void setNoxItemCatalog(NoxItemCatalog noxItemCatalog) {
+    this.noxItemCatalog = noxItemCatalog;
   }
 }

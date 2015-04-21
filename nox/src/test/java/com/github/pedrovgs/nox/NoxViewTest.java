@@ -18,6 +18,7 @@ package com.github.pedrovgs.nox;
 
 import android.app.Activity;
 import android.view.MotionEvent;
+import android.view.View;
 import com.github.pedrovgs.nox.doubles.FakePath;
 import com.github.pedrovgs.nox.path.Path;
 import com.github.pedrovgs.nox.path.PathConfig;
@@ -34,6 +35,7 @@ import org.robolectric.annotation.Config;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -148,6 +150,58 @@ import static org.mockito.Mockito.verify;
     noxView.computeScroll();
 
     verify(scroller).computeScroll();
+  }
+
+  @Test public void shouldPauseNoxItemCatalogOnVisibilityChangedToNotVisible() {
+    NoxItemCatalog noxItemCatalog = mock(NoxItemCatalog.class);
+    noxView.setNoxItemCatalog(noxItemCatalog);
+
+    noxView.setVisibility(View.INVISIBLE);
+
+    verify(noxItemCatalog).pause();
+  }
+
+  @Test public void shouldResumeNoxItemCatalogOnVisibilityChangedToVisible() {
+    NoxItemCatalog noxItemCatalog = mock(NoxItemCatalog.class);
+    noxView.setNoxItemCatalog(noxItemCatalog);
+
+    noxView.setVisibility(View.INVISIBLE);
+    noxView.setVisibility(View.VISIBLE);
+
+    verify(noxItemCatalog).resume();
+  }
+
+  @Test public void shouldNotInteractWithNoxItemCatalogIfChangedViewIsNotNoxView() {
+    NoxItemCatalog noxItemCatalog = mock(NoxItemCatalog.class);
+    noxView.setNoxItemCatalog(noxItemCatalog);
+
+    noxView.onVisibilityChanged(mock(View.class), View.VISIBLE);
+
+    verify(noxItemCatalog, never()).resume();
+    verify(noxItemCatalog, never()).pause();
+  }
+
+  @Test public void shouldInvalidateViewOnNewNoxItemReady() {
+    noxView = spy(noxView);
+    List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
+
+    noxView.showNoxItems(noxItems);
+    NoxItemCatalog noxItemCatalog = noxView.getNoxItemCatalog();
+    noxItemCatalog.notifyNoxItemReady(0);
+
+    verify(noxView).invalidate();
+  }
+
+  @Test public void shouldNotInvalidateViewIfNoxViewIsNotVisible() {
+    List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
+
+    noxView.showNoxItems(noxItems);
+    NoxItemCatalog noxItemCatalog = noxView.getNoxItemCatalog();
+    noxView = spy(noxView);
+    noxView.setVisibility(View.INVISIBLE);
+    noxItemCatalog.notifyNoxItemReady(0);
+
+    verify(noxView, never()).invalidate();
   }
 
   private List<NoxItem> givenOneListWithJustOneNoxItem() {
