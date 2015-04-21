@@ -37,6 +37,7 @@ public class BoundaryPathTest {
   private static final double DELTA = 0.1;
   private static final float ANY_Y_POSITION = 1;
   private static final int ANY_ITEM_POSITION = 0;
+  private static final int ANY_BIG_OFFSET = 1000;
 
   private FakePath path;
 
@@ -156,6 +157,50 @@ public class BoundaryPathTest {
 
     float expected = ANY_Y_POSITION + 1 + ANY_ITEM_MARGIN + ANY_ITEM_SIZE - ANY_VIEW_HEIGHT;
     assertEquals(expected, path.getMaxY(), DELTA);
+  }
+
+  @Test public void shouldReturnFalseIfViewIsInsideThePositionButABigXOffsetHasBeenApplied() {
+    float x = ANY_VIEW_WIDTH / 2;
+    float y = ANY_VIEW_HEIGHT / 2;
+    givenElementsAreInPosition(x, y);
+
+    path.calculate();
+    path.setOffset(ANY_BIG_OFFSET, 0);
+
+    assertFalse(path.isItemInsideView(0));
+  }
+
+  @Test public void shouldReturnFalseIfViewIsInsideThePositionButABigYOffsetHasBeenApplied() {
+    float x = ANY_VIEW_WIDTH / 2;
+    float y = ANY_VIEW_HEIGHT / 2;
+    givenElementsAreInPosition(x, y);
+
+    path.calculate();
+    path.setOffset(0, ANY_BIG_OFFSET);
+
+    assertFalse(path.isItemInsideView(0));
+  }
+
+  @Test public void shouldReturnTrueIfViewIsInsideThePositionButALittleXOffsetHasBeenApplied() {
+    float x = ANY_VIEW_WIDTH / 2;
+    float y = ANY_VIEW_HEIGHT / 2;
+    givenElementsAreInPosition(x, y);
+
+    path.calculate();
+    path.setOffset(1, 0);
+
+    assertTrue(path.isItemInsideView(0));
+  }
+
+  @Test public void shouldReturnTrueIfViewIsInsideThePositionButALittleYOffsetHasBeenApplied() {
+    float x = ANY_VIEW_WIDTH / 2;
+    float y = ANY_VIEW_HEIGHT / 2;
+    givenElementsAreInPosition(x, y);
+
+    path.calculate();
+    path.setOffset(0, 1);
+
+    assertTrue(path.isItemInsideView(0));
   }
 
   private void givenElementsAreInPosition(float x, float y) {
