@@ -80,6 +80,10 @@ public class NoxView extends View {
    */
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
+    if (noxItemCatalog == null) {
+      wasInvalidatedBefore = false;
+      return;
+    }
     //TODO: Check if we can move to onScroll or computeScroll method
     updatePathOffset();
     for (int i = 0; i < noxItemCatalog.size(); i++) {
@@ -343,6 +347,9 @@ public class NoxView extends View {
    */
   private void initializeNoxItemPlaceholder(TypedArray attributes) {
     Drawable placeholder = attributes.getDrawable(R.styleable.nox_placeholder);
+    if (placeholder == null) {
+      placeholder = getResources().getDrawable(R.drawable.ic_nox);
+    }
     noxConfig.setPlaceholder(placeholder);
   }
 

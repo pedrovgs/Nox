@@ -18,7 +18,6 @@ package com.github.pedrovgs.nox.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.DisplayMetrics;
 import com.github.pedrovgs.nox.NoxItem;
 import com.github.pedrovgs.nox.NoxView;
 import com.github.pedrovgs.nox.path.Path;
@@ -43,14 +42,17 @@ public class MainActivity extends ActionBarActivity {
 
   private void configureNoxView() {
     noxView = (NoxView) findViewById(R.id.nox_view);
-    configurePath();
-    configureNoxItems();
+    noxView.post(new Runnable() {
+      @Override public void run() {
+        configureNoxItems();
+        configurePath();
+      }
+    });
   }
 
   private void configurePath() {
-    DisplayMetrics metrics = getResources().getDisplayMetrics();
-    int width = metrics.widthPixels;
-    int height = metrics.heightPixels;
+    int width = noxView.getWidth();
+    int height = noxView.getHeight();
     float itemSize = getResources().getDimension(R.dimen.nox_item_size_1);
     float itemMargin = getResources().getDimension(R.dimen.nox_item_margin_1);
     PathConfig pathConfig = new PathConfig(2, width, height, itemSize, itemMargin);
