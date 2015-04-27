@@ -283,6 +283,11 @@ import static org.mockito.Mockito.verify;
     verify(drawable).draw(canvas);
   }
 
+  @Test(expected = NullPointerException.class)
+  public void shouldNotAcceptNullInstancesOfOnNoxItemClickListener() {
+    noxView.setOnItemClickListener(null);
+  }
+
   private List<NoxItem> givenOneListWithJustOneNoxItem() {
     List<NoxItem> noxItems = new ArrayList<NoxItem>();
     noxItems.add(new NoxItem(ANY_RESOURCE_ID));

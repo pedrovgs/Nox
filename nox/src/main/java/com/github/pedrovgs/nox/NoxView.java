@@ -54,6 +54,7 @@ public class NoxView extends View {
   private NoxItemCatalog noxItemCatalog;
   private Paint paint = new Paint();
   private boolean wasInvalidatedBefore;
+  private OnNoxItemClickListener listener = OnNoxItemClickListener.EMPTY;
 
   public NoxView(Context context) {
     this(context, null);
@@ -178,6 +179,14 @@ public class NoxView extends View {
    */
   public Path getPath() {
     return path;
+  }
+
+  /**
+   * Configures a OnNoxItemClickListener instace to be notified when a NoxItem instance is clicked.
+   */
+  public void setOnItemClickListener(OnNoxItemClickListener listener) {
+    validateListener(listener);
+    this.listener = listener;
   }
 
   /**
@@ -361,6 +370,13 @@ public class NoxView extends View {
       throw new IllegalArgumentException(
           "The number of items in the Path instance passed as argument doesn't match with "
               + "the current number of NoxItems.");
+    }
+  }
+
+  private void validateListener(OnNoxItemClickListener listener) {
+    if (listener == null) {
+      throw new NullPointerException(
+          "You can't configure a null instance of OnNoxItemClickListener as NoxView listener.");
     }
   }
 

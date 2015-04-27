@@ -18,8 +18,10 @@ package com.github.pedrovgs.nox.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import com.github.pedrovgs.nox.NoxItem;
 import com.github.pedrovgs.nox.NoxView;
+import com.github.pedrovgs.nox.OnNoxItemClickListener;
 import com.github.pedrovgs.nox.path.Path;
 import com.github.pedrovgs.nox.path.PathConfig;
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ import java.util.List;
  * @author Pedro Vicente Gomez Sanchez.
  */
 public class MainActivity extends ActionBarActivity {
+
+  private static final String LOGTAG = "MainActivity";
 
   private NoxView noxView;
 
@@ -46,8 +50,16 @@ public class MainActivity extends ActionBarActivity {
       @Override public void run() {
         configureNoxItems();
         configurePath();
+        configureClickListeners();
       }
     });
+  }
+
+  private void configureNoxItems() {
+    List<NoxItem> noxItems = new ArrayList<NoxItem>();
+    noxItems.add(new NoxItem("http://www.upaf.com/wp-content/uploads/2014/11/user_icon.png"));
+    noxItems.add(new NoxItem(R.drawable.ic_apps));
+    noxView.showNoxItems(noxItems);
   }
 
   private void configurePath() {
@@ -60,10 +72,20 @@ public class MainActivity extends ActionBarActivity {
     noxView.setPath(verticalLinearPath);
   }
 
-  private void configureNoxItems() {
-    List<NoxItem> noxItems = new ArrayList<NoxItem>();
-    noxItems.add(new NoxItem("http://www.upaf.com/wp-content/uploads/2014/11/user_icon.png"));
-    noxItems.add(new NoxItem(R.drawable.ic_apps));
-    noxView.showNoxItems(noxItems);
+  private void configureClickListeners() {
+    noxView.setOnItemClickListener(new OnNoxItemClickListener() {
+      @Override public void onNoxItemClicked(int position, NoxItem noxItem) {
+        switch (position) {
+          case 0:
+            //openActivity(ContactsActivity.class);
+            break;
+          case 1:
+            //openActivity(ApplicationsActivity.class);
+            break;
+          default:
+            Log.e(LOGTAG, "Item click not handled at position " + position);
+        }
+      }
+    });
   }
 }
