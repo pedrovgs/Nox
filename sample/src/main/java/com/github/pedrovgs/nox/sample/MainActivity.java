@@ -16,6 +16,7 @@
 
 package com.github.pedrovgs.nox.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -87,5 +88,10 @@ public class MainActivity extends ActionBarActivity {
         }
       }
     });
+  }
+
+  private void openActivity(Class clazz) {
+    Intent intent = new Intent(this, clazz);
+    startActivity(intent);
   }
 }

@@ -54,6 +54,13 @@ class NoxItemCatalog extends Observable {
   }
 
   /**
+   * Returns the NoxItem associated to a given position passed as parameter.
+   */
+  NoxItem getNoxItem(int position) {
+    return noxItems.get(position);
+  }
+
+  /**
    * Returns the number of nox items to be loaded.
    */
   int size() {

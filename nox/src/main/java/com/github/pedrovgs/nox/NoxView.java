@@ -24,7 +24,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import com.github.pedrovgs.nox.imageloader.ImageLoader;
@@ -55,6 +58,7 @@ public class NoxView extends View {
   private Paint paint = new Paint();
   private boolean wasInvalidatedBefore;
   private OnNoxItemClickListener listener = OnNoxItemClickListener.EMPTY;
+  private GestureDetectorCompat gestureDetector;
 
   public NoxView(Context context) {
     this(context, null);
@@ -125,13 +129,13 @@ public class NoxView extends View {
 
   /**
    * Delegates touch events to the scroller instance initialized previously to implement the scroll
-   * effect.
+   * effect. If the scroller does not handle the MotionEvent NoxView will check if any NoxItem has
+   * been clicked to notify a previously configured OnNoxItemClickListener.
    */
   @Override public boolean onTouchEvent(MotionEvent event) {
-    if (scroller == null) {
-      return false;
-    }
-    return scroller.onTouchEvent(event);
+    boolean scrollCaptured = scroller != null && scroller.onTouchEvent(event);
+    boolean singleTapCaptured = getGestureDetectorCompat().onTouchEvent(event);
+    return scrollCaptured || singleTapCaptured;
   }
 
   /**
@@ -402,5 +406,29 @@ public class NoxView extends View {
    */
   NoxItemCatalog getNoxItemCatalog() {
     return noxItemCatalog;
+  }
+
+  /**
+   * Returns a GestureDetectorCompat lazy instantiated created to handle single tap events and
+   * detect if a NoxItem has been clicked to notify the previously configured listener.
+   */
+  private GestureDetectorCompat getGestureDetectorCompat() {
+    if (gestureDetector == null) {
+      GestureDetector.OnGestureListener gestureListener = new SimpleOnGestureListener() {
+
+        @Override public boolean onSingleTapUp(MotionEvent e) {
+          boolean handled = false;
+          int position = path.getNoxItemHit(e.getX(), e.getY());
+          if (position >= 0) {
+            handled = true;
+            NoxItem noxItem = noxItemCatalog.getNoxItem(position);
+            listener.onNoxItemClicked(position, noxItem);
+          }
+          return handled;
+        }
+      };
+      gestureDetector = new GestureDetectorCompat(getContext(), gestureListener);
+    }
+    return gestureDetector;
   }
 }

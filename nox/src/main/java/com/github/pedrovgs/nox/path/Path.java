@@ -139,6 +139,27 @@ public abstract class Path {
   }
 
   /**
+   * Returns the position of the NoxView if any of the previously configured NoxItem instances is
+   * hit. If there is no any NoxItem hit this returns -1.
+   */
+  public int getNoxItemHit(float x, float y) {
+    int noxItemPosition = -1;
+    for (int i = 0; i < getNumberOfElements(); i++) {
+      float noxItemX = getXForItemAtPosition(i);
+      float noxItemY = getYForItemAtPosition(i);
+      float margin = getPathConfig().getItemMargin();
+      float itemSize = getPathConfig().getItemSize();
+      boolean matchesHorizontally = x >= noxItemX - margin && x <= noxItemX + itemSize;
+      boolean matchesVertically = y >= noxItemY - margin && y <= noxItemY + itemSize;
+      if (matchesHorizontally && matchesVertically) {
+        noxItemPosition = i;
+        break;
+      }
+    }
+    return noxItemPosition;
+  }
+
+  /**
    * Configures the number of element the Path is going to use to calculate NoxItems positions.
    * This method resets the previous position calculus.
    */
