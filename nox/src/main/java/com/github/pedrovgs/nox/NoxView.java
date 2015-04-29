@@ -290,13 +290,24 @@ public class NoxView extends View {
     if (noxItemCatalog.isBitmapReady(position)) {
       Bitmap bitmap = noxItemCatalog.getBitmap(position);
       canvas.drawBitmap(bitmap, left, top, paint);
+    } else if (noxItemCatalog.isDrawableReady(position)) {
+      Drawable drawable = noxItemCatalog.getPlaceholder(position);
+      drawNoxItemDrawable(canvas, (int) left, (int) top, drawable);
     } else if (noxItemCatalog.isPlaceholderReady(position)) {
       Drawable drawable = noxItemCatalog.getPlaceholder(position);
-      if (drawable != null) {
-        int itemSize = (int) noxConfig.getNoxItemSize();
-        drawable.setBounds((int) left, (int) top, (int) left + itemSize, (int) top + itemSize);
-        drawable.draw(canvas);
-      }
+      drawNoxItemDrawable(canvas, (int) left, (int) top, drawable);
+    }
+  }
+
+  /**
+   * Draws a NoxItem drawable during the onDraw method given a canvas object and all the
+   * information needed to draw the Drawable passed as parameter.
+   */
+  private void drawNoxItemDrawable(Canvas canvas, int left, int top, Drawable drawable) {
+    if (drawable != null) {
+      int itemSize = (int) noxConfig.getNoxItemSize();
+      drawable.setBounds(left, top, left + itemSize, top + itemSize);
+      drawable.draw(canvas);
     }
   }
 
@@ -438,21 +449,37 @@ public class NoxView extends View {
     int noxItemHit = path.getNoxItemHit(event.getX(), event.getY());
     boolean isNoxItemHit = noxItemHit > 0;
     if (isNoxItemHit) {
-      boolean isPlaceholderReady = noxItemCatalog.isPlaceholderReady(noxItemHit);
-      if (!isPlaceholderReady) {
-        return;
-      }
-      Drawable drawable = noxItemCatalog.getPlaceholder(noxItemHit);
       switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-          drawable.setState(new int[] { android.R.attr.state_pressed });
-          refreshView();
+          changeNoxItemStateToPressed(noxItemHit);
           break;
         case MotionEvent.ACTION_UP:
-          drawable.setState(new int[] { -android.R.attr.state_pressed });
-          refreshView();
+          changeNoxItemStateToNotPressed(noxItemHit);
           break;
       }
+    }
+  }
+
+  private void changeNoxItemStateToPressed(int noxItemPosition) {
+    int[] stateSet = new int[] { android.R.attr.state_pressed };
+    setNoxItemState(noxItemPosition, stateSet);
+  }
+
+  private void changeNoxItemStateToNotPressed(int noxItemPosition) {
+    int[] stateSet = new int[] { -android.R.attr.state_pressed };
+    setNoxItemState(noxItemPosition, stateSet);
+  }
+
+  private void setNoxItemState(int noxItemPosition, int[] stateSet) {
+    if (noxItemCatalog.isPlaceholderReady(noxItemPosition)) {
+      Drawable drawable = noxItemCatalog.getPlaceholder(noxItemPosition);
+      drawable.setState(stateSet);
+      refreshView();
+    }
+    if (noxItemCatalog.isDrawableReady(noxItemPosition)) {
+      Drawable drawable = noxItemCatalog.getDrawable(noxItemPosition);
+      drawable.setState(stateSet);
+      refreshView();
     }
   }
 }

@@ -1,12 +1,11 @@
 package com.github.pedrovgs.nox.imageloader;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import com.github.pedrovgs.nox.imageloader.transformation.CircleTransformation;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
-import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,12 +30,12 @@ class PicassoImageLoader implements ImageLoader {
   private boolean useCircularTransformation;
   private int size;
   private Listener listener;
-  private final Map<Listener, Target> targets;
+  private final Map<Listener, ListenerTarget> targets;
   private List<Transformation> transformations;
 
   PicassoImageLoader(Context context) {
     this.context = context;
-    this.targets = new WeakHashMap<Listener, Target>();
+    this.targets = new WeakHashMap<Listener, ListenerTarget>();
   }
 
   @Override public ImageLoader load(String url) {
@@ -86,18 +85,25 @@ class PicassoImageLoader implements ImageLoader {
     List<Transformation> transformations = prepareTransformations();
     boolean hasUrl = url != null;
     boolean hasResourceId = resourceId != null;
-    Target listenerTarget = getLinearTarget(listener);
+    boolean hasPlaceholder = placeholderId != null;
+    ListenerTarget listenerTarget = getLinearTarget(listener);
     if (hasUrl) {
       RequestCreator bitmapRequest = Picasso.with(context).load(url).tag(PICASSO_IMAGE_LOADER_TAG);
       applyPlaceholder(bitmapRequest).resize(size, size)
           .transform(transformations)
           .into(listenerTarget);
-    } else if (hasResourceId) {
-      RequestCreator bitmapRequest =
-          Picasso.with(context).load(resourceId).tag(PICASSO_IMAGE_LOADER_TAG);
-      applyPlaceholder(bitmapRequest).resize(size, size)
-          .transform(transformations)
-          .into(listenerTarget);
+    } else if (hasResourceId || hasPlaceholder) {
+      Resources resources = context.getResources();
+      Drawable placeholder = null;
+      Drawable drawable = null;
+      if (hasPlaceholder) {
+        placeholder = resources.getDrawable(placeholderId);
+        listenerTarget.onPrepareLoad(placeholder);
+      }
+      if (hasResourceId) {
+        drawable = resources.getDrawable(resourceId);
+        listenerTarget.onDrawableLoad(drawable);
+      }
     } else {
       throw new IllegalArgumentException(
           "Review your request, you are trying to load an image without a url or a resource id.");
@@ -113,22 +119,10 @@ class PicassoImageLoader implements ImageLoader {
    * Listener and Target instances are going to be stored into a WeakHashMap to avoid a memory leak
    * when ImageLoader client code is garbage collected.
    */
-  private Target getLinearTarget(final Listener listener) {
-    Target target = targets.get(listener);
+  private ListenerTarget getLinearTarget(final Listener listener) {
+    ListenerTarget target = targets.get(listener);
     if (target == null) {
-      target = new Target() {
-        @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-          listener.onImageLoaded(bitmap);
-        }
-
-        @Override public void onBitmapFailed(Drawable errorDrawable) {
-          listener.onError();
-        }
-
-        @Override public void onPrepareLoad(Drawable placeHolderDrawable) {
-          listener.onPlaceholderLoaded(placeHolderDrawable);
-        }
-      };
+      target = new ListenerTarget(listener);
       targets.put(listener, target);
     }
     return target;

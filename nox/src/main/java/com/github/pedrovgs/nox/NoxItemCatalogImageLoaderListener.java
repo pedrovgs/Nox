@@ -48,6 +48,12 @@ class NoxItemCatalogImageLoaderListener implements ImageLoader.Listener {
     noxItemCatalog.setLoading(position, false);
   }
 
+  @Override public void onDrawableLoaded(Drawable drawable) {
+    noxItemCatalog.setDrawable(position, drawable);
+    noxItemCatalog.setLoading(position, false);
+    noxItemCatalog.notifyNoxItemReady(position);
+  }
+
   @Override public boolean equals(Object o) {
     if (this == o) {
       return true;

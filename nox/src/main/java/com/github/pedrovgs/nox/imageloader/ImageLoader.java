@@ -83,5 +83,7 @@ public interface ImageLoader {
     void onImageLoaded(Bitmap image);
 
     void onError();
+
+    void onDrawableLoaded(Drawable drawable);
   }
 }

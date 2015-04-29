@@ -36,6 +36,7 @@ class NoxItemCatalog extends Observable {
   private final int noxItemSize;
   private final ImageLoader imageLoader;
   private final WeakReference<Bitmap>[] bitmaps;
+  private final WeakReference<Drawable>[] drawables;
   private final WeakReference<Drawable>[] placeholders;
   private final boolean[] loading;
 
@@ -48,6 +49,7 @@ class NoxItemCatalog extends Observable {
     this.noxItemSize = noxItemSize;
     this.imageLoader = imageLoader;
     this.bitmaps = new WeakReference[noxItems.size()];
+    this.drawables = new WeakReference[noxItems.size()];
     this.placeholders = new WeakReference[noxItems.size()];
     this.loading = new boolean[noxItems.size()];
     this.listeners = new ImageLoader.Listener[noxItems.size()];
@@ -68,10 +70,17 @@ class NoxItemCatalog extends Observable {
   }
 
   /**
-   * Returns true if the resource associated to the NoxItem given a position has been downloaded.
+   * Returns true if the bitmap associated to the NoxItem given a position has been loaded.
    */
   boolean isBitmapReady(int position) {
     return bitmaps[position] != null && bitmaps[position].get() != null;
+  }
+
+  /**
+   * Returns true if the drawable associated to the NoxItem given a position has been loaded.
+   */
+  boolean isDrawableReady(int position) {
+    return drawables[position] != null && drawables[position] != null;
   }
 
   /**
@@ -89,6 +98,14 @@ class NoxItemCatalog extends Observable {
    */
   Bitmap getBitmap(int position) {
     return bitmaps[position] != null ? bitmaps[position].get() : null;
+  }
+
+  /**
+   * Returns the drawable associated to a NoxItem instance given a position or null if the resource
+   * wasn't downloaded.
+   */
+  Drawable getDrawable(int position) {
+    return drawables[position] != null ? drawables[position].get() : null;
   }
 
   /**
@@ -153,6 +170,13 @@ class NoxItemCatalog extends Observable {
    */
   void setBitmap(int position, Bitmap image) {
     bitmaps[position] = new WeakReference<Bitmap>(image);
+  }
+
+  /**
+   * Configures the drawable associated to a NoxItem given a positin.
+   */
+  void setDrawable(int position, Drawable drawable) {
+    drawables[position] = new WeakReference<Drawable>(drawable);
   }
 
   /**
