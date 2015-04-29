@@ -58,7 +58,10 @@ public class MainActivity extends ActionBarActivity {
 
   private void configureNoxItems() {
     List<NoxItem> noxItems = new ArrayList<NoxItem>();
-    noxItems.add(new NoxItem("http://www.upaf.com/wp-content/uploads/2014/11/user_icon.png"));
+    noxItems.add(new NoxItem("http://www.upaf.com/wp-content/uploads/2014/11/user_icon2as.png",
+        R.drawable.ic_apps));
+    noxItems.add(new NoxItem("http://www.upaf.com/wp-content/uploads/2014/11/user_icon2as.png",
+        R.drawable.ic_apps));
     noxItems.add(new NoxItem(R.drawable.ic_apps));
     noxView.showNoxItems(noxItems);
   }

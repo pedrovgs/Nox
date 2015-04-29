@@ -15,23 +15,7 @@
   ~ limitations under the License.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.pedrovgs.nox.sample">
-
-  <uses-permission android:name="android.permission.INTERNET"/>
-
-  <application
-      android:icon="@drawable/app_logo"
-      android:label="@string/app_name"
-      android:theme="@style/AppTheme">
-    <activity
-        android:name=".MainActivity"
-        android:label="@string/app_name">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-    </activity>
-  </application>
-
-</manifest>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:drawable="@drawable/ic_apps_normal" android:state_pressed="false"/>
+  <item android:drawable="@drawable/ic_apps_pressed" android:state_pressed="true"/>
+</selector>
