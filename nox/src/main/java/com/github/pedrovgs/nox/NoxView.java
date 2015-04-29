@@ -133,6 +133,8 @@ public class NoxView extends View {
    * been clicked to notify a previously configured OnNoxItemClickListener.
    */
   @Override public boolean onTouchEvent(MotionEvent event) {
+    super.onTouchEvent(event);
+    processTouchEvent(event);
     boolean scrollCaptured = scroller != null && scroller.onTouchEvent(event);
     boolean singleTapCaptured = getGestureDetectorCompat().onTouchEvent(event);
     return scrollCaptured || singleTapCaptured;
@@ -431,4 +433,27 @@ public class NoxView extends View {
     }
     return gestureDetector;
   }
+
+  private void processTouchEvent(MotionEvent event) {
+    int noxItemHit = path.getNoxItemHit(event.getX(), event.getY());
+    boolean isNoxItemHit = noxItemHit > 0;
+    if (isNoxItemHit) {
+      boolean isPlaceholderReady = noxItemCatalog.isPlaceholderReady(noxItemHit);
+      if (!isPlaceholderReady) {
+        return;
+      }
+      Drawable drawable = noxItemCatalog.getPlaceholder(noxItemHit);
+      switch (event.getAction()) {
+        case MotionEvent.ACTION_DOWN:
+          drawable.setState(new int[] { android.R.attr.state_pressed });
+          refreshView();
+          break;
+        case MotionEvent.ACTION_UP:
+          drawable.setState(new int[] { -android.R.attr.state_pressed });
+          refreshView();
+          break;
+      }
+    }
+  }
 }
+
