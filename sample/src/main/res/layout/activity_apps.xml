@@ -22,4 +22,12 @@
     tools:context="com.github.pedrovgs.nox.sample.AppsActivity">
 
 
+  <com.github.pedrovgs.nox.NoxView
+      xmlns:nox="http://schemas.android.com/apk/res-auto"
+      android:id="@+id/nox_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      nox:item_margin="@dimen/apps_activity_nox_item_margin"/>
+
+
 </RelativeLayout>

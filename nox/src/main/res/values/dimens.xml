@@ -16,6 +16,6 @@
   -->
 
 <resources>
-  <dimen name="default_nox_item_size">10dp</dimen>
+  <dimen name="default_nox_item_size">40dp</dimen>
   <dimen name="default_nox_item_margin">2dp</dimen>
 </resources>
