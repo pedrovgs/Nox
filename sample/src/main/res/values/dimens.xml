@@ -20,4 +20,6 @@
   <dimen name="main_activity_nox_item_margin">42dp</dimen>
   <dimen name="contacts_activity_nox_item_margin">8dp</dimen>
   <dimen name="apps_activity_nox_item_margin">12dp</dimen>
+  <dimen name="bt_size">40dp</dimen>
+  <dimen name="bt_margin">5dp</dimen>
 </resources>

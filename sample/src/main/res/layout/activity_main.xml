@@ -21,6 +21,5 @@
     android:id="@+id/nox_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
     nox:item_size="@dimen/nox_item_size"
     nox:item_margin="@dimen/main_activity_nox_item_margin"/>

@@ -400,7 +400,7 @@ public class NoxView extends View {
    */
   private void initializeTransformationConfig(TypedArray attributes) {
     useCircularTransformation =
-        attributes.getBoolean(R.styleable.nox_use_circular_transformation, false);
+        attributes.getBoolean(R.styleable.nox_use_circular_transformation, true);
   }
 
   private void validatePath(Path path) {

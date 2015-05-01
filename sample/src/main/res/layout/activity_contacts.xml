@@ -31,5 +31,22 @@
       nox:item_size="@dimen/nox_item_size"
       nox:path="circular_path"/>
 
+  <Button
+      android:id="@+id/add_contact"
+      android:layout_width="@dimen/bt_size"
+      android:layout_height="@dimen/bt_size"
+      android:layout_margin="@dimen/bt_margin"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentBottom="true"
+      android:text="+"/>
+
+  <Button
+      android:id="@+id/remove_contact"
+      android:layout_width="@dimen/bt_size"
+      android:layout_height="@dimen/bt_size"
+      android:layout_margin="@dimen/bt_margin"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentBottom="true"
+      android:text="-"/>
 
 </RelativeLayout>
