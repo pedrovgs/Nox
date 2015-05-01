@@ -18,14 +18,37 @@ package com.github.pedrovgs.nox.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import com.github.pedrovgs.nox.NoxItem;
+import com.github.pedrovgs.nox.NoxView;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
 public class ContactsActivity extends ActionBarActivity {
 
+  private NoxView noxView;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    configureNoxView();
+  }
+
+  private void configureNoxView() {
+    noxView = (NoxView) findViewById(R.id.nox_view);
+    List<NoxItem> contacts = getContacts();
+    noxView.showNoxItems(contacts);
+  }
+
+  private List<NoxItem> getContacts() {
+    List<NoxItem> contacts = new ArrayList<NoxItem>();
+    for (int i = 0; i < 50; i++) {
+      String contactUrl = "http://api.randomuser.me/portraits/thumb/women/" + i + ".jpg";
+      NoxItem noxItem = new NoxItem(contactUrl);
+      contacts.add(noxItem);
+    }
+    return contacts;
   }
 }

@@ -144,7 +144,9 @@ public class NoxView extends View {
    */
   @Override public void computeScroll() {
     super.computeScroll();
-    scroller.computeScroll();
+    if (scroller != null) {
+      scroller.computeScroll();
+    }
   }
 
   /**

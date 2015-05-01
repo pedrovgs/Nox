@@ -66,8 +66,8 @@ public class MainActivity extends ActionBarActivity {
   private void configurePath() {
     int width = noxView.getWidth();
     int height = noxView.getHeight();
-    float itemSize = getResources().getDimension(R.dimen.nox_item_size_1);
-    float itemMargin = getResources().getDimension(R.dimen.nox_item_margin_1);
+    float itemSize = getResources().getDimension(R.dimen.nox_item_size);
+    float itemMargin = getResources().getDimension(R.dimen.main_activity_nox_item_margin);
     PathConfig pathConfig = new PathConfig(2, width, height, itemSize, itemMargin);
     Path verticalLinearPath = new VerticalLinearPath(pathConfig);
     noxView.setPath(verticalLinearPath);
