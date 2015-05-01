@@ -89,7 +89,6 @@ public class NoxView extends View {
       wasInvalidatedBefore = false;
       return;
     }
-    //TODO: Check if we can move to onScroll or computeScroll method
     updatePathOffset();
     for (int i = 0; i < noxItemCatalog.size(); i++) {
       if (path.isItemInsideView(i)) {
@@ -291,7 +290,7 @@ public class NoxView extends View {
       Bitmap bitmap = noxItemCatalog.getBitmap(position);
       canvas.drawBitmap(bitmap, left, top, paint);
     } else if (noxItemCatalog.isDrawableReady(position)) {
-      Drawable drawable = noxItemCatalog.getPlaceholder(position);
+      Drawable drawable = noxItemCatalog.getDrawable(position);
       drawNoxItemDrawable(canvas, (int) left, (int) top, drawable);
     } else if (noxItemCatalog.isPlaceholderReady(position)) {
       Drawable drawable = noxItemCatalog.getPlaceholder(position);
@@ -451,7 +450,9 @@ public class NoxView extends View {
     }
 
     boolean handled = false;
-    int noxItemHit = path.getNoxItemHit(event.getX(), event.getY());
+    float x = event.getX();
+    float y = event.getY();
+    int noxItemHit = path.getNoxItemHit(x, y);
     boolean isNoxItemHit = noxItemHit >= 0;
     if (isNoxItemHit) {
       switch (event.getAction()) {
@@ -460,8 +461,8 @@ public class NoxView extends View {
           handled = true;
           break;
         case MotionEvent.ACTION_UP:
-          handled = true;
           changeNoxItemStateToNotPressed(noxItemHit);
+          handled = true;
           break;
         default:
       }
@@ -470,26 +471,31 @@ public class NoxView extends View {
   }
 
   private void changeNoxItemStateToPressed(int noxItemPosition) {
-    int[] stateSet = new int[1];
+    int[] stateSet = new int[2];
     stateSet[0] = android.R.attr.state_pressed;
+    stateSet[1] = android.R.attr.state_enabled;
     setNoxItemState(noxItemPosition, stateSet);
   }
 
   private void changeNoxItemStateToNotPressed(int noxItemPosition) {
-    int[] stateSet = new int[1];
+    int[] stateSet = new int[2];
     stateSet[0] = -android.R.attr.state_pressed;
+    stateSet[1] = android.R.attr.state_enabled;
     setNoxItemState(noxItemPosition, stateSet);
   }
 
   private void setNoxItemState(int noxItemPosition, int[] stateSet) {
-    if (noxItemCatalog.isPlaceholderReady(noxItemPosition)) {
-      Drawable drawable = noxItemCatalog.getPlaceholder(noxItemPosition);
-      drawable.setState(stateSet);
-      refreshView();
-    }
+    boolean refreshView = false;
     if (noxItemCatalog.isDrawableReady(noxItemPosition)) {
       Drawable drawable = noxItemCatalog.getDrawable(noxItemPosition);
       drawable.setState(stateSet);
+      refreshView = true;
+    } else if (noxItemCatalog.isPlaceholderReady(noxItemPosition)) {
+      Drawable drawable = noxItemCatalog.getPlaceholder(noxItemPosition);
+      drawable.setState(stateSet);
+      refreshView = true;
+    }
+    if (refreshView) {
       refreshView();
     }
   }
