@@ -125,7 +125,7 @@ import static org.mockito.Mockito.verify;
   @Test public void shouldUseNoxItemCatalogSizeToLoadNoxItemImages() {
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     verify(imageLoader).size(ANY_NOX_ITEM_SIZE);
   }
@@ -133,9 +133,9 @@ import static org.mockito.Mockito.verify;
   @Test public void shouldUseCircularTransformationToLoadNoxItemImages() {
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
 
-    verify(imageLoader).useCircularTransformation();
+    verify(imageLoader).useCircularTransformation(useCircularTransformation);
   }
 
   @Test
@@ -143,7 +143,7 @@ import static org.mockito.Mockito.verify;
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
     noxItemCatalog.addObserver(observer);
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     verify(observer, times(2)).update(noxItemCatalog, 0);
   }
@@ -156,8 +156,8 @@ import static org.mockito.Mockito.verify;
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
     noxItemCatalog.addObserver(observer);
 
-    noxItemCatalog.load(0);
-    noxItemCatalog.load(1);
+    noxItemCatalog.load(0, useCircularTransformation);
+    noxItemCatalog.load(1, useCircularTransformation);
 
     verify(observer, times(2)).update(noxItemCatalog, 0);
     verify(observer, times(2)).update(noxItemCatalog, 1);
@@ -169,8 +169,8 @@ import static org.mockito.Mockito.verify;
     noxItems.add(new NoxItem(ANY_URL_2));
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
 
-    noxItemCatalog.load(0);
-    noxItemCatalog.load(1);
+    noxItemCatalog.load(0, useCircularTransformation);
+    noxItemCatalog.load(1, useCircularTransformation);
 
     verify(imageLoader).load(ANY_URL);
     verify(imageLoader).load(ANY_URL_2);
@@ -181,7 +181,7 @@ import static org.mockito.Mockito.verify;
     noxItems.add(new NoxItem(ANY_URL));
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     assertTrue(noxItemCatalog.isBitmapReady(0));
     assertNotNull(noxItemCatalog.getBitmap(0));
@@ -192,7 +192,7 @@ import static org.mockito.Mockito.verify;
     noxItems.add(new NoxItem(ANY_URL));
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     assertFalse(noxItemCatalog.isPlaceholderReady(0));
     assertNull(noxItemCatalog.getPlaceholder(0));
@@ -204,7 +204,7 @@ import static org.mockito.Mockito.verify;
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
     noxItemCatalog.setDefaultPlaceholder(ANY_PLACEHOLDER);
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     assertTrue(noxItemCatalog.isPlaceholderReady(0));
     assertEquals(ANY_PLACEHOLDER, noxItemCatalog.getPlaceholder(0));
@@ -215,7 +215,7 @@ import static org.mockito.Mockito.verify;
     noxItems.add(new NoxItem(ANY_RESOURCE_ID));
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     assertTrue(noxItemCatalog.isBitmapReady(0));
     assertNotNull(noxItemCatalog.getBitmap(0));
@@ -226,7 +226,7 @@ import static org.mockito.Mockito.verify;
     noxItems.add(new NoxItem(ANY_URL, ANY_PLACEHOLDER_ID));
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     assertTrue(noxItemCatalog.isPlaceholderReady(0));
     assertNotNull(noxItemCatalog.getPlaceholder(0));
@@ -236,7 +236,7 @@ import static org.mockito.Mockito.verify;
     FakeImageLoader imageLoader = new FakeImageLoader(true);
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(imageLoader);
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     assertFalse(noxItemCatalog.isPlaceholderReady(0));
     assertNull(noxItemCatalog.getPlaceholder(0));
@@ -249,7 +249,7 @@ import static org.mockito.Mockito.verify;
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(imageLoader);
     noxItemCatalog.setDefaultPlaceholder(ANY_PLACEHOLDER);
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
     imageLoader.forceLoad();
 
     assertTrue(noxItemCatalog.isPlaceholderReady(0));
@@ -261,8 +261,8 @@ import static org.mockito.Mockito.verify;
   @Test public void shouldNotLoadNoxItemIfBitmapIsReady() {
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
 
-    noxItemCatalog.load(0);
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     verify(imageLoader).load(ANY_URL);
   }
@@ -272,8 +272,8 @@ import static org.mockito.Mockito.verify;
     imageLoader = spy(imageLoader);
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(imageLoader);
 
-    noxItemCatalog.load(0);
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     verify(imageLoader).load(ANY_URL);
   }
@@ -283,9 +283,9 @@ import static org.mockito.Mockito.verify;
     imageLoader = spy(imageLoader);
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(imageLoader);
 
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
     imageLoader.forceError();
-    noxItemCatalog.load(0);
+    noxItemCatalog.load(0, useCircularTransformation);
 
     verify(imageLoader, times(2)).load(ANY_URL);
   }

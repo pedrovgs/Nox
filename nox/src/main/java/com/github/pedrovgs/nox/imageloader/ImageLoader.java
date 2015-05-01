@@ -48,7 +48,7 @@ public interface ImageLoader {
   /**
    * Applies a circular transformation to transform the source bitmap into a circular one.
    */
-  ImageLoader useCircularTransformation();
+  ImageLoader useCircularTransformation(boolean useCircularTransformation);
 
   /**
    * Changes the external resource size once it downloaded and before to notify the listener.

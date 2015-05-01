@@ -137,7 +137,7 @@ class NoxItemCatalog extends Observable {
    * download the resources associated to the NoxItem only if wasn't previously downloaded or the
    * download is not being performed.
    */
-  void load(int position) {
+  void load(int position, boolean useCircularTransformation) {
     if (isDownloading(position)) {
       return;
     }
@@ -145,7 +145,7 @@ class NoxItemCatalog extends Observable {
     if ((noxItem.hasUrl() && !isBitmapReady(position))
         || noxItem.hasResourceId() && !isDrawableReady(position)) {
       loading[position] = true;
-      loadNoxItem(position, noxItem);
+      loadNoxItem(position, noxItem,useCircularTransformation);
     }
   }
 
@@ -202,12 +202,12 @@ class NoxItemCatalog extends Observable {
   /**
    * Starts the resource download given a NoxItem instance and a given position.
    */
-  private void loadNoxItem(final int position, NoxItem noxItem) {
+  private void loadNoxItem(final int position, NoxItem noxItem, boolean useCircularTransformation) {
     imageLoader.load(noxItem.getUrl())
         .load(noxItem.getResourceId())
         .withPlaceholder(noxItem.getPlaceholderId())
         .size(noxItemSize)
-        .useCircularTransformation()
+        .useCircularTransformation(useCircularTransformation)
         .notify(getImageLoaderListener(position));
   }
 

@@ -53,8 +53,8 @@ class PicassoImageLoader implements ImageLoader {
     return this;
   }
 
-  @Override public ImageLoader useCircularTransformation() {
-    this.useCircularTransformation = true;
+  @Override public ImageLoader useCircularTransformation(boolean useCircularTransformation) {
+    this.useCircularTransformation = useCircularTransformation;
     return this;
   }
 
@@ -82,7 +82,7 @@ class PicassoImageLoader implements ImageLoader {
    * resource asynchronously and notify the result to the listener.
    */
   private void loadImage() {
-    List<Transformation> transformations = prepareTransformations();
+    List<Transformation> transformations = getTransformations();
     boolean hasUrl = url != null;
     boolean hasResourceId = resourceId != null;
     boolean hasPlaceholder = placeholderId != null;
@@ -140,10 +140,12 @@ class PicassoImageLoader implements ImageLoader {
    * returns a List<Transformation> because Picasso doesn't support a null instance as
    * transformation.
    */
-  private List<Transformation> prepareTransformations() {
-    if (useCircularTransformation && transformations == null) {
+  private List<Transformation> getTransformations() {
+    if (transformations == null) {
       transformations = new LinkedList<Transformation>();
-      transformations.add(new CircleTransformation());
+      if (useCircularTransformation) {
+        transformations.add(new CircleTransformation());
+      }
     }
     return transformations;
   }

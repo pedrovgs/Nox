@@ -27,6 +27,7 @@
       android:id="@+id/nox_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      nox:use_circular_transformation="false"
       nox:item_margin="@dimen/apps_activity_nox_item_margin"/>
 
 

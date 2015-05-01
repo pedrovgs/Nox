@@ -60,6 +60,7 @@ public class NoxView extends View {
   private OnNoxItemClickListener listener = OnNoxItemClickListener.EMPTY;
   private GestureDetectorCompat gestureDetector;
   private int defaultPathKey;
+  private boolean useCircularTransformation;
 
   public NoxView(Context context) {
     super(context);
@@ -222,7 +223,7 @@ public class NoxView extends View {
    */
   private void loadNoxItem(int position) {
     if (!scroller.isScrollingFast()) {
-      noxItemCatalog.load(position);
+      noxItemCatalog.load(position, useCircularTransformation);
     }
   }
 
@@ -348,6 +349,7 @@ public class NoxView extends View {
     initializeNoxItemMargin(attributes);
     initializeNoxItemPlaceholder(attributes);
     initializePathConfig(attributes);
+    initializeTransformationConfig(attributes);
     attributes.recycle();
   }
 
@@ -385,11 +387,20 @@ public class NoxView extends View {
   }
 
   /**
-   * Configures the Path used.
+   * Configures the Path used to show the list of NoxItems.
    */
   private void initializePathConfig(TypedArray attributes) {
     defaultPathKey =
         attributes.getInteger(R.styleable.nox_path, PathFactory.FIXED_CIRCULAR_PATH_KEY);
+  }
+
+  /**
+   * Configures the visual transformation applied to the NoxItem resources loaded, images
+   * downloaded from the internet and resources loaded from the system.
+   */
+  private void initializeTransformationConfig(TypedArray attributes) {
+    useCircularTransformation =
+        attributes.getBoolean(R.styleable.nox_use_circular_transformation, false);
   }
 
   private void validatePath(Path path) {

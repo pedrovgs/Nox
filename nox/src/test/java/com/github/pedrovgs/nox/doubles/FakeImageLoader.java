@@ -57,7 +57,7 @@ public class FakeImageLoader implements ImageLoader {
     return this;
   }
 
-  @Override public ImageLoader useCircularTransformation() {
+  @Override public ImageLoader useCircularTransformation(boolean useCircularTransformation) {
     return this;
   }
 
