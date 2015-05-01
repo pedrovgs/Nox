@@ -30,6 +30,7 @@ import java.util.List;
  */
 public class ContactsActivity extends ActionBarActivity {
 
+  private static final int INITIAL_CONTACTS = 65;
   private NoxView noxView;
   private Button addContact;
   private Button removeContact;
@@ -74,7 +75,7 @@ public class ContactsActivity extends ActionBarActivity {
 
   private List<NoxItem> getContacts() {
     contacts = new ArrayList<NoxItem>();
-    for (int i = 0; i < 40; i++) {
+    for (int i = 0; i < INITIAL_CONTACTS; i++) {
       String contactUrl = getUrlForContact(i);
       NoxItem noxItem = new NoxItem(contactUrl);
       contacts.add(noxItem);

@@ -145,7 +145,7 @@ class NoxItemCatalog extends Observable {
     if ((noxItem.hasUrl() && !isBitmapReady(position))
         || noxItem.hasResourceId() && !isDrawableReady(position)) {
       loading[position] = true;
-      loadNoxItem(position, noxItem,useCircularTransformation);
+      loadNoxItem(position, noxItem, useCircularTransformation);
     }
   }
 

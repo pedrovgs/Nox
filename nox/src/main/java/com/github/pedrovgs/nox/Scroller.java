@@ -159,7 +159,7 @@ class Scroller {
         @Override public boolean onDown(MotionEvent e) {
           resetOverScroller();
           ViewCompat.postInvalidateOnAnimation(view);
-          return false;
+          return true;
         }
 
         @Override
