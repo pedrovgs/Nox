@@ -79,6 +79,7 @@ public class MainActivity extends ActionBarActivity {
   private void configureClickListeners() {
     noxView.setOnItemClickListener(new OnNoxItemClickListener() {
       @Override public void onNoxItemClicked(int position, NoxItem noxItem) {
+        Log.e(LOGTAG, "Item click not handled at position " + position);
         switch (position) {
           case 0:
             //openActivity(ContactsActivity.class);
@@ -87,7 +88,6 @@ public class MainActivity extends ActionBarActivity {
             //openActivity(ApplicationsActivity.class);
             break;
           default:
-            Log.e(LOGTAG, "Item click not handled at position " + position);
         }
       }
     });

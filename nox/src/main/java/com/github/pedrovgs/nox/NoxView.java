@@ -137,7 +137,7 @@ public class NoxView extends View {
     boolean clickCaptured = processTouchEvent(event);
     boolean scrollCaptured = scroller != null && scroller.onTouchEvent(event);
     boolean singleTapCaptured = getGestureDetectorCompat().onTouchEvent(event);
-    return scrollCaptured || singleTapCaptured || clickCaptured;
+    return clickCaptured || scrollCaptured || singleTapCaptured;
   }
 
   /**
@@ -452,7 +452,7 @@ public class NoxView extends View {
 
     boolean handled = false;
     int noxItemHit = path.getNoxItemHit(event.getX(), event.getY());
-    boolean isNoxItemHit = noxItemHit > 0;
+    boolean isNoxItemHit = noxItemHit >= 0;
     if (isNoxItemHit) {
       switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
