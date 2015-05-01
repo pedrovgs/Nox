@@ -83,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
             openActivity(ContactsActivity.class);
             break;
           case 1:
-            //openActivity(ApplicationsActivity.class);
+            openActivity(AppsActivity.class);
             break;
           default:
         }
