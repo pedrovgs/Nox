@@ -272,7 +272,7 @@ import static org.mockito.Mockito.verify;
 
     noxView.showNoxItems(noxItems);
     NoxItemCatalog noxItemCatalog = noxView.getNoxItemCatalog();
-    noxItemCatalog.setPlaceholder(drawable);
+    noxItemCatalog.setDefaultPlaceholder(drawable);
     noxItemCatalog.notifyNoxItemReady(0);
     noxView.onDraw(canvas);
 

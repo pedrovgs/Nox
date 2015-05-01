@@ -268,7 +268,7 @@ public class NoxView extends View {
     ImageLoader imageLoader = ImageLoaderFactory.getPicassoImageLoader(getContext());
     this.noxItemCatalog =
         new NoxItemCatalog(noxItems, (int) noxConfig.getNoxItemSize(), imageLoader);
-    this.noxItemCatalog.setPlaceholder(noxConfig.getPlaceholder());
+    this.noxItemCatalog.setDefaultPlaceholder(noxConfig.getPlaceholder());
     this.noxItemCatalog.addObserver(catalogObserver);
   }
 

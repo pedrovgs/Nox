@@ -34,7 +34,7 @@ class NoxItemCatalogImageLoaderListener implements ImageLoader.Listener {
   }
 
   @Override public void onPlaceholderLoaded(Drawable placeholder) {
-    noxItemCatalog.setPlaceholder(position, placeholder);
+    noxItemCatalog.setDefaultPlaceholder(position, placeholder);
     noxItemCatalog.notifyNoxItemReady(position);
   }
 

@@ -41,7 +41,7 @@ class NoxItemCatalog extends Observable {
   private final boolean[] loading;
 
   private ImageLoader.Listener[] listeners;
-  private Drawable placeholder;
+  private Drawable defaultPlaceholder;
 
   NoxItemCatalog(List<NoxItem> noxItems, int noxItemSize, ImageLoader imageLoader) {
     validateNoxItems(noxItems);
@@ -84,12 +84,12 @@ class NoxItemCatalog extends Observable {
   }
 
   /**
-   * Returns true if the placeholder associated to the NoxItem given a position has been
+   * Returns true if the defaultPlaceholder associated to the NoxItem given a position has been
    * loaded.
    */
   boolean isPlaceholderReady(int position) {
     return (placeholders[position] != null && placeholders[position].get() != null)
-        || placeholder != null;
+        || defaultPlaceholder != null;
   }
 
   /**
@@ -109,7 +109,8 @@ class NoxItemCatalog extends Observable {
   }
 
   /**
-   * Returns the placeholder associated to a NoxItem instance given a position or null if the
+   * Returns the defaultPlaceholder associated to a NoxItem instance given a position or null if
+   * the
    * resource wasn't downloaded or previously configured.
    */
   Drawable getPlaceholder(int position) {
@@ -118,16 +119,18 @@ class NoxItemCatalog extends Observable {
       placeholder = placeholders[position].get();
     }
     if (placeholder == null) {
-      placeholder = this.placeholder;
+      Drawable clone = defaultPlaceholder.getConstantState().newDrawable();
+      placeholders[position] = new WeakReference<Drawable>(clone);
     }
-    return placeholder;
+    return placeholders[position].get();
   }
 
   /**
-   * Configures a placeholder to be used if the NoxItem has no placeholder configured.
+   * Configures a defaultPlaceholder to be used if the NoxItem has no defaultPlaceholder
+   * configured.
    */
-  void setPlaceholder(Drawable placeholder) {
-    this.placeholder = placeholder;
+  void setDefaultPlaceholder(Drawable placeholder) {
+    this.defaultPlaceholder = placeholder;
   }
 
   /**
@@ -136,12 +139,12 @@ class NoxItemCatalog extends Observable {
    * download is not being performed.
    */
   void load(int position) {
-    if(isDownloading(position)){
+    if (isDownloading(position)) {
       return;
     }
     NoxItem noxItem = noxItems.get(position);
-    if ((noxItem.hasUrl() && !isBitmapReady(position)) || noxItem.hasResourceId()
-        && !isDrawableReady(position)) {
+    if ((noxItem.hasUrl() && !isBitmapReady(position))
+        || noxItem.hasResourceId() && !isDrawableReady(position)) {
       loading[position] = true;
       loadNoxItem(position, noxItem);
     }
@@ -191,9 +194,9 @@ class NoxItemCatalog extends Observable {
   }
 
   /**
-   * Configures the placeholder associated to a NoxItem given a position.
+   * Configures the defaultPlaceholder associated to a NoxItem given a position.
    */
-  void setPlaceholder(int position, Drawable placeholder) {
+  void setDefaultPlaceholder(int position, Drawable placeholder) {
     placeholders[position] = new WeakReference<Drawable>(placeholder);
   }
 

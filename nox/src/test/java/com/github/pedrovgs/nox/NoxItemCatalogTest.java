@@ -86,7 +86,7 @@ import static org.mockito.Mockito.verify;
   @Test public void shouldReturnTrueIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasConfigured() {
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
 
-    noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
+    noxItemCatalog.setDefaultPlaceholder(ANY_PLACEHOLDER);
 
     assertTrue(noxItemCatalog.isPlaceholderReady(0));
   }
@@ -101,7 +101,7 @@ import static org.mockito.Mockito.verify;
   public void shouldReturnPlaceholderIfNoxCatalogWasNotLoadedAndGeneralPlaceholderWasConfigured() {
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog();
 
-    noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
+    noxItemCatalog.setDefaultPlaceholder(ANY_PLACEHOLDER);
 
     assertEquals(ANY_PLACEHOLDER, noxItemCatalog.getPlaceholder(0));
   }
@@ -202,7 +202,7 @@ import static org.mockito.Mockito.verify;
     List<NoxItem> noxItems = new LinkedList<NoxItem>();
     noxItems.add(new NoxItem(ANY_URL));
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(noxItems);
-    noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
+    noxItemCatalog.setDefaultPlaceholder(ANY_PLACEHOLDER);
 
     noxItemCatalog.load(0);
 
@@ -247,7 +247,7 @@ import static org.mockito.Mockito.verify;
   @Test public void shouldReturnBitmapsAndPlaceholdersWhenImagesAreLoaded() {
     FakeImageLoader imageLoader = new FakeImageLoader(true);
     NoxItemCatalog noxItemCatalog = givenOneNoxItemCatalog(imageLoader);
-    noxItemCatalog.setPlaceholder(ANY_PLACEHOLDER);
+    noxItemCatalog.setDefaultPlaceholder(ANY_PLACEHOLDER);
 
     noxItemCatalog.load(0);
     imageLoader.forceLoad();
