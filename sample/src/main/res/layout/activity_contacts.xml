@@ -28,7 +28,8 @@
       android:layout_height="match_parent"
       nox:item_placeholder="@drawable/ic_contacts"
       nox:item_margin="@dimen/contacts_activity_nox_item_margin"
-      nox:item_size="@dimen/nox_item_size"/>
+      nox:item_size="@dimen/nox_item_size"
+      nox:path="circular_path"/>
 
 
 </RelativeLayout>
