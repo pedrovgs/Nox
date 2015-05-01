@@ -61,6 +61,8 @@ import static org.mockito.Mockito.verify;
   private static final int ANY_VIEW_HEIGHT = 100;
   private static final int ANY_ITEM_SIZE = 8;
   private static final int ANY_ITEM_MARGIN = 2;
+  private static final float ANY_X_OUT_OF_THE_VIEW = 2000;
+  private static final float ANY_Y_OUT_OF_THE_VIEW = 2000;
 
   private NoxView noxView;
 
@@ -139,7 +141,7 @@ import static org.mockito.Mockito.verify;
   }
 
   @Test public void shouldNotHandleOnTouchEventIfNoNoxItemHaveBeenShown() {
-    boolean handled = noxView.onTouchEvent(mock(MotionEvent.class));
+    boolean handled = noxView.performClick();
 
     assertFalse(handled);
   }

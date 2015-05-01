@@ -134,10 +134,10 @@ public class NoxView extends View {
    */
   @Override public boolean onTouchEvent(MotionEvent event) {
     super.onTouchEvent(event);
-    processTouchEvent(event);
+    boolean clickCaptured = processTouchEvent(event);
     boolean scrollCaptured = scroller != null && scroller.onTouchEvent(event);
     boolean singleTapCaptured = getGestureDetectorCompat().onTouchEvent(event);
-    return scrollCaptured || singleTapCaptured;
+    return scrollCaptured || singleTapCaptured || clickCaptured;
   }
 
   /**
@@ -445,28 +445,39 @@ public class NoxView extends View {
     return gestureDetector;
   }
 
-  private void processTouchEvent(MotionEvent event) {
+  private boolean processTouchEvent(MotionEvent event) {
+    if (path == null) {
+      return false;
+    }
+
+    boolean handled = false;
     int noxItemHit = path.getNoxItemHit(event.getX(), event.getY());
     boolean isNoxItemHit = noxItemHit > 0;
     if (isNoxItemHit) {
       switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
           changeNoxItemStateToPressed(noxItemHit);
+          handled = true;
           break;
         case MotionEvent.ACTION_UP:
+          handled = true;
           changeNoxItemStateToNotPressed(noxItemHit);
           break;
+        default:
       }
     }
+    return handled;
   }
 
   private void changeNoxItemStateToPressed(int noxItemPosition) {
-    int[] stateSet = new int[] { android.R.attr.state_pressed };
+    int[] stateSet = new int[1];
+    stateSet[0] = android.R.attr.state_pressed;
     setNoxItemState(noxItemPosition, stateSet);
   }
 
   private void changeNoxItemStateToNotPressed(int noxItemPosition) {
-    int[] stateSet = new int[] { -android.R.attr.state_pressed };
+    int[] stateSet = new int[1];
+    stateSet[0] = -android.R.attr.state_pressed;
     setNoxItemState(noxItemPosition, stateSet);
   }
 

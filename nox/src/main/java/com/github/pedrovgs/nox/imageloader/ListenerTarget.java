@@ -48,7 +48,7 @@ class ListenerTarget implements Target {
     listener.onPlaceholderLoaded(placeHolderDrawable);
   }
 
-  public void onDrawableLoad(Drawable drawable){
+  public void onDrawableLoad(Drawable drawable) {
     listener.onDrawableLoaded(drawable);
   }
 }
