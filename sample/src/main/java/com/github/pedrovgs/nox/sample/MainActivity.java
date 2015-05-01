@@ -79,7 +79,7 @@ public class MainActivity extends ActionBarActivity {
         Log.e(LOGTAG, "Item click not handled at position " + position);
         switch (position) {
           case 0:
-            //openActivity(ContactsActivity.class);
+            openActivity(ContactsActivity.class);
             break;
           case 1:
             //openActivity(ApplicationsActivity.class);
