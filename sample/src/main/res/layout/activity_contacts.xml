@@ -26,10 +26,9 @@
       android:id="@+id/nox_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="@color/black"
-      nox:placeholder="@drawable/ic_contacts"
-      nox:item_size="@dimen/nox_item_size"
-      nox:item_margin="@dimen/contacts_activity_nox_item_margin"/>
+      nox:item_placeholder="@drawable/ic_contacts"
+      nox:item_margin="@dimen/contacts_activity_nox_item_margin"
+      nox:item_size="@dimen/nox_item_size"/>
 
 
 </RelativeLayout>

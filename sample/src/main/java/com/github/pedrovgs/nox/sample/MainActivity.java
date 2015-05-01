@@ -49,26 +49,27 @@ public class MainActivity extends ActionBarActivity {
     noxView = (NoxView) findViewById(R.id.nox_view);
     noxView.post(new Runnable() {
       @Override public void run() {
-        configureNoxItems();
-        configurePath();
+        int numberOfItems = configureNoxItems();
+        configurePath(numberOfItems);
         configureClickListeners();
       }
     });
   }
 
-  private void configureNoxItems() {
+  private int configureNoxItems() {
     List<NoxItem> noxItems = new ArrayList<NoxItem>();
     noxItems.add(new NoxItem(R.drawable.ic_contacts));
     noxItems.add(new NoxItem(R.drawable.ic_apps));
     noxView.showNoxItems(noxItems);
+    return noxItems.size();
   }
 
-  private void configurePath() {
+  private void configurePath(int numberOfItems) {
     int width = noxView.getWidth();
     int height = noxView.getHeight();
     float itemSize = getResources().getDimension(R.dimen.nox_item_size);
     float itemMargin = getResources().getDimension(R.dimen.main_activity_nox_item_margin);
-    PathConfig pathConfig = new PathConfig(2, width, height, itemSize, itemMargin);
+    PathConfig pathConfig = new PathConfig(numberOfItems, width, height, itemSize, itemMargin);
     Path verticalLinearPath = new VerticalLinearPath(pathConfig);
     noxView.setPath(verticalLinearPath);
   }

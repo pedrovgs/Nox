@@ -19,6 +19,6 @@
   <declare-styleable name="nox">
     <attr name="item_size" format="dimension"/>
     <attr name="item_margin" format="dimension"/>
-    <attr name="placeholder" format="integer"/>
+    <attr name="item_placeholder" format="integer"/>
   </declare-styleable>
 </resources>

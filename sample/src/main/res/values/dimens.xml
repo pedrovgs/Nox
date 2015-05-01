@@ -18,5 +18,5 @@
 <resources>
   <dimen name="nox_item_size">48dp</dimen>
   <dimen name="main_activity_nox_item_margin">42dp</dimen>
-  <dimen name="contacts_activity_nox_item_margin">3dp</dimen>
+  <dimen name="contacts_activity_nox_item_margin">8dp</dimen>
 </resources>

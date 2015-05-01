@@ -61,11 +61,13 @@ public class NoxView extends View {
   private GestureDetectorCompat gestureDetector;
 
   public NoxView(Context context) {
-    this(context, null);
+    super(context);
+    initializeNoxViewConfig(context, null, 0, 0);
   }
 
   public NoxView(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
+    super(context, attrs);
+    initializeNoxViewConfig(context, attrs, 0, 0);
   }
 
   public NoxView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -373,9 +375,9 @@ public class NoxView extends View {
    * instances during the onDraw execution.
    */
   private void initializeNoxItemPlaceholder(TypedArray attributes) {
-    Drawable placeholder = attributes.getDrawable(R.styleable.nox_placeholder);
+    Drawable placeholder = attributes.getDrawable(R.styleable.nox_item_placeholder);
     if (placeholder == null) {
-      placeholder = getResources().getDrawable(R.drawable.ic_nox);
+      placeholder = getContext().getResources().getDrawable(R.drawable.ic_nox);
     }
     noxConfig.setPlaceholder(placeholder);
   }
