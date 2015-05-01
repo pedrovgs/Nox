@@ -59,6 +59,7 @@ public class NoxView extends View {
   private boolean wasInvalidatedBefore;
   private OnNoxItemClickListener listener = OnNoxItemClickListener.EMPTY;
   private GestureDetectorCompat gestureDetector;
+  private int defaultPathKey;
 
   public NoxView(Context context) {
     super(context);
@@ -327,7 +328,7 @@ public class NoxView extends View {
       int numberOfElements = noxItemCatalog.size();
       PathConfig pathConfig =
           new PathConfig(numberOfElements, viewWidth, viewHeight, firstItemSize, firstItemMargin);
-      path = PathFactory.getFixedCircularPath(pathConfig);
+      path = PathFactory.getPathByKey(defaultPathKey, pathConfig);
     } else {
       path.setNumberOfElements(noxItemCatalog.size());
     }
@@ -346,6 +347,7 @@ public class NoxView extends View {
     initializeNoxItemSize(attributes);
     initializeNoxItemMargin(attributes);
     initializeNoxItemPlaceholder(attributes);
+    initializePathConfig(attributes);
     attributes.recycle();
   }
 
@@ -380,6 +382,14 @@ public class NoxView extends View {
       placeholder = getContext().getResources().getDrawable(R.drawable.ic_nox);
     }
     noxConfig.setPlaceholder(placeholder);
+  }
+
+  /**
+   * Configures the Path used.
+   */
+  private void initializePathConfig(TypedArray attributes) {
+    defaultPathKey =
+        attributes.getInteger(R.styleable.nox_path, PathFactory.FIXED_CIRCULAR_PATH_KEY);
   }
 
   private void validatePath(Path path) {

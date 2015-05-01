@@ -20,5 +20,12 @@
     <attr name="item_size" format="dimension"/>
     <attr name="item_margin" format="dimension"/>
     <attr name="item_placeholder" format="integer"/>
+    <attr name="path" format="enum">
+      <enum name="linear_path" value="0"/>
+      <enum name="linear_centered_path" value="1"/>
+      <enum name="circular_path" value="2"/>
+      <enum name="fixed_circular_path" value="3"/>
+      <enum name="spiral_path" value="4"/>
+    </attr>
   </declare-styleable>
 </resources>

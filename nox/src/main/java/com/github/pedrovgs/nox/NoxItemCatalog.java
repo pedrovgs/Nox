@@ -110,8 +110,7 @@ class NoxItemCatalog extends Observable {
 
   /**
    * Returns the defaultPlaceholder associated to a NoxItem instance given a position or null if
-   * the
-   * resource wasn't downloaded or previously configured.
+   * the resource wasn't downloaded or previously configured.
    */
   Drawable getPlaceholder(int position) {
     Drawable placeholder = null;

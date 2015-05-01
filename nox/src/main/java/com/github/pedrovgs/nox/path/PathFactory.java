@@ -25,6 +25,12 @@ package com.github.pedrovgs.nox.path;
  */
 public class PathFactory {
 
+  public static final int LINEAR_PATH_KEY = 0;
+  public static final int LINEAR_CENTERED_PATH_KEY = 1;
+  public static final int CIRCULAR_PATH_KEY = 2;
+  public static final int FIXED_CIRCULAR_PATH_KEY = 3;
+  public static final int SPIRAL_PATH_KEY = 4;
+
   public static Path getLinearPath(PathConfig pathConfig) {
     return new LinearPath(pathConfig);
   }
@@ -43,5 +49,29 @@ public class PathFactory {
 
   public static Path getFixedCircularPath(PathConfig pathConfig) {
     return new FixedCircularPath(pathConfig);
+  }
+
+  public static Path getPathByKey(int pathKey, PathConfig pathConfig) {
+    Path path;
+    switch (pathKey) {
+      case LINEAR_PATH_KEY:
+        path = new LinearPath(pathConfig);
+        break;
+      case LINEAR_CENTERED_PATH_KEY:
+        path = new LinearCenteredPath(pathConfig);
+        break;
+      case CIRCULAR_PATH_KEY:
+        path = new CircularPath(pathConfig);
+        break;
+      case FIXED_CIRCULAR_PATH_KEY:
+        path = new FixedCircularPath(pathConfig);
+        break;
+      case SPIRAL_PATH_KEY:
+        path = new SpiralPath(pathConfig);
+        break;
+      default:
+        path = new LinearPath(pathConfig);
+    }
+    return path;
   }
 }
