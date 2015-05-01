@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
 import com.github.pedrovgs.nox.doubles.FakePath;
@@ -263,26 +262,6 @@ import static org.mockito.Mockito.verify;
     noxView.onDraw(canvas);
 
     verify(canvas, never()).drawBitmap(any(Bitmap.class), anyInt(), anyInt(), any(Paint.class));
-  }
-
-  @Test public void shouldDrawNoxItemPlaceholdersIfResourcesAreDownloaded() {
-    Canvas canvas = mock(Canvas.class);
-    Drawable drawable = mock(Drawable.class);
-    List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
-
-    noxView.showNoxItems(noxItems);
-    NoxItemCatalog noxItemCatalog = noxView.getNoxItemCatalog();
-    noxItemCatalog.setDefaultPlaceholder(drawable);
-    noxItemCatalog.notifyNoxItemReady(0);
-    noxView.onDraw(canvas);
-
-    Path path = noxView.getPath();
-    int expectedLeft = (int) path.getXForItemAtPosition(0);
-    int expectedTop = (int) path.getYForItemAtPosition(0);
-    int expectedRight = (int) (expectedLeft + path.getPathConfig().getItemSize());
-    int expectedBottom = (int) (expectedTop + path.getPathConfig().getItemSize());
-    verify(drawable).setBounds(expectedLeft, expectedTop, expectedRight, expectedBottom);
-    verify(drawable).draw(canvas);
   }
 
   @Test(expected = NullPointerException.class)

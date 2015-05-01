@@ -117,11 +117,12 @@ class NoxItemCatalog extends Observable {
     if (placeholders[position] != null) {
       placeholder = placeholders[position].get();
     }
-    if (placeholder == null) {
+    if (placeholder == null && defaultPlaceholder != null) {
       Drawable clone = defaultPlaceholder.getConstantState().newDrawable();
       placeholders[position] = new WeakReference<Drawable>(clone);
+      placeholder = clone;
     }
-    return placeholders[position].get();
+    return placeholder;
   }
 
   /**
