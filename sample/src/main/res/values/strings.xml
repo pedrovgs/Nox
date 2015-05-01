@@ -21,5 +21,9 @@
   <string name="title_activity_apps">Nox</string>
   <string name="action_paths">Paths</string>
   <string name="menu_item_linear_path">Linear Path</string>
+  <string name="menu_item_linear_centered_path">Linear Centered Path</string>
+  <string name="menu_item_circuclar_path">Circular Path</string>
+  <string name="menu_item_fixed_circular_path">Fixed Circular Path</string>
+  <string name="menu_item_spiral_path">Spiral Path</string>
 
 </resources>

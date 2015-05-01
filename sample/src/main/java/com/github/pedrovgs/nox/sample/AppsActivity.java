@@ -25,12 +25,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.github.pedrovgs.nox.NoxItem;
 import com.github.pedrovgs.nox.NoxView;
+import com.github.pedrovgs.nox.path.Path;
+import com.github.pedrovgs.nox.path.PathConfig;
+import com.github.pedrovgs.nox.path.PathFactory;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppsActivity extends ActionBarActivity {
 
   private NoxView noxView;
+  private List<NoxItem> apps;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -40,7 +44,7 @@ public class AppsActivity extends ActionBarActivity {
 
   private void initializeNoxView() {
     noxView = (NoxView) findViewById(R.id.nox_view);
-    List<NoxItem> apps = getApps();
+    apps = getApps();
     noxView.showNoxItems(apps);
   }
 
@@ -67,9 +71,38 @@ public class AppsActivity extends ActionBarActivity {
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
-    if (id == R.id.action_settings) {
-      return true;
+    Path newPath;
+    PathConfig pathConfig = getPathConfig();
+    switch (id) {
+      case R.id.linear_path_option:
+        newPath = PathFactory.getLinearPath(pathConfig);
+        noxView.setPath(newPath);
+        break;
+      case R.id.linear_centered_path_option:
+        newPath = PathFactory.getLinearCenteredPath(pathConfig);
+        noxView.setPath(newPath);
+        break;
+      case R.id.circular_path_option:
+        newPath = PathFactory.getCircularPath(pathConfig);
+        noxView.setPath(newPath);
+        break;
+      case R.id.fixed_circular_path_option:
+        newPath = PathFactory.getFixedCircularPath(pathConfig);
+        noxView.setPath(newPath);
+        break;
+      default:
+        newPath = PathFactory.getSpiralPath(pathConfig);
+        noxView.setPath(newPath);
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  private PathConfig getPathConfig() {
+    int numberOfElements = apps.size();
+    int viewWidth = noxView.getWidth();
+    int viewHeight = noxView.getHeight();
+    float itemSize = getResources().getDimension(R.dimen.default_nox_item_size);
+    float itemMargin = getResources().getDimension(R.dimen.apps_activity_nox_item_margin);
+    return new PathConfig(numberOfElements, viewWidth, viewHeight, itemSize, itemMargin);
   }
 }
