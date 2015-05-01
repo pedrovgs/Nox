@@ -18,6 +18,8 @@ package com.github.pedrovgs.nox.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.Button;
 import com.github.pedrovgs.nox.NoxItem;
 import com.github.pedrovgs.nox.NoxView;
 import java.util.ArrayList;
@@ -29,11 +31,39 @@ import java.util.List;
 public class ContactsActivity extends ActionBarActivity {
 
   private NoxView noxView;
+  private Button addContact;
+  private Button removeContact;
+  private int lastContactId;
+
+  private List<NoxItem> contacts;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_contacts);
     configureNoxView();
+    configureButtons();
+  }
+
+  private void configureButtons() {
+    addContact = (Button) findViewById(R.id.add_contact);
+    addContact.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        lastContactId++;
+        String newContactUrl = getUrlForContact(lastContactId);
+        contacts.add(new NoxItem(newContactUrl));
+        noxView.showNoxItems(contacts);
+      }
+    });
+
+    removeContact = (Button) findViewById(R.id.remove_contact);
+    removeContact.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        int lastContact = contacts.size() - 1;
+        contacts.remove(lastContact);
+        lastContactId--;
+        noxView.showNoxItems(contacts);
+      }
+    });
   }
 
   private void configureNoxView() {
@@ -43,12 +73,17 @@ public class ContactsActivity extends ActionBarActivity {
   }
 
   private List<NoxItem> getContacts() {
-    List<NoxItem> contacts = new ArrayList<NoxItem>();
-    for (int i = 0; i < 50; i++) {
-      String contactUrl = "http://api.randomuser.me/portraits/thumb/women/" + i + ".jpg";
+    contacts = new ArrayList<NoxItem>();
+    for (int i = 0; i < 40; i++) {
+      String contactUrl = getUrlForContact(i);
       NoxItem noxItem = new NoxItem(contactUrl);
       contacts.add(noxItem);
+      lastContactId = i;
     }
     return contacts;
+  }
+
+  private String getUrlForContact(int i) {
+    return "http://api.randomuser.me/portraits/thumb/women/" + i + ".jpg";
   }
 }
