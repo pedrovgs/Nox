@@ -36,8 +36,8 @@ class NoxItemCatalog extends Observable {
   private final int noxItemSize;
   private final ImageLoader imageLoader;
   private final WeakReference<Bitmap>[] bitmaps;
-  private final WeakReference<Drawable>[] drawables;
-  private final WeakReference<Drawable>[] placeholders;
+  private final Drawable[] drawables;
+  private final Drawable[] placeholders;
   private final boolean[] loading;
 
   private ImageLoader.Listener[] listeners;
@@ -49,8 +49,8 @@ class NoxItemCatalog extends Observable {
     this.noxItemSize = noxItemSize;
     this.imageLoader = imageLoader;
     this.bitmaps = new WeakReference[noxItems.size()];
-    this.drawables = new WeakReference[noxItems.size()];
-    this.placeholders = new WeakReference[noxItems.size()];
+    this.drawables = new Drawable[noxItems.size()];
+    this.placeholders = new Drawable[noxItems.size()];
     this.loading = new boolean[noxItems.size()];
     this.listeners = new ImageLoader.Listener[noxItems.size()];
   }
@@ -88,8 +88,7 @@ class NoxItemCatalog extends Observable {
    * loaded.
    */
   boolean isPlaceholderReady(int position) {
-    return (placeholders[position] != null && placeholders[position].get() != null)
-        || defaultPlaceholder != null;
+    return (placeholders[position] != null) || defaultPlaceholder != null;
   }
 
   /**
@@ -105,7 +104,7 @@ class NoxItemCatalog extends Observable {
    * wasn't downloaded.
    */
   Drawable getDrawable(int position) {
-    return drawables[position] != null ? drawables[position].get() : null;
+    return drawables[position];
   }
 
   /**
@@ -113,13 +112,10 @@ class NoxItemCatalog extends Observable {
    * the resource wasn't downloaded or previously configured.
    */
   Drawable getPlaceholder(int position) {
-    Drawable placeholder = null;
-    if (placeholders[position] != null) {
-      placeholder = placeholders[position].get();
-    }
+    Drawable placeholder = placeholders[position];
     if (placeholder == null && defaultPlaceholder != null) {
       Drawable clone = defaultPlaceholder.getConstantState().newDrawable();
-      placeholders[position] = new WeakReference<Drawable>(clone);
+      placeholders[position] = clone;
       placeholder = clone;
     }
     return placeholder;
@@ -183,7 +179,7 @@ class NoxItemCatalog extends Observable {
    * Configures the drawable associated to a NoxItem given a positin.
    */
   void setDrawable(int position, Drawable drawable) {
-    drawables[position] = new WeakReference<Drawable>(drawable);
+    drawables[position] = drawable;
   }
 
   /**
@@ -197,7 +193,7 @@ class NoxItemCatalog extends Observable {
    * Configures the defaultPlaceholder associated to a NoxItem given a position.
    */
   void setDefaultPlaceholder(int position, Drawable placeholder) {
-    placeholders[position] = new WeakReference<Drawable>(placeholder);
+    placeholders[position] = placeholder;
   }
 
   /**
