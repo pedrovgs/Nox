@@ -27,7 +27,7 @@ import android.view.View;
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class Zoomer {
+class Zoomer {
 
   private final View view;
   private final float minScaleFactor;
@@ -38,22 +38,7 @@ public class Zoomer {
   private float scaleFocusX;
   private float scaleFocusY;
 
-  /**
-   * Returns the current scale factor NoxView applies to the canvas to perform the zoom effect.
-   */
-  public float getScaleFactor() {
-    return scaleFactor;
-  }
-
-  public float getScaleFocusX() {
-    return scaleFocusX;
-  }
-
-  public float getScaleFocusY() {
-    return scaleFocusY;
-  }
-
-  public Zoomer(View view, float minScaleFactor, float maxScaleFactor) {
+  Zoomer(View view, float minScaleFactor, float maxScaleFactor) {
     this.view = view;
     this.minScaleFactor = minScaleFactor;
     this.maxScaleFactor = maxScaleFactor;
@@ -61,7 +46,31 @@ public class Zoomer {
     gestureDetector = new ScaleGestureDetector(view.getContext(), listener);
   }
 
-  public boolean onTouchEvent(MotionEvent event) {
+  /**
+   * Returns the current scale factor NoxView applies to the canvas to perform the zoom effect.
+   */
+  float getScaleFactor() {
+    return scaleFactor;
+  }
+
+  /**
+   * Returns the current focus offset in the x axis used to perform the scale effect.
+   */
+  float getScaleFocusX() {
+    return scaleFocusX;
+  }
+
+  /**
+   * Returns the current focus offset int the y axis used to perform the scale effect
+   */
+  float getScaleFocusY() {
+    return scaleFocusY;
+  }
+
+  /**
+   * Process touch events to perform the scale effect.
+   */
+  boolean onTouchEvent(MotionEvent event) {
     return gestureDetector.onTouchEvent(event);
   }
 

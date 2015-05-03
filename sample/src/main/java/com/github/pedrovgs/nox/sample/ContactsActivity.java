@@ -102,7 +102,7 @@ public class ContactsActivity extends ActionBarActivity {
     String source = i % 2 == 0 ? "women" : "men";
     return "http://api.randomuser.me/portraits/thumb/" + source + "/" + i / 2 + ".jpg";
   }
-  
+
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_paths, menu);
     return true;
