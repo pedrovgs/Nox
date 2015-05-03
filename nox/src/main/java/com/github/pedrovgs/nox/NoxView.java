@@ -507,18 +507,23 @@ public class NoxView extends View {
     float y = event.getY();
     int noxItemHit = path.getNoxItemHit(x, y);
     boolean isNoxItemHit = noxItemHit >= 0;
-    if (isNoxItemHit) {
-      switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN:
+    switch (event.getAction()) {
+      case MotionEvent.ACTION_DOWN:
+        if (isNoxItemHit) {
           changeNoxItemStateToPressed(noxItemHit);
           handled = true;
-          break;
-        case MotionEvent.ACTION_UP:
-          changeNoxItemStateToNotPressed(noxItemHit);
-          handled = true;
-          break;
-        default:
-      }
+        }
+        break;
+      case MotionEvent.ACTION_CANCEL:
+      case MotionEvent.ACTION_UP:
+        for (int i = 0; i < noxItemCatalog.size(); i++) {
+          if (path.isItemInsideView(i)) {
+            changeNoxItemStateToNotPressed(i);
+            handled = true;
+          }
+        }
+        break;
+      default:
     }
     return handled;
   }

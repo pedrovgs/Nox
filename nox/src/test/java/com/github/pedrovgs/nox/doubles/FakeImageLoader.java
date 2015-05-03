@@ -86,6 +86,10 @@ public class FakeImageLoader implements ImageLoader {
 
   }
 
+  @Override public void cancelPendingRequests() {
+
+  }
+
   public void forceLoad() {
     loadOnDemand = false;
     notify(listener);
