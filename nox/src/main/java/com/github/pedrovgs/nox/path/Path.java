@@ -147,10 +147,9 @@ public abstract class Path {
     for (int i = 0; i < getNumberOfElements(); i++) {
       float noxItemX = getXForItemAtPosition(i);
       float noxItemY = getYForItemAtPosition(i);
-      float margin = getPathConfig().getItemMargin();
       float itemSize = getPathConfig().getItemSize();
-      boolean matchesHorizontally = x >= noxItemX - margin && x <= noxItemX + itemSize;
-      boolean matchesVertically = y >= noxItemY - margin && y <= noxItemY + itemSize;
+      boolean matchesHorizontally = x >= noxItemX && x <= noxItemX + itemSize;
+      boolean matchesVertically = y >= noxItemY && y <= noxItemY + itemSize;
       if (matchesHorizontally && matchesVertically) {
         noxItemPosition = i;
         break;
