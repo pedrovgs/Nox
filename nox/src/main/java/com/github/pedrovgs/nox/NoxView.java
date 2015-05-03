@@ -51,6 +51,8 @@ import java.util.Observer;
  */
 public class NoxView extends View {
 
+  private static final float DEFAULT_SCALE_FACTOR = 1.0f;
+
   private NoxConfig noxConfig;
   private Path path;
   private Scroller scroller;
@@ -117,7 +119,6 @@ public class NoxView extends View {
         initializeNoxItemCatalog(noxItems);
         createPath();
         initializeScroller();
-        initializeZoomer();
         refreshView();
       }
     });
@@ -326,10 +327,6 @@ public class NoxView extends View {
     scroller.reset();
   }
 
-  private void initializeZoomer() {
-    zoomer = new Zoomer(this, 0.5f, 2f);
-  }
-
   /**
    * Checks the X and Y scroll offset to update that values into the Path configured previously.
    */
@@ -401,7 +398,16 @@ public class NoxView extends View {
     initializeNoxItemPlaceholder(attributes);
     initializePathConfig(attributes);
     initializeTransformationConfig(attributes);
+    initializeScaleFactorConfig(attributes);
     attributes.recycle();
+  }
+
+  private void initializeScaleFactorConfig(TypedArray attributes) {
+    float minScaleFactor =
+        attributes.getFloat(R.styleable.nox_min_scale_factor, DEFAULT_SCALE_FACTOR);
+    float maxScaleFactor =
+        attributes.getFloat(R.styleable.nox_max_scale_factor, DEFAULT_SCALE_FACTOR);
+    zoomer = new Zoomer(this, minScaleFactor, maxScaleFactor);
   }
 
   /**

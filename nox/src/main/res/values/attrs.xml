@@ -21,6 +21,8 @@
     <attr name="item_margin" format="dimension"/>
     <attr name="item_placeholder" format="integer"/>
     <attr name="use_circular_transformation" format="boolean"/>
+    <attr name="min_scale_factor" format="float"/>
+    <attr name="max_scale_factor" format="float"/>
     <attr name="path" format="enum">
       <enum name="linear_path" value="0"/>
       <enum name="linear_centered_path" value="1"/>
