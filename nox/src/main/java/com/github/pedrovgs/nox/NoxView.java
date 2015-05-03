@@ -54,6 +54,7 @@ public class NoxView extends View {
   private NoxConfig noxConfig;
   private Path path;
   private Scroller scroller;
+  private Zoomer zoomer;
   private NoxItemCatalog noxItemCatalog;
   private Paint paint = new Paint();
   private boolean wasInvalidatedBefore;
@@ -93,6 +94,7 @@ public class NoxView extends View {
       wasInvalidatedBefore = false;
       return;
     }
+    applyScale(canvas);
     updatePathOffset();
     for (int i = 0; i < noxItemCatalog.size(); i++) {
       if (path.isItemInsideView(i)) {
@@ -102,6 +104,7 @@ public class NoxView extends View {
         drawNoxItem(canvas, i, left, top);
       }
     }
+    canvas.restore();
     wasInvalidatedBefore = false;
   }
 
@@ -114,6 +117,7 @@ public class NoxView extends View {
         initializeNoxItemCatalog(noxItems);
         createPath();
         initializeScroller();
+        initializeZoomer();
         refreshView();
       }
     });
@@ -152,7 +156,8 @@ public class NoxView extends View {
     boolean clickCaptured = processTouchEvent(event);
     boolean scrollCaptured = scroller != null && scroller.onTouchEvent(event);
     boolean singleTapCaptured = getGestureDetectorCompat().onTouchEvent(event);
-    return clickCaptured || scrollCaptured || singleTapCaptured;
+    boolean scaleCaptured = zoomer != null && zoomer.onTouchEvent(event);
+    return clickCaptured || scrollCaptured || singleTapCaptured || scaleCaptured;
   }
 
   /**
@@ -238,6 +243,19 @@ public class NoxView extends View {
   }
 
   /**
+   * Given a canvas to draw uses the zoomer dependency to apply the scale and the offset needed to
+   * perform the effect.
+   */
+  private void applyScale(Canvas canvas) {
+    float scaleFactor = zoomer.getScaleFactor();
+    canvas.save();
+    float currentScale = scaleFactor;
+    float scaleFocusX = zoomer.getScaleFocusX();
+    float scaleFocusY = zoomer.getScaleFocusY();
+    canvas.scale(currentScale, currentScale, scaleFocusX, scaleFocusY);
+  }
+
+  /**
    * Given a NoxItem position try to load this NoxItem if the view is not performing a fast scroll
    * after a fling gesture.
    */
@@ -306,6 +324,10 @@ public class NoxView extends View {
     scroller = new Scroller(this, path.getMinX(), path.getMaxX(), path.getMinY(), path.getMaxY(),
         path.getOverSize());
     scroller.reset();
+  }
+
+  private void initializeZoomer() {
+    zoomer = new Zoomer(this, 0.5f, 2f);
   }
 
   /**
