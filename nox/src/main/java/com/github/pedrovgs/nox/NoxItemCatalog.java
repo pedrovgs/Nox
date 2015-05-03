@@ -215,7 +215,8 @@ class NoxItemCatalog extends Observable {
     Drawable newPlaceholders[] = new Drawable[newSize];
     boolean newLoadings[] = new boolean[newSize];
     ImageLoader.Listener newListeners[] = new ImageLoader.Listener[newSize];
-    for (int i = 0; i < bitmaps.length; i++) {
+    float length = Math.min(bitmaps.length, newSize);
+    for (int i = 0; i < length; i++) {
       newBitmaps[i] = bitmaps[i];
       newDrawables[i] = drawables[i];
       newPlaceholders[i] = placeholders[i];
