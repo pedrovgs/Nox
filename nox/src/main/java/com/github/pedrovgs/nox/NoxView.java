@@ -195,7 +195,7 @@ public class NoxView extends View {
   /**
    * Configures a OnNoxItemClickListener instace to be notified when a NoxItem instance is clicked.
    */
-  public void setOnItemClickListener(OnNoxItemClickListener listener) {
+  public void setOnNoxItemClickListener(OnNoxItemClickListener listener) {
     validateListener(listener);
     this.listener = listener;
   }

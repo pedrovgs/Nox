@@ -266,7 +266,7 @@ import static org.mockito.Mockito.verify;
 
   @Test(expected = NullPointerException.class)
   public void shouldNotAcceptNullInstancesOfOnNoxItemClickListener() {
-    noxView.setOnItemClickListener(null);
+    noxView.setOnNoxItemClickListener(null);
   }
 
   private List<NoxItem> givenOneListWithJustOneNoxItem() {

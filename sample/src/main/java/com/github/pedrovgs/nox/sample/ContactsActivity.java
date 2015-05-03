@@ -16,12 +16,14 @@
 
 package com.github.pedrovgs.nox.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import com.github.pedrovgs.nox.NoxItem;
 import com.github.pedrovgs.nox.NoxView;
+import com.github.pedrovgs.nox.OnNoxItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +73,14 @@ public class ContactsActivity extends ActionBarActivity {
     noxView = (NoxView) findViewById(R.id.nox_view);
     List<NoxItem> contacts = getContacts();
     noxView.showNoxItems(contacts);
+    noxView.setOnNoxItemClickListener(new OnNoxItemClickListener() {
+      @Override public void onNoxItemClicked(int position, NoxItem noxItem) {
+        String contactPhoto = noxItem.getUrl();
+        Intent intent = new Intent(this, ContactPhotoActivity.class);
+        intent.putExtra("url", contactPhoto);
+        startActivity(intent);
+      }
+    });
   }
 
   private List<NoxItem> getContacts() {

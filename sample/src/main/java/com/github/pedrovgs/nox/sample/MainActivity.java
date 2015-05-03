@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity {
   }
 
   private void configureClickListeners() {
-    noxView.setOnItemClickListener(new OnNoxItemClickListener() {
+    noxView.setOnNoxItemClickListener(new OnNoxItemClickListener() {
       @Override public void onNoxItemClicked(int position, NoxItem noxItem) {
         Log.e(LOGTAG, "Item click not handled at position " + position);
         switch (position) {
