@@ -67,6 +67,12 @@ class Zoomer {
     return scaleFocusY;
   }
 
+  void reset() {
+    scaleFactor = 1;
+    scaleFocusX = 0;
+    scaleFocusY = 0;
+  }
+
   /**
    * Process touch events to perform the scale effect.
    */

@@ -38,6 +38,7 @@ public abstract class Path {
   private int maxX;
   private int minY;
   private int maxY;
+  private float scaleFactor = 1;
 
   public Path(PathConfig pathConfig) {
     this.pathConfig = pathConfig;
@@ -79,11 +80,17 @@ public abstract class Path {
    * Returns true if the view should be rendered inside the view window.
    */
   public final boolean isItemInsideView(int position) {
-    float x = getXForItemAtPosition(position) + offsetX;
-    float y = getYForItemAtPosition(position) + offsetY;
+    float x = (getXForItemAtPosition(position) + offsetX);
+    float y = (getYForItemAtPosition(position) + offsetY);
     float itemSize = pathConfig.getItemSize();
-    boolean matchesHorizontally = x + itemSize >= 0 && x <= pathConfig.getViewWidth();
-    boolean matchesVertically = y + itemSize >= 0 && y <= pathConfig.getViewHeight();
+    int viewWidth = pathConfig.getViewWidth();
+    float maxX = scaleFactor > 1 ? viewWidth * scaleFactor : viewWidth / scaleFactor;
+    float minX = scaleFactor == 1 ? 0 : -maxX;
+    boolean matchesHorizontally = x + itemSize >= minX && x <= maxX;
+    float viewHeight = pathConfig.getViewHeight();
+    float maxY = scaleFactor > 1 ? viewHeight * scaleFactor : viewHeight / scaleFactor;
+    float minY = scaleFactor == 1 ? 0 : -maxY;
+    boolean matchesVertically = y + itemSize >= minY && y <= maxY;
     return matchesHorizontally && matchesVertically;
   }
 
@@ -91,14 +98,14 @@ public abstract class Path {
    * Returns the minimum X position the view should show during the scroll process.
    */
   public final int getMinX() {
-    return (int) (minX - getPathConfig().getItemMargin());
+    return (int) (this.minX - getNoxItemMargin());
   }
 
   /**
    * Returns the maximum X position the view should show during the scroll process.
    */
   public final int getMaxX() {
-    return (int) (maxX + +getPathConfig().getItemSize() + getPathConfig().getItemMargin()
+    return (int) (this.maxX + getNoxItemSize() + getNoxItemMargin()
         - getPathConfig().getViewWidth());
   }
 
@@ -106,14 +113,14 @@ public abstract class Path {
    * Returns the minimum Y position the view should show during the scroll process.
    */
   public final int getMinY() {
-    return (int) (minY - getPathConfig().getItemMargin());
+    return (int) (this.minY - getNoxItemMargin());
   }
 
   /**
    * Returns the maximum Y position the view should show during the scroll process.
    */
   public final int getMaxY() {
-    return (int) (maxY + getPathConfig().getItemMargin() + getPathConfig().getItemSize()
+    return (int) (this.maxY + getNoxItemMargin() + getNoxItemSize()
         - getPathConfig().getViewHeight());
   }
 
@@ -139,6 +146,13 @@ public abstract class Path {
   }
 
   /**
+   * Configures the scale factor used to calculate NoxItem positions.
+   */
+  public void setScaleFactor(float scaleFactor) {
+    this.scaleFactor = scaleFactor;
+  }
+
+  /**
    * Returns the position of the NoxView if any of the previously configured NoxItem instances is
    * hit. If there is no any NoxItem hit this returns -1.
    */
@@ -147,7 +161,7 @@ public abstract class Path {
     for (int i = 0; i < getNumberOfElements(); i++) {
       float noxItemX = getXForItemAtPosition(i);
       float noxItemY = getYForItemAtPosition(i);
-      float itemSize = getPathConfig().getItemSize();
+      float itemSize = getNoxItemSize();
       boolean matchesHorizontally = x >= noxItemX && x <= noxItemX + itemSize;
       boolean matchesVertically = y >= noxItemY && y <= noxItemY + itemSize;
       if (matchesHorizontally && matchesVertically) {
@@ -188,5 +202,19 @@ public abstract class Path {
     noxItemsYPositions[position] = y;
     minY = (int) Math.min(y, minY);
     maxY = (int) Math.max(y, maxY);
+  }
+
+  /**
+   * Returns the NoxItem size taking into account the scale factor.
+   */
+  protected float getNoxItemSize() {
+    return getPathConfig().getItemSize();
+  }
+
+  /**
+   * Returns the NoxIte margin taking into account the scale factor.
+   */
+  private float getNoxItemMargin() {
+    return getPathConfig().getItemMargin();
   }
 }

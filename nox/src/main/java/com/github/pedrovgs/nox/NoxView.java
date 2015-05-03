@@ -96,8 +96,9 @@ public class NoxView extends View {
       wasInvalidatedBefore = false;
       return;
     }
-    applyScale(canvas);
     updatePathOffset();
+    applyScale(canvas);
+    path.setScaleFactor(zoomer.getScaleFactor());
     for (int i = 0; i < noxItemCatalog.size(); i++) {
       if (path.isItemInsideView(i)) {
         loadNoxItem(i);
@@ -141,8 +142,10 @@ public class NoxView extends View {
    */
   public void setPath(Path path) {
     validatePath(path);
+
     this.path = path;
     this.path.calculate();
+    resetZoomer();
     initializeScroller();
     refreshView();
   }
@@ -154,10 +157,10 @@ public class NoxView extends View {
    */
   @Override public boolean onTouchEvent(MotionEvent event) {
     super.onTouchEvent(event);
+    boolean scaleCaptured = zoomer != null && zoomer.onTouchEvent(event);
     boolean clickCaptured = processTouchEvent(event);
     boolean scrollCaptured = scroller != null && scroller.onTouchEvent(event);
     boolean singleTapCaptured = getGestureDetectorCompat().onTouchEvent(event);
-    boolean scaleCaptured = zoomer != null && zoomer.onTouchEvent(event);
     return clickCaptured || scrollCaptured || singleTapCaptured || scaleCaptured;
   }
 
@@ -250,10 +253,9 @@ public class NoxView extends View {
   private void applyScale(Canvas canvas) {
     float scaleFactor = zoomer.getScaleFactor();
     canvas.save();
-    float currentScale = scaleFactor;
     float scaleFocusX = zoomer.getScaleFocusX();
     float scaleFocusY = zoomer.getScaleFocusY();
-    canvas.scale(currentScale, currentScale, scaleFocusX, scaleFocusY);
+    canvas.scale(scaleFactor, scaleFactor, scaleFocusX, scaleFocusY);
   }
 
   /**
@@ -325,6 +327,10 @@ public class NoxView extends View {
     scroller = new Scroller(this, path.getMinX(), path.getMaxX(), path.getMinY(), path.getMaxY(),
         path.getOverSize());
     scroller.reset();
+  }
+
+  private void resetZoomer() {
+    zoomer.reset();
   }
 
   /**
