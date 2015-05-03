@@ -15,12 +15,19 @@
   ~ limitations under the License.
   -->
 
-<resources>
-  <dimen name="nox_item_size">48dp</dimen>
-  <dimen name="main_activity_nox_item_margin">42dp</dimen>
-  <dimen name="contacts_activity_nox_item_margin">8dp</dimen>
-  <dimen name="apps_activity_nox_item_margin">12dp</dimen>
-  <dimen name="bt_size">40dp</dimen>
-  <dimen name="bt_margin">5dp</dimen>
-  <dimen name="pb_size">60dp</dimen>
-</resources>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+  <ProgressBar
+      android:layout_width="@dimen/pb_size"
+      android:layout_height="@dimen/pb_size"
+      android:layout_gravity="center"/>
+
+  <ImageView
+      android:id="@+id/iv_contact"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+
+</FrameLayout>

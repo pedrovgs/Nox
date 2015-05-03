@@ -76,8 +76,7 @@ public class ContactsActivity extends ActionBarActivity {
     noxView.setOnNoxItemClickListener(new OnNoxItemClickListener() {
       @Override public void onNoxItemClicked(int position, NoxItem noxItem) {
         String contactPhoto = noxItem.getUrl();
-        Intent intent = new Intent(this, ContactPhotoActivity.class);
-        intent.putExtra("url", contactPhoto);
+        Intent intent = ContactPhotoActivity.getIntent(ContactsActivity.this, contactPhoto);
         startActivity(intent);
       }
     });
