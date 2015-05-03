@@ -16,15 +16,18 @@
 
 package com.github.pedrovgs.nox.sample;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.github.pedrovgs.nox.NoxItem;
 import com.github.pedrovgs.nox.NoxView;
+import com.github.pedrovgs.nox.OnNoxItemClickListener;
 import com.github.pedrovgs.nox.path.Path;
 import com.github.pedrovgs.nox.path.PathConfig;
 import com.github.pedrovgs.nox.path.PathFactory;
@@ -32,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppsActivity extends ActionBarActivity {
+
+  private static final String LOGTAG = "AppsActivity";
 
   private NoxView noxView;
   private List<NoxItem> apps;
@@ -46,6 +51,20 @@ public class AppsActivity extends ActionBarActivity {
     noxView = (NoxView) findViewById(R.id.nox_view);
     apps = getApps();
     noxView.showNoxItems(apps);
+    noxView.setOnNoxItemClickListener(new OnNoxItemClickListener() {
+      @Override public void onNoxItemClicked(int position, NoxItem noxItem) {
+        Log.d(LOGTAG, "NoxItem clicked at position " + position);
+        String packageName = getAppPackageAtPosition(position);
+        Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
+        if (intent != null) {
+          startActivity(intent);
+        }
+      }
+    });
+  }
+
+  private List<ApplicationInfo> getInstalledApps() {
+    return getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
   }
 
   private List<NoxItem> getApps() {
@@ -60,8 +79,17 @@ public class AppsActivity extends ActionBarActivity {
     return apps;
   }
 
-  private List<ApplicationInfo> getInstalledApps() {
-    return getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+  private String getAppPackageAtPosition(int position) {
+    String packageName = null;
+    int i = 0;
+    for (ApplicationInfo app : getInstalledApps()) {
+      if (i == position) {
+        packageName = app.packageName;
+        break;
+      }
+      i++;
+    }
+    return packageName;
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
