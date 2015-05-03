@@ -305,6 +305,7 @@ public class NoxView extends View {
   private void initializeScroller() {
     scroller = new Scroller(this, path.getMinX(), path.getMaxX(), path.getMinY(), path.getMaxY(),
         path.getOverSize());
+    scroller.reset();
   }
 
   /**

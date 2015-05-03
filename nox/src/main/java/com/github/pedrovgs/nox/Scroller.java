@@ -19,7 +19,6 @@ package com.github.pedrovgs.nox;
 import android.content.Context;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -91,11 +90,13 @@ class Scroller {
 
     int distanceX = overScroller.getCurrX() - view.getScrollX();
     int distanceY = overScroller.getCurrY() - view.getScrollY();
-    boolean stopScrolling = distanceX == 0 && distanceY == 0;
+    int dX = (int) calculateDx(distanceX);
+    int dY = (int) calculateDy(distanceY);
+    boolean stopScrolling = dX == 0 && dY == 0;
     if (stopScrolling) {
       isScrollingFast = false;
     }
-    view.scrollBy(distanceX, distanceY);
+    view.scrollBy(dX, dY);
   }
 
   /**
@@ -138,6 +139,13 @@ class Scroller {
    */
   boolean isScrollingFast() {
     return isScrollingFast;
+  }
+
+  /**
+   * Resets the scroll position to the 0,0.
+   */
+  void reset() {
+    view.scrollTo(0, 0);
   }
 
   /**
