@@ -36,6 +36,7 @@ class PicassoImageLoader implements ImageLoader {
   PicassoImageLoader(Context context) {
     this.context = context;
     this.targets = new WeakHashMap<Listener, ListenerTarget>();
+    resume();
   }
 
   @Override public ImageLoader load(String url) {
@@ -75,6 +76,10 @@ class PicassoImageLoader implements ImageLoader {
 
   @Override public void resume() {
     Picasso.with(context).resumeTag(PICASSO_IMAGE_LOADER_TAG);
+  }
+
+  @Override public void cancelPendingRequests() {
+    Picasso.with(context).cancelTag(PICASSO_IMAGE_LOADER_TAG);
   }
 
   /**

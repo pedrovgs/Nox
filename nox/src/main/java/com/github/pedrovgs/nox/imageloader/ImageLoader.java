@@ -72,6 +72,11 @@ public interface ImageLoader {
   void resume();
 
   /**
+   * Cancels all the pending requests to download a resource.
+   */
+  void cancelPendingRequests();
+
+  /**
    * Declares some methods which will be called during the resource download process implemented by
    * the ImageLoader. Use this interface to be notified when the placeholder and the final resource
    * be ready to be used.

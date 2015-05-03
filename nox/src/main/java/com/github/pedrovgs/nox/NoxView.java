@@ -213,7 +213,7 @@ public class NoxView extends View {
   }
 
   /**
-   * Controls visibility changes to pause or resume this custom view and avoid preformance
+   * Controls visibility changes to pause or resume this custom view and avoid performance
    * problems.
    */
   @Override protected void onVisibilityChanged(View changedView, int visibility) {
@@ -227,6 +227,14 @@ public class NoxView extends View {
     } else {
       pause();
     }
+  }
+
+  /**
+   * Release resources when the view has been detached from the window.
+   */
+  @Override protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    release();
   }
 
   /**
@@ -252,6 +260,14 @@ public class NoxView extends View {
    */
   private void pause() {
     noxItemCatalog.pause();
+    noxItemCatalog.deleteObserver(catalogObserver);
+  }
+
+  /**
+   * Releases NoxItemCatalog and removes the observer previously configured.
+   */
+  private void release() {
+    noxItemCatalog.release();
     noxItemCatalog.deleteObserver(catalogObserver);
   }
 

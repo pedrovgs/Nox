@@ -161,6 +161,14 @@ class NoxItemCatalog extends Observable {
   }
 
   /**
+   * Cancels all the pending NoxItem downloads to the ImageLoader.
+   */
+  void release() {
+    imageLoader.cancelPendingRequests();
+    loading = new boolean[noxItems.size()];
+  }
+
+  /**
    * Called by NoxItemCatalogImageLoaderListener when a NoxItem is ready to be used.
    */
   void notifyNoxItemReady(int position) {
