@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class ContactsActivity extends ActionBarActivity {
 
-  private static final int INITIAL_CONTACTS = 65;
+  private static final int INITIAL_CONTACTS = 80;
   private NoxView noxView;
   private Button addContact;
   private Button removeContact;
@@ -85,6 +85,7 @@ public class ContactsActivity extends ActionBarActivity {
   }
 
   private String getUrlForContact(int i) {
-    return "http://api.randomuser.me/portraits/thumb/women/" + i + ".jpg";
+    String source = i % 2 == 0 ? "women" : "men";
+    return "http://api.randomuser.me/portraits/thumb/" + source + "/" + i / 2 + ".jpg";
   }
 }
