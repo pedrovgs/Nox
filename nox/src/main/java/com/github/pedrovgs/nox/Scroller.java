@@ -19,6 +19,7 @@ package com.github.pedrovgs.nox;
 import android.content.Context;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -83,20 +84,18 @@ class Scroller {
    * previous call. Also controls if the view is performing a fast scroll after a fling gesture.
    */
   void computeScroll() {
-    if (!overScroller.computeScrollOffset() || overScroller.isFinished()) {
+    if (!overScroller.computeScrollOffset()) {
       isScrollingFast = false;
       return;
     }
-    isScrollingFast = true;
+
     int distanceX = overScroller.getCurrX() - view.getScrollX();
     int distanceY = overScroller.getCurrY() - view.getScrollY();
-    int dX = calculateDx(distanceX);
-    int dY = calculateDy(distanceY);
-    boolean stopScrolling = dX == 0 && dY == 0;
+    boolean stopScrolling = distanceX == 0 && distanceY == 0;
     if (stopScrolling) {
       isScrollingFast = false;
     }
-    view.scrollBy(dX, dY);
+    view.scrollBy(distanceX, distanceY);
   }
 
   /**
@@ -164,8 +163,8 @@ class Scroller {
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-          int dX = calculateDx(distanceX);
-          int dY = calculateDy(distanceY);
+          int dX = (int) calculateDx(distanceX);
+          int dY = (int) calculateDy(distanceY);
           view.scrollBy(dX, dY);
           return true;
         }
@@ -180,7 +179,7 @@ class Scroller {
           overScroller.fling(startX, startY, velX, velY, minX, maxX, minY, maxY, overSize,
               overSize);
           ViewCompat.postInvalidateOnAnimation(view);
-          return true;
+          return false;
         }
       };
 
@@ -188,22 +187,22 @@ class Scroller {
    * Returns the distance in the X axes to perform the scroll taking into account the view
    * boundary.
    */
-  private int calculateDx(float distanceX) {
+  private float calculateDx(float distanceX) {
     int currentX = view.getScrollX();
-    int nextX = (int) (distanceX + currentX);
+    float nextX = distanceX + currentX;
     boolean isInsideHorizontally = nextX >= minX && nextX <= maxX;
-    return isInsideHorizontally ? (int) distanceX : 0;
+    return isInsideHorizontally ? distanceX : 0;
   }
 
   /**
    * Returns the distance in the Y axes to perform the scroll taking into account the view
    * boundary.
    */
-  private int calculateDy(float distanceY) {
+  private float calculateDy(float distanceY) {
     int currentY = view.getScrollY();
-    int nextY = (int) (distanceY + currentY);
+    float nextY = distanceY + currentY;
     boolean isInsideVertically = nextY >= minY && nextY <= maxY;
-    return isInsideVertically ? (int) distanceY : 0;
+    return isInsideVertically ? distanceY : 0;
   }
 
   private void resetOverScroller() {
