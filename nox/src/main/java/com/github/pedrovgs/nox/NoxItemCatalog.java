@@ -35,11 +35,11 @@ class NoxItemCatalog extends Observable {
   private final List<NoxItem> noxItems;
   private final int noxItemSize;
   private final ImageLoader imageLoader;
-  private final WeakReference<Bitmap>[] bitmaps;
-  private final Drawable[] drawables;
-  private final Drawable[] placeholders;
-  private final boolean[] loading;
 
+  private WeakReference<Bitmap>[] bitmaps;
+  private Drawable[] drawables;
+  private Drawable[] placeholders;
+  private boolean[] loading;
   private ImageLoader.Listener[] listeners;
   private Drawable defaultPlaceholder;
 
@@ -194,6 +194,31 @@ class NoxItemCatalog extends Observable {
    */
   void setDefaultPlaceholder(int position, Drawable placeholder) {
     placeholders[position] = placeholder;
+  }
+
+  /**
+   * Regenerates all the internal data structures. This method should be called when the number of
+   * nox items in the catalog has changed externally.
+   */
+  public void recreate() {
+    int newSize = noxItems.size();
+    WeakReference<Bitmap> newBitmaps[] = new WeakReference[newSize];
+    Drawable newDrawables[] = new Drawable[newSize];
+    Drawable newPlaceholders[] = new Drawable[newSize];
+    boolean newLoadings[] = new boolean[newSize];
+    ImageLoader.Listener newListeners[] = new ImageLoader.Listener[newSize];
+    for (int i = 0; i < bitmaps.length; i++) {
+      newBitmaps[i] = bitmaps[i];
+      newDrawables[i] = drawables[i];
+      newPlaceholders[i] = placeholders[i];
+      newLoadings[i] = loading[i];
+      newListeners[i] = listeners[i];
+    }
+    bitmaps = newBitmaps;
+    drawables = newDrawables;
+    placeholders = newPlaceholders;
+    loading = newLoadings;
+    listeners = newListeners;
   }
 
   /**

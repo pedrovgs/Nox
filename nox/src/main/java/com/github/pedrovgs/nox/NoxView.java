@@ -120,6 +120,18 @@ public class NoxView extends View {
   }
 
   /**
+   * Used to notify when the data source has changed and is necessary to re draw the view.
+   */
+  public void notifyDataSetChanged() {
+    if (noxItemCatalog != null) {
+      noxItemCatalog.recreate();
+      createPath();
+      initializeScroller();
+      refreshView();
+    }
+  }
+
+  /**
    * Changes the Path used to the one passed as argument. This method will refresh the view.
    */
   public void setPath(Path path) {

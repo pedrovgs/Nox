@@ -54,7 +54,7 @@ public class ContactsActivity extends ActionBarActivity {
         lastContactId++;
         String newContactUrl = getUrlForContact(lastContactId);
         contacts.add(new NoxItem(newContactUrl));
-        noxView.showNoxItems(contacts);
+        noxView.notifyDataSetChanged();
       }
     });
 
@@ -64,7 +64,7 @@ public class ContactsActivity extends ActionBarActivity {
         int lastContact = contacts.size() - 1;
         contacts.remove(lastContact);
         lastContactId--;
-        noxView.showNoxItems(contacts);
+        noxView.notifyDataSetChanged();
       }
     });
   }
