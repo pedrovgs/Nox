@@ -38,7 +38,6 @@ public abstract class Path {
   private int maxX;
   private int minY;
   private int maxY;
-  private float scaleFactor = 1;
 
   public Path(PathConfig pathConfig) {
     this.pathConfig = pathConfig;
@@ -82,15 +81,11 @@ public abstract class Path {
   public final boolean isItemInsideView(int position) {
     float x = (getXForItemAtPosition(position) + offsetX);
     float y = (getYForItemAtPosition(position) + offsetY);
-    float itemSize = pathConfig.getItemSize();
+    float itemSize = getNoxItemSize();
     int viewWidth = pathConfig.getViewWidth();
-    float maxX = scaleFactor > 1 ? viewWidth * scaleFactor : viewWidth / scaleFactor;
-    float minX = scaleFactor == 1 ? 0 : -maxX;
-    boolean matchesHorizontally = x + itemSize >= minX && x <= maxX;
+    boolean matchesHorizontally = x + itemSize >= 0 && x <= viewWidth;
     float viewHeight = pathConfig.getViewHeight();
-    float maxY = scaleFactor > 1 ? viewHeight * scaleFactor : viewHeight / scaleFactor;
-    float minY = scaleFactor == 1 ? 0 : -maxY;
-    boolean matchesVertically = y + itemSize >= minY && y <= maxY;
+    boolean matchesVertically = y + itemSize >= 0 && y <= viewHeight;
     return matchesHorizontally && matchesVertically;
   }
 
@@ -143,13 +138,6 @@ public abstract class Path {
    */
   public int getNumberOfElements() {
     return getPathConfig().getNumberOfElements();
-  }
-
-  /**
-   * Configures the scale factor used to calculate NoxItem positions.
-   */
-  public void setScaleFactor(float scaleFactor) {
-    this.scaleFactor = scaleFactor;
   }
 
   /**

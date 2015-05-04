@@ -29,9 +29,7 @@
       nox:item_placeholder="@drawable/ic_contacts"
       nox:item_margin="@dimen/contacts_activity_nox_item_margin"
       nox:item_size="@dimen/nox_item_size"
-      nox:path="circular_path"
-      nox:min_scale_factor="0.5"
-      nox:max_scale_factor="2"/>
+      nox:path="circular_path"/>
 
   <Button
       android:id="@+id/add_contact"
