@@ -40,6 +40,7 @@ public class AppsActivity extends ActionBarActivity {
 
   private NoxView noxView;
   private List<NoxItem> apps;
+  private List<String> packageNames;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -49,12 +50,13 @@ public class AppsActivity extends ActionBarActivity {
 
   private void initializeNoxView() {
     noxView = (NoxView) findViewById(R.id.nox_view);
+    packageNames = new ArrayList<String>();
     apps = getApps();
     noxView.showNoxItems(apps);
     noxView.setOnNoxItemClickListener(new OnNoxItemClickListener() {
       @Override public void onNoxItemClicked(int position, NoxItem noxItem) {
         Log.d(LOGTAG, "NoxItem clicked at position " + position);
-        String packageName = getAppPackageAtPosition(position);
+        String packageName = packageNames.get(position);
         Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
         if (intent != null) {
           startActivity(intent);
@@ -72,24 +74,12 @@ public class AppsActivity extends ActionBarActivity {
     for (ApplicationInfo app : getInstalledApps()) {
       String packageName = app.packageName;
       if (app.icon != 0) {
+        packageNames.add(packageName);
         Uri uri = Uri.parse("android.resource://" + packageName + "/" + app.icon);
         apps.add(new NoxItem(uri.toString()));
       }
     }
     return apps;
-  }
-
-  private String getAppPackageAtPosition(int position) {
-    String packageName = null;
-    int i = 0;
-    for (ApplicationInfo app : getInstalledApps()) {
-      if (i == position) {
-        packageName = app.packageName;
-        break;
-      }
-      i++;
-    }
-    return packageName;
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {

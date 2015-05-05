@@ -51,8 +51,6 @@ import java.util.Observer;
  */
 public class NoxView extends View {
 
-  private static final float DEFAULT_SCALE_FACTOR = 1.0f;
-
   private NoxConfig noxConfig;
   private Path path;
   private Scroller scroller;
