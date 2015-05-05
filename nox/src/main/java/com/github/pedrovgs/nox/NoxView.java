@@ -32,9 +32,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.github.pedrovgs.nox.imageloader.ImageLoader;
 import com.github.pedrovgs.nox.imageloader.ImageLoaderFactory;
-import com.github.pedrovgs.nox.path.Path;
-import com.github.pedrovgs.nox.path.PathConfig;
-import com.github.pedrovgs.nox.path.PathFactory;
+import com.github.pedrovgs.nox.shape.Shape;
+import com.github.pedrovgs.nox.shape.ShapeConfig;
+import com.github.pedrovgs.nox.shape.ShapeFactory;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -52,14 +52,14 @@ import java.util.Observer;
 public class NoxView extends View {
 
   private NoxConfig noxConfig;
-  private Path path;
+  private Shape shape;
   private Scroller scroller;
   private NoxItemCatalog noxItemCatalog;
   private Paint paint = new Paint();
   private boolean wasInvalidatedBefore;
   private OnNoxItemClickListener listener = OnNoxItemClickListener.EMPTY;
   private GestureDetectorCompat gestureDetector;
-  private int defaultPathKey;
+  private int defaultShapeKey;
   private boolean useCircularTransformation;
 
   public NoxView(Context context) {
@@ -93,12 +93,12 @@ public class NoxView extends View {
       wasInvalidatedBefore = false;
       return;
     }
-    updatePathOffset();
+    updateShapeOffset();
     for (int i = 0; i < noxItemCatalog.size(); i++) {
-      if (path.isItemInsideView(i)) {
+      if (shape.isItemInsideView(i)) {
         loadNoxItem(i);
-        float left = path.getXForItemAtPosition(i);
-        float top = path.getYForItemAtPosition(i);
+        float left = shape.getXForItemAtPosition(i);
+        float top = shape.getYForItemAtPosition(i);
         drawNoxItem(canvas, i, left, top);
       }
     }
@@ -113,7 +113,7 @@ public class NoxView extends View {
     this.post(new Runnable() {
       @Override public void run() {
         initializeNoxItemCatalog(noxItems);
-        createPath();
+        createShape();
         initializeScroller();
         refreshView();
       }
@@ -126,20 +126,20 @@ public class NoxView extends View {
   public void notifyDataSetChanged() {
     if (noxItemCatalog != null) {
       noxItemCatalog.recreate();
-      createPath();
+      createShape();
       initializeScroller();
       refreshView();
     }
   }
 
   /**
-   * Changes the Path used to the one passed as argument. This method will refresh the view.
+   * Changes the Shape used to the one passed as argument. This method will refresh the view.
    */
-  public void setPath(Path path) {
-    validatePath(path);
+  public void setShape(Shape shape) {
+    validateShape(shape);
 
-    this.path = path;
-    this.path.calculate();
+    this.shape = shape;
+    this.shape.calculate();
     initializeScroller();
     refreshView();
   }
@@ -200,10 +200,10 @@ public class NoxView extends View {
   }
 
   /**
-   * Returns the current Path used in to draw this view.
+   * Returns the current Shape used in to draw this view.
    */
-  public Path getPath() {
-    return path;
+  public Shape getShape() {
+    return shape;
   }
 
   /**
@@ -279,7 +279,7 @@ public class NoxView extends View {
   private Observer catalogObserver = new Observer() {
     @Override public void update(Observable observable, Object data) {
       Integer position = (Integer) data;
-      boolean isNoxItemLoadedInsideTheView = path != null && path.isItemInsideView(position);
+      boolean isNoxItemLoadedInsideTheView = shape != null && shape.isItemInsideView(position);
       if (isNoxItemLoadedInsideTheView) {
         refreshView();
       }
@@ -305,18 +305,18 @@ public class NoxView extends View {
   }
 
   private void initializeScroller() {
-    scroller = new Scroller(this, path.getMinX(), path.getMaxX(), path.getMinY(), path.getMaxY(),
-        path.getOverSize());
+    scroller = new Scroller(this, shape.getMinX(), shape.getMaxX(), shape.getMinY(), shape.getMaxY(),
+        shape.getOverSize());
     scroller.reset();
   }
 
   /**
-   * Checks the X and Y scroll offset to update that values into the Path configured previously.
+   * Checks the X and Y scroll offset to update that values into the Shape configured previously.
    */
-  private void updatePathOffset() {
+  private void updateShapeOffset() {
     int offsetX = scroller.getOffsetX();
     int offsetY = scroller.getOffsetY();
-    path.setOffset(offsetX, offsetY);
+    shape.setOffset(offsetX, offsetY);
   }
 
   /**
@@ -348,23 +348,23 @@ public class NoxView extends View {
   }
 
   /**
-   * Initializes a Path instance given the NoxView configuration provided programmatically or using
+   * Initializes a Shape instance given the NoxView configuration provided programmatically or using
    * XML styleable attributes.
    */
-  private void createPath() {
-    if (path == null) {
+  private void createShape() {
+    if (shape == null) {
       float firstItemMargin = noxConfig.getNoxItemMargin();
       float firstItemSize = noxConfig.getNoxItemSize();
       int viewHeight = getMeasuredHeight();
       int viewWidth = getMeasuredWidth();
       int numberOfElements = noxItemCatalog.size();
-      PathConfig pathConfig =
-          new PathConfig(numberOfElements, viewWidth, viewHeight, firstItemSize, firstItemMargin);
-      path = PathFactory.getPathByKey(defaultPathKey, pathConfig);
+      ShapeConfig shapeConfig =
+          new ShapeConfig(numberOfElements, viewWidth, viewHeight, firstItemSize, firstItemMargin);
+      shape = ShapeFactory.getShapeByKey(defaultShapeKey, shapeConfig);
     } else {
-      path.setNumberOfElements(noxItemCatalog.size());
+      shape.setNumberOfElements(noxItemCatalog.size());
     }
-    path.calculate();
+    shape.calculate();
   }
 
   /**
@@ -379,13 +379,13 @@ public class NoxView extends View {
     initializeNoxItemSize(attributes);
     initializeNoxItemMargin(attributes);
     initializeNoxItemPlaceholder(attributes);
-    initializePathConfig(attributes);
+    initializeShapeConfig(attributes);
     initializeTransformationConfig(attributes);
     attributes.recycle();
   }
 
   /**
-   * Configures the nox item default size used in NoxConfig, Path and NoxItemCatalog to draw nox
+   * Configures the nox item default size used in NoxConfig, Shape and NoxItemCatalog to draw nox
    * item instances during the onDraw execution.
    */
   private void initializeNoxItemSize(TypedArray attributes) {
@@ -395,7 +395,7 @@ public class NoxView extends View {
   }
 
   /**
-   * Configures the nox item default margin used in NoxConfig, Path and NoxItemCatalog to draw nox
+   * Configures the nox item default margin used in NoxConfig, Shape and NoxItemCatalog to draw nox
    * item instances during the onDraw execution.
    */
   private void initializeNoxItemMargin(TypedArray attributes) {
@@ -418,11 +418,11 @@ public class NoxView extends View {
   }
 
   /**
-   * Configures the Path used to show the list of NoxItems.
+   * Configures the Shape used to show the list of NoxItems.
    */
-  private void initializePathConfig(TypedArray attributes) {
-    defaultPathKey =
-        attributes.getInteger(R.styleable.nox_path, PathFactory.FIXED_CIRCULAR_PATH_KEY);
+  private void initializeShapeConfig(TypedArray attributes) {
+    defaultShapeKey =
+        attributes.getInteger(R.styleable.nox_shape, ShapeFactory.FIXED_CIRCULAR_SHAPE_KEY);
   }
 
   /**
@@ -434,13 +434,13 @@ public class NoxView extends View {
         attributes.getBoolean(R.styleable.nox_use_circular_transformation, true);
   }
 
-  private void validatePath(Path path) {
-    if (path == null) {
-      throw new NullPointerException("You can't pass a null Path instance as argument.");
+  private void validateShape(Shape shape) {
+    if (shape == null) {
+      throw new NullPointerException("You can't pass a null Shape instance as argument.");
     }
-    if (noxItemCatalog != null && path.getNumberOfElements() != noxItemCatalog.size()) {
+    if (noxItemCatalog != null && shape.getNumberOfElements() != noxItemCatalog.size()) {
       throw new IllegalArgumentException(
-          "The number of items in the Path instance passed as argument doesn't match with "
+          "The number of items in the Shape instance passed as argument doesn't match with "
               + "the current number of NoxItems.");
     }
   }
@@ -486,7 +486,7 @@ public class NoxView extends View {
 
         @Override public boolean onSingleTapUp(MotionEvent e) {
           boolean handled = false;
-          int position = path.getNoxItemHit(e.getX(), e.getY());
+          int position = shape.getNoxItemHit(e.getX(), e.getY());
           if (position >= 0) {
             handled = true;
             NoxItem noxItem = noxItemCatalog.getNoxItem(position);
@@ -501,14 +501,14 @@ public class NoxView extends View {
   }
 
   private boolean processTouchEvent(MotionEvent event) {
-    if (path == null) {
+    if (shape == null) {
       return false;
     }
 
     boolean handled = false;
     float x = event.getX();
     float y = event.getY();
-    int noxItemHit = path.getNoxItemHit(x, y);
+    int noxItemHit = shape.getNoxItemHit(x, y);
     boolean isNoxItemHit = noxItemHit >= 0;
     switch (event.getAction()) {
       case MotionEvent.ACTION_DOWN:
@@ -520,7 +520,7 @@ public class NoxView extends View {
       case MotionEvent.ACTION_CANCEL:
       case MotionEvent.ACTION_UP:
         for (int i = 0; i < noxItemCatalog.size(); i++) {
-          if (path.isItemInsideView(i)) {
+          if (shape.isItemInsideView(i)) {
             changeNoxItemStateToNotPressed(i);
             handled = true;
           }

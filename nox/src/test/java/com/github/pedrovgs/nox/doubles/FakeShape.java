@@ -16,8 +16,8 @@
 
 package com.github.pedrovgs.nox.doubles;
 
-import com.github.pedrovgs.nox.path.Path;
-import com.github.pedrovgs.nox.path.PathConfig;
+import com.github.pedrovgs.nox.shape.Shape;
+import com.github.pedrovgs.nox.shape.ShapeConfig;
 
 /**
  * Fake path implementation created to be used in Nox tests. This Path implementation adds two
@@ -25,14 +25,14 @@ import com.github.pedrovgs.nox.path.PathConfig;
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class FakePath extends Path {
+public class FakeShape extends Shape {
 
   private float xPosition;
   private float yPosition;
   private int overSize;
 
-  public FakePath(PathConfig pathConfig) {
-    super(pathConfig);
+  public FakeShape(ShapeConfig shapeConfig) {
+    super(shapeConfig);
   }
 
   public void setXPosition(float xPosition) {
@@ -44,7 +44,7 @@ public class FakePath extends Path {
   }
 
   @Override public void calculate() {
-    for (int i = 0; i < getPathConfig().getNumberOfElements(); i++) {
+    for (int i = 0; i < getShapeConfig().getNumberOfElements(); i++) {
       setNoxItemXPosition(i, xPosition);
       setNoxItemYPosition(i, yPosition);
     }

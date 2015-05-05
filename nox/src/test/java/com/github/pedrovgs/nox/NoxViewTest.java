@@ -22,9 +22,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
-import com.github.pedrovgs.nox.doubles.FakePath;
-import com.github.pedrovgs.nox.path.Path;
-import com.github.pedrovgs.nox.path.PathConfig;
+import com.github.pedrovgs.nox.doubles.FakeShape;
+import com.github.pedrovgs.nox.shape.Shape;
+import com.github.pedrovgs.nox.shape.ShapeConfig;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -85,10 +85,10 @@ import static org.mockito.Mockito.verify;
   }
 
   @Test public void shouldInitializeScrollerUsingPathInformation() {
-    Path path =
+    Shape shape =
         givenPathConfiguredToReturn(ANY_MIN_X, ANY_MAX_X, ANY_MIN_Y, ANY_MAX_Y, ANY_OVER_SIZE);
 
-    noxView.setPath(path);
+    noxView.setShape(shape);
 
     assertEquals(ANY_MIN_X, noxView.getMinX());
     assertEquals(ANY_MAX_X, noxView.getMaxX());
@@ -99,25 +99,25 @@ import static org.mockito.Mockito.verify;
 
   @Test public void shouldInvalidateViewOnNewPathConfigured() {
     noxView = spy(noxView);
-    Path path =
+    Shape shape =
         givenPathConfiguredToReturn(ANY_MIN_X, ANY_MAX_X, ANY_MIN_Y, ANY_MAX_Y, ANY_OVER_SIZE);
 
-    noxView.setPath(path);
+    noxView.setShape(shape);
 
     verify(noxView).invalidate();
   }
 
   @Test(expected = NullPointerException.class) public void shouldNotAcceptNullPathInstances() {
-    noxView.setPath(null);
+    noxView.setShape(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void shouldNotAcceptANewPathWithDifferentNumberOfElementsThanThePreviousConfigured() {
-    Path path = givenPathWithNumberOfElements(2);
+    Shape shape = givenPathWithNumberOfElements(2);
     List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
 
     noxView.showNoxItems(noxItems);
-    noxView.setPath(path);
+    noxView.setShape(shape);
   }
 
   @Test public void shouldInvalidateViewOnNewNoxItemsConfigured() {
@@ -130,13 +130,13 @@ import static org.mockito.Mockito.verify;
 
   @Test public void shouldChangePathNumberOfElementsIfNoxItemsWherePreviouslyConfigured() {
     List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
-    Path path = givenPathWithNumberOfElements(noxItems.size() + 1);
-    path = spy(path);
+    Shape shape = givenPathWithNumberOfElements(noxItems.size() + 1);
+    shape = spy(shape);
 
-    noxView.setPath(path);
+    noxView.setShape(shape);
     noxView.showNoxItems(noxItems);
 
-    verify(path).setNumberOfElements(noxItems.size());
+    verify(shape).setNumberOfElements(noxItems.size());
   }
 
   @Test public void shouldNotHandleOnTouchEventIfNoNoxItemHaveBeenShown() {
@@ -252,9 +252,9 @@ import static org.mockito.Mockito.verify;
   @Test public void shouldNotDrawNoxItemsOutOfTheViewEvenIfAreReadyToDraw() {
     Canvas canvas = mock(Canvas.class);
     List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
-    Path path = givenPathToPositionElementsOutOfTheView();
+    Shape shape = givenPathToPositionElementsOutOfTheView();
 
-    noxView.setPath(path);
+    noxView.setShape(shape);
     noxView.showNoxItems(noxItems);
     NoxItemCatalog noxItemCatalog = noxView.getNoxItemCatalog();
     noxItemCatalog.setBitmap(0, mock(Bitmap.class));
@@ -275,25 +275,25 @@ import static org.mockito.Mockito.verify;
     return noxItems;
   }
 
-  private Path givenPathWithNumberOfElements(int numberOfElements) {
-    PathConfig pathConfig =
-        new PathConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
+  private Shape givenPathWithNumberOfElements(int numberOfElements) {
+    ShapeConfig shapeConfig =
+        new ShapeConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
             ANY_ITEM_MARGIN);
-    return new FakePath(pathConfig);
+    return new FakeShape(shapeConfig);
   }
 
-  private Path givenPathToPositionElementsOutOfTheView() {
-    PathConfig pathConfig =
-        new PathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    FakePath path = new FakePath(pathConfig);
+  private Shape givenPathToPositionElementsOutOfTheView() {
+    ShapeConfig shapeConfig =
+        new ShapeConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    FakeShape path = new FakeShape(shapeConfig);
     path.setXPosition(-100);
     path.setYPosition(-200);
     return path;
   }
 
-  private Path givenPathConfiguredToReturn(int minX, int maxX, int minY, int maxY, int overSize) {
-    PathConfig pathConfig = new PathConfig(1, 0, 0, 0, 0);
-    FakePath path = new FakePath(pathConfig);
+  private Shape givenPathConfiguredToReturn(int minX, int maxX, int minY, int maxY, int overSize) {
+    ShapeConfig shapeConfig = new ShapeConfig(1, 0, 0, 0, 0);
+    FakeShape path = new FakeShape(shapeConfig);
     path.setBoundaries(minX, maxX, minY, maxY, overSize);
     return path;
   }

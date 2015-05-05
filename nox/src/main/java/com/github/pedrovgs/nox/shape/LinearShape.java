@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 /**
- * Linear Path implementation used to place NoxItem objects in a single line in
- * NoxView starting from the left side of the view. NoxItem instances in this path will have the
+ * Linear Shape implementation used to place NoxItem objects in a single line in
+ * NoxView starting from the left side of the view. NoxItem instances in this shape will have the
  * same size.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-class LinearPath extends Path {
+class LinearShape extends Shape {
 
-  LinearPath(PathConfig pathConfig) {
-    super(pathConfig);
+  LinearShape(ShapeConfig shapeConfig) {
+    super(shapeConfig);
   }
 
   @Override public void calculate() {
-    int numberOfItems = getPathConfig().getNumberOfElements();
-    float height = (getPathConfig().getViewHeight() / 2) - (getPathConfig().getItemSize() / 2);
+    int numberOfItems = getShapeConfig().getNumberOfElements();
+    float height = (getShapeConfig().getViewHeight() / 2) - (getShapeConfig().getItemSize() / 2);
 
-    float itemWidth = getPathConfig().getItemSize();
-    float viewMargin = getPathConfig().getItemMargin();
+    float itemWidth = getShapeConfig().getItemSize();
+    float viewMargin = getShapeConfig().getItemMargin();
     float x = getFirstItemLeftPosition();
 
     for (int i = 0; i < numberOfItems; i++) {
@@ -45,6 +45,6 @@ class LinearPath extends Path {
   }
 
   protected float getFirstItemLeftPosition() {
-    return getPathConfig().getItemMargin();
+    return getShapeConfig().getItemMargin();
   }
 }

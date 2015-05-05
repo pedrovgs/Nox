@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 /**
- * Linear centered Path implementation used to place NoxItem objects in a single line
- * centered in NoxView. NoxItem instances in this path will have the same size.
+ * Linear centered Shape implementation used to place NoxItem objects in a single line
+ * centered in NoxView. NoxItem instances in this shape will have the same size.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-class LinearCenteredPath extends LinearPath {
+class LinearCenteredShape extends LinearShape {
 
-  LinearCenteredPath(PathConfig pathConfig) {
-    super(pathConfig);
+  LinearCenteredShape(ShapeConfig shapeConfig) {
+    super(shapeConfig);
   }
 
   @Override protected float getFirstItemLeftPosition() {
-    float itemSize = getPathConfig().getItemSize();
-    float itemMargin = getPathConfig().getItemMargin();
+    float itemSize = getShapeConfig().getItemSize();
+    float itemMargin = getShapeConfig().getItemMargin();
     float center = getCenter();
-    int numberOfElements = getPathConfig().getNumberOfElements();
+    int numberOfElements = getShapeConfig().getNumberOfElements();
     return center - numberOfElements * (itemSize / 2 + itemMargin / 2);
   }
 
   private float getCenter() {
-    return getPathConfig().getViewWidth() / 2;
+    return getShapeConfig().getViewWidth() / 2;
   }
 }

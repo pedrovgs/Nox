@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
-import com.github.pedrovgs.nox.doubles.FakePath;
+import com.github.pedrovgs.nox.doubles.FakeShape;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertFalse;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class BoundaryPathTest {
+public class BoundaryShapeTest {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
@@ -39,12 +39,12 @@ public class BoundaryPathTest {
   private static final int ANY_ITEM_POSITION = 0;
   private static final int ANY_BIG_OFFSET = 1000;
 
-  private FakePath path;
+  private FakeShape path;
 
   @Before public void setUp() {
-    PathConfig pathConfig =
-        new PathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    path = new FakePath(pathConfig);
+    ShapeConfig shapeConfig =
+        new ShapeConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    path = new FakeShape(shapeConfig);
   }
 
   @Test public void shouldReturnFalseIfItemIsAtTheRightAndOutsideTheView() {

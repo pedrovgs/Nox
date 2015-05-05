@@ -20,22 +20,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.github.pedrovgs.nox.sample.AppsActivity">
 
-  <item android:id="@+id/linear_path_option"
+  <item android:id="@+id/linear_shape_option"
       android:title="@string/menu_item_linear_path"
       android:orderInCategory="100"
       app:showAsAction="never"/>
 
-  <item android:id="@+id/linear_centered_path_option"
+  <item android:id="@+id/linear_centered_shape_option"
       android:title="@string/menu_item_linear_centered_path"
       android:orderInCategory="100"
       app:showAsAction="never"/>
 
-  <item android:id="@+id/circular_path_option"
+  <item android:id="@+id/circular_shape_option"
       android:title="@string/menu_item_circuclar_path"
       android:orderInCategory="100"
       app:showAsAction="never"/>
 
-  <item android:id="@+id/fixed_circular_path_option"
+  <item android:id="@+id/fixed_circular_shape_option"
       android:title="@string/menu_item_fixed_circular_path"
       android:orderInCategory="100"
       app:showAsAction="never"/>

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 /**
- * Contains all the information needed to create a Path instance.
+ * Contains all the information needed to create a Shape instance.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class PathConfig {
+public class ShapeConfig {
 
   private int numberOfElements;
   private final int viewWidth;
@@ -29,7 +29,7 @@ public class PathConfig {
   private final float itemSize;
   private final float itemMargin;
 
-  public PathConfig(int numberOfElements, int viewWidth, int viewHeight, float itemSize,
+  public ShapeConfig(int numberOfElements, int viewWidth, int viewHeight, float itemSize,
       float itemMargin) {
     this.numberOfElements = numberOfElements;
     this.viewWidth = viewWidth;

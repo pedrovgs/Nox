@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,70 +26,70 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class LinearPathTest extends BasePathTestCase {
+public class LinearShapeTest extends BasePathTestCase {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
   private static final float ANY_ITEM_SIZE = 8;
   private static final float ANY_ITEM_MARGIN = 2;
 
-  private Path path;
+  private Shape shape;
 
   @Before public void setUp() {
-    PathConfig pathConfig =
+    ShapeConfig shapeConfig =
         givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    path = getPath(pathConfig);
+    shape = getPath(shapeConfig);
   }
 
-  @Override public Path getPath(PathConfig pathConfig) {
-    return PathFactory.getLinearPath(pathConfig);
+  @Override public Shape getPath(ShapeConfig shapeConfig) {
+    return ShapeFactory.getLinearShape(shapeConfig);
   }
 
   @Test public void shouldUseSameTopForEveryElement() {
     int numberOfElements = 10;
-    PathConfig pathConfig =
+    ShapeConfig shapeConfig =
         givenPathConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
             ANY_ITEM_MARGIN);
-    path = getPath(pathConfig);
+    shape = getPath(shapeConfig);
 
-    path.calculate();
+    shape.calculate();
 
     float expectedTop = (ANY_VIEW_HEIGHT / 2) - (ANY_ITEM_SIZE / 2);
     for (int i = 0; i < numberOfElements; i++) {
-      assertEquals(expectedTop, path.getYForItemAtPosition(i), DELTA);
+      assertEquals(expectedTop, shape.getYForItemAtPosition(i), DELTA);
     }
   }
 
   @Test public void shouldCalculateLeftPositionsUsingOneLinearDistributionUsingItemSizeAndMargin() {
     int numberOfElements = 10;
-    PathConfig pathConfig =
+    ShapeConfig shapeConfig =
         givenPathConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
             ANY_ITEM_MARGIN);
-    path = getPath(pathConfig);
+    shape = getPath(shapeConfig);
 
-    path.calculate();
+    shape.calculate();
 
     float expectedLeft = ANY_ITEM_MARGIN;
     for (int i = 0; i < numberOfElements; i++) {
-      assertEquals(expectedLeft, path.getXForItemAtPosition(i), DELTA);
+      assertEquals(expectedLeft, shape.getXForItemAtPosition(i), DELTA);
       expectedLeft += ANY_ITEM_SIZE + ANY_ITEM_MARGIN;
     }
   }
 
   @Test public void shouldCalculateTheCorrectLeftPositionForOneElement() {
-    path.calculate();
+    shape.calculate();
 
-    float left = path.getXForItemAtPosition(0);
+    float left = shape.getXForItemAtPosition(0);
 
     assertEquals(ANY_ITEM_MARGIN, left, DELTA);
   }
 
   @Test public void shouldReturnTrueJustForTheElementsInsideTheView() {
-    PathConfig pathConfig =
+    ShapeConfig shapeConfig =
         givenPathConfig(11, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    path = getPath(pathConfig);
+    shape = getPath(shapeConfig);
 
-    path.calculate();
+    shape.calculate();
 
     assertElementsAtPositionAreInsideTheView(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
     assertElementsAtPositionAreOutsizeTheView(10);
@@ -97,13 +97,13 @@ public class LinearPathTest extends BasePathTestCase {
 
   private void assertElementsAtPositionAreInsideTheView(int... positions) {
     for (int position : positions) {
-      assertTrue(path.isItemInsideView(position));
+      assertTrue(shape.isItemInsideView(position));
     }
   }
 
   private void assertElementsAtPositionAreOutsizeTheView(int... positions) {
     for (int position : positions) {
-      assertFalse(path.isItemInsideView(position));
+      assertFalse(shape.isItemInsideView(position));
     }
   }
 }

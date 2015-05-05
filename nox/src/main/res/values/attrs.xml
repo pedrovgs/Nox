@@ -21,12 +21,12 @@
     <attr name="item_margin" format="dimension"/>
     <attr name="item_placeholder" format="integer"/>
     <attr name="use_circular_transformation" format="boolean"/>
-    <attr name="path" format="enum">
-      <enum name="linear_path" value="0"/>
-      <enum name="linear_centered_path" value="1"/>
-      <enum name="circular_path" value="2"/>
-      <enum name="fixed_circular_path" value="3"/>
-      <enum name="spiral_path" value="4"/>
+    <attr name="shape" format="enum">
+      <enum name="linear_shape" value="0"/>
+      <enum name="linear_centered_shape" value="1"/>
+      <enum name="circular_shape" value="2"/>
+      <enum name="fixed_circular_shape" value="3"/>
+      <enum name="spiral_shape" value="4"/>
     </attr>
   </declare-styleable>
 </resources>

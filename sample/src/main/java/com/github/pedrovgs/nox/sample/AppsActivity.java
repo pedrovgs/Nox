@@ -28,9 +28,9 @@ import android.view.MenuItem;
 import com.github.pedrovgs.nox.NoxItem;
 import com.github.pedrovgs.nox.NoxView;
 import com.github.pedrovgs.nox.OnNoxItemClickListener;
-import com.github.pedrovgs.nox.path.Path;
-import com.github.pedrovgs.nox.path.PathConfig;
-import com.github.pedrovgs.nox.path.PathFactory;
+import com.github.pedrovgs.nox.shape.Shape;
+import com.github.pedrovgs.nox.shape.ShapeConfig;
+import com.github.pedrovgs.nox.shape.ShapeFactory;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,44 +83,44 @@ public class AppsActivity extends ActionBarActivity {
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.menu_paths, menu);
+    getMenuInflater().inflate(R.menu.menu_shape, menu);
     return true;
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
-    Path newPath;
-    PathConfig pathConfig = getPathConfig();
+    Shape newShape;
+    ShapeConfig shapeConfig = getShapeConfig();
     switch (id) {
-      case R.id.linear_path_option:
-        newPath = PathFactory.getLinearPath(pathConfig);
-        noxView.setPath(newPath);
+      case R.id.linear_shape_option:
+        newShape = ShapeFactory.getLinearShape(shapeConfig);
+        noxView.setShape(newShape);
         break;
-      case R.id.linear_centered_path_option:
-        newPath = PathFactory.getLinearCenteredPath(pathConfig);
-        noxView.setPath(newPath);
+      case R.id.linear_centered_shape_option:
+        newShape = ShapeFactory.getLinearCenteredShape(shapeConfig);
+        noxView.setShape(newShape);
         break;
-      case R.id.circular_path_option:
-        newPath = PathFactory.getCircularPath(pathConfig);
-        noxView.setPath(newPath);
+      case R.id.circular_shape_option:
+        newShape = ShapeFactory.getCircularShape(shapeConfig);
+        noxView.setShape(newShape);
         break;
-      case R.id.fixed_circular_path_option:
-        newPath = PathFactory.getFixedCircularPath(pathConfig);
-        noxView.setPath(newPath);
+      case R.id.fixed_circular_shape_option:
+        newShape = ShapeFactory.getFixedCircularShape(shapeConfig);
+        noxView.setShape(newShape);
         break;
       default:
-        newPath = PathFactory.getSpiralPath(pathConfig);
-        noxView.setPath(newPath);
+        newShape = ShapeFactory.getSpiralShape(shapeConfig);
+        noxView.setShape(newShape);
     }
     return super.onOptionsItemSelected(item);
   }
 
-  private PathConfig getPathConfig() {
+  private ShapeConfig getShapeConfig() {
     int numberOfElements = apps.size();
     int viewWidth = noxView.getWidth();
     int viewHeight = noxView.getHeight();
     float itemSize = getResources().getDimension(R.dimen.default_nox_item_size);
     float itemMargin = getResources().getDimension(R.dimen.apps_activity_nox_item_margin);
-    return new PathConfig(numberOfElements, viewWidth, viewHeight, itemSize, itemMargin);
+    return new ShapeConfig(numberOfElements, viewWidth, viewHeight, itemSize, itemMargin);
   }
 }

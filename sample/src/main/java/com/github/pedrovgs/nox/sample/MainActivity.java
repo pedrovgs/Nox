@@ -23,8 +23,8 @@ import android.util.Log;
 import com.github.pedrovgs.nox.NoxItem;
 import com.github.pedrovgs.nox.NoxView;
 import com.github.pedrovgs.nox.OnNoxItemClickListener;
-import com.github.pedrovgs.nox.path.Path;
-import com.github.pedrovgs.nox.path.PathConfig;
+import com.github.pedrovgs.nox.shape.Shape;
+import com.github.pedrovgs.nox.shape.ShapeConfig;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
     noxView.post(new Runnable() {
       @Override public void run() {
         int numberOfItems = configureNoxItems();
-        configurePath(numberOfItems);
+        configureShape(numberOfItems);
         configureClickListeners();
       }
     });
@@ -64,14 +64,14 @@ public class MainActivity extends ActionBarActivity {
     return noxItems.size();
   }
 
-  private void configurePath(int numberOfItems) {
+  private void configureShape(int numberOfItems) {
     int width = noxView.getWidth();
     int height = noxView.getHeight();
     float itemSize = getResources().getDimension(R.dimen.nox_item_size);
     float itemMargin = getResources().getDimension(R.dimen.main_activity_nox_item_margin);
-    PathConfig pathConfig = new PathConfig(numberOfItems, width, height, itemSize, itemMargin);
-    Path verticalLinearPath = new VerticalLinearPath(pathConfig);
-    noxView.setPath(verticalLinearPath);
+    ShapeConfig shapeConfig = new ShapeConfig(numberOfItems, width, height, itemSize, itemMargin);
+    Shape verticalLinearShape = new VerticalLinearShape(shapeConfig);
+    noxView.setShape(verticalLinearShape);
   }
 
   private void configureClickListeners() {

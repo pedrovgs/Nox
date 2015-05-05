@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 /**
- * Spiral Path implementation used to place NoxItem objects in a equiangular spiral starting from
- * the center of the view. NoxItem instances in this path will have the same size. This path is
+ * Spiral Shape implementation used to place NoxItem objects in a equiangular spiral starting from
+ * the center of the view. NoxItem instances in this Shape will have the same size. This Shape is
  * based on the Archimedean Spiral.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-class SpiralPath extends Path {
+class SpiralShape extends Shape {
 
-  SpiralPath(PathConfig pathConfig) {
-    super(pathConfig);
+  SpiralShape(ShapeConfig shapeConfig) {
+    super(shapeConfig);
   }
 
   @Override public void calculate() {
-    PathConfig pc = getPathConfig();
+    ShapeConfig pc = getShapeConfig();
     int numberOfItems = pc.getNumberOfElements();
     float centerY = (pc.getViewHeight() / 2) - (pc.getItemSize() / 2) - (pc.getItemMargin() / 2);
     float centerX = (pc.getViewWidth() / 2) - (pc.getItemSize() / 2) - (pc.getItemMargin() / 2);

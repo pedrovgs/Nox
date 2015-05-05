@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 /**
- * Circular Path implementation used to place NoxItem objects in a circle inside NoxView starting
- * from the center of the view. NoxItem instances in this path will have the same size and the
+ * Circular Shape implementation used to place NoxItem objects in a circle inside NoxView starting
+ * from the center of the view. NoxItem instances in this Shape will have the same size and the
  * number of NoxItem elements per circle level will follow a linear distribution where "n = 6 *
  * iteration" and one element in the middle of the view.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-class CircularPath extends Path {
+class CircularShape extends Shape {
 
   private static final double RAD = Math.PI / 180;
   private static final int BASE = 6;
 
-  CircularPath(PathConfig pathConfig) {
-    super(pathConfig);
+  CircularShape(ShapeConfig shapeConfig) {
+    super(shapeConfig);
   }
 
   @Override public void calculate() {
-    PathConfig pc = getPathConfig();
+    ShapeConfig pc = getShapeConfig();
     int numberOfItems = pc.getNumberOfElements();
     final float centerX = getCenterX();
     final float centerY = getCenterY();
@@ -50,24 +50,24 @@ class CircularPath extends Path {
   }
 
   protected int getNumberOfElementsPerIteration(int item, int iteration) {
-    int numberOfElements = getPathConfig().getNumberOfElements();
+    int numberOfElements = getShapeConfig().getNumberOfElements();
     int numberOfElementsPerIteration = Math.max(BASE * iteration, 1);
     numberOfElementsPerIteration = Math.min(numberOfElementsPerIteration, numberOfElements - item);
     return numberOfElementsPerIteration;
   }
 
   private float getCenterY() {
-    PathConfig pc = getPathConfig();
+    ShapeConfig pc = getShapeConfig();
     return pc.getViewHeight() / 2 - pc.getItemSize() / 2 - pc.getItemMargin() / 2;
   }
 
   private float getCenterX() {
-    PathConfig pc = getPathConfig();
+    ShapeConfig pc = getShapeConfig();
     return pc.getViewWidth() / 2 - pc.getItemSize() / 2 - pc.getItemMargin() / 2;
   }
 
   private float getDistance() {
-    PathConfig pc = getPathConfig();
+    ShapeConfig pc = getShapeConfig();
     return pc.getItemSize() + pc.getItemMargin();
   }
 

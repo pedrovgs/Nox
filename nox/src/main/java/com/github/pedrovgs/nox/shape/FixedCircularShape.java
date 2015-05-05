@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 /**
- * CircularPath extension used to place NoxItem objects in a circle inside NoxView
- * starting from the center of the view. NoxItem instances in this path will have the same size and
+ * CircularShape extension used to place NoxItem objects in a circle inside NoxView
+ * starting from the center of the view. NoxItem instances in this shape will have the same size and
  * the number of NoxItem elements per circle level be calculated in base of the size of the
  * element. Every circle level will be filled with NoxItem instances.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-class FixedCircularPath extends CircularPath {
+class FixedCircularShape extends CircularShape {
 
-  FixedCircularPath(PathConfig pathConfig) {
-    super(pathConfig);
+  FixedCircularShape(ShapeConfig shapeConfig) {
+    super(shapeConfig);
   }
 
   @Override protected int getNumberOfElementsPerIteration(int item, int iteration) {
     int numberOfElementsPerIteration = 0;
-    float itemSize = getPathConfig().getItemSize() + getPathConfig().getItemMargin();
+    float itemSize = getShapeConfig().getItemSize() + getShapeConfig().getItemMargin();
     float radius = iteration * itemSize;
     float circumferenceLong = (float) (2 * Math.PI * radius);
     if (itemSize >= circumferenceLong) {
-      numberOfElementsPerIteration = Math.min(getPathConfig().getNumberOfElements(), 1);
+      numberOfElementsPerIteration = Math.min(getShapeConfig().getNumberOfElements(), 1);
     } else {
       numberOfElementsPerIteration = (int) (circumferenceLong / itemSize);
       numberOfElementsPerIteration =
-          Math.min(numberOfElementsPerIteration, getPathConfig().getNumberOfElements() - item);
+          Math.min(numberOfElementsPerIteration, getShapeConfig().getNumberOfElements() - item);
     }
 
     return numberOfElementsPerIteration;

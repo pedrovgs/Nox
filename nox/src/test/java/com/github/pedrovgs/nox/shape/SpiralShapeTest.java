@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 import org.junit.Test;
 
@@ -23,64 +23,64 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class SpiralPathTest extends BasePathTestCase {
+public class SpiralShapeTest extends BasePathTestCase {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
   private static final float ANY_ITEM_SIZE = 8;
   private static final float ANY_ITEM_MARGIN = 2;
 
-  private Path path;
+  private Shape shape;
 
-  @Override public Path getPath(PathConfig pathConfig) {
-    return PathFactory.getSpiralPath(pathConfig);
+  @Override public Shape getPath(ShapeConfig shapeConfig) {
+    return ShapeFactory.getSpiralShape(shapeConfig);
   }
 
   @Test public void shouldReturnTheMiddleOfTheViewAsPositionForJustOneElement() {
-    PathConfig pathConfig =
+    ShapeConfig shapeConfig =
         givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    path = getPath(pathConfig);
+    shape = getPath(shapeConfig);
 
-    path.calculate();
+    shape.calculate();
 
     float expectedLeft = (ANY_VIEW_WIDTH / 2) - (ANY_ITEM_SIZE / 2) - (ANY_ITEM_MARGIN / 2);
-    assertEquals(expectedLeft, path.getXForItemAtPosition(0), DELTA);
+    assertEquals(expectedLeft, shape.getXForItemAtPosition(0), DELTA);
     float expectedTop = (ANY_VIEW_HEIGHT / 2) - (ANY_ITEM_SIZE / 2) - (ANY_ITEM_MARGIN / 2);
-    assertEquals(expectedTop, path.getYForItemAtPosition(0), DELTA);
+    assertEquals(expectedTop, shape.getYForItemAtPosition(0), DELTA);
   }
 
   @Test public void shouldConfigureElementsFollowingAnArchimedeanSpiral() {
-    PathConfig pathConfig =
+    ShapeConfig shapeConfig =
         givenPathConfig(10, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    path = getPath(pathConfig);
+    shape = getPath(shapeConfig);
 
-    path.calculate();
+    shape.calculate();
 
-    assertElementsConformAnSpiral(pathConfig);
+    assertElementsConformAnSpiral(shapeConfig);
   }
 
-  private void assertElementsConformAnSpiral(PathConfig pathConfig) {
-    for (int i = 0; i < pathConfig.getNumberOfElements(); i++) {
-      float expectedLeft = getExpectedLeftAtPosition(i, pathConfig);
-      float expectedTop = getExpectedTopAtPosition(i, pathConfig);
-      assertEquals(expectedLeft, path.getXForItemAtPosition(i), DELTA);
-      assertEquals(expectedTop, path.getYForItemAtPosition(i), DELTA);
+  private void assertElementsConformAnSpiral(ShapeConfig shapeConfig) {
+    for (int i = 0; i < shapeConfig.getNumberOfElements(); i++) {
+      float expectedLeft = getExpectedLeftAtPosition(i, shapeConfig);
+      float expectedTop = getExpectedTopAtPosition(i, shapeConfig);
+      assertEquals(expectedLeft, shape.getXForItemAtPosition(i), DELTA);
+      assertEquals(expectedTop, shape.getYForItemAtPosition(i), DELTA);
     }
   }
 
-  private float getExpectedLeftAtPosition(int i, PathConfig pathConfig) {
-    float angle = pathConfig.getItemSize();
-    float centerX = (pathConfig.getViewWidth() / 2)
-        - (pathConfig.getItemSize() / 2)
-        - (pathConfig.getItemMargin() / 2);
+  private float getExpectedLeftAtPosition(int i, ShapeConfig shapeConfig) {
+    float angle = shapeConfig.getItemSize();
+    float centerX = (shapeConfig.getViewWidth() / 2)
+        - (shapeConfig.getItemSize() / 2)
+        - (shapeConfig.getItemMargin() / 2);
     return (float) (centerX + (angle * i * Math.cos(i)));
   }
 
-  private float getExpectedTopAtPosition(int i, PathConfig pathConfig) {
-    float angle = pathConfig.getItemSize();
-    float centerY = (pathConfig.getViewHeight() / 2)
-        - (pathConfig.getItemSize() / 2)
-        - (pathConfig.getItemMargin() / 2);
+  private float getExpectedTopAtPosition(int i, ShapeConfig shapeConfig) {
+    float angle = shapeConfig.getItemSize();
+    float centerY = (shapeConfig.getViewHeight() / 2)
+        - (shapeConfig.getItemSize() / 2)
+        - (shapeConfig.getItemMargin() / 2);
     return (float) (centerY + (angle * i * Math.sin(i)));
   }
 }

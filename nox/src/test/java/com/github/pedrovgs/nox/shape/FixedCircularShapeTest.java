@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,57 +24,57 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class FixedCircularPathTest extends BasePathTestCase {
+public class FixedCircularShapeTest extends BasePathTestCase {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
   private static final float ANY_ITEM_SIZE = 8;
   private static final float ANY_ITEM_MARGIN = 2;
 
-  private Path path;
+  private Shape shape;
 
   @Before public void setUp() {
-    PathConfig pathConfig =
+    ShapeConfig shapeConfig =
         givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    path = getPath(pathConfig);
+    shape = getPath(shapeConfig);
   }
 
-  @Override public Path getPath(PathConfig pathConfig) {
-    return PathFactory.getFixedCircularPath(pathConfig);
+  @Override public Shape getPath(ShapeConfig shapeConfig) {
+    return ShapeFactory.getFixedCircularShape(shapeConfig);
   }
 
   @Test public void shouldReturnTheMiddleOfTheViewAsPositionForJustOneElement() {
-    PathConfig pathConfig =
+    ShapeConfig shapeConfig =
         givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    path = getPath(pathConfig);
+    shape = getPath(shapeConfig);
 
-    path.calculate();
+    shape.calculate();
 
     float expectedLeft = (ANY_VIEW_WIDTH / 2) - (ANY_ITEM_SIZE / 2) - (ANY_ITEM_MARGIN / 2);
-    assertEquals(expectedLeft, path.getXForItemAtPosition(0), DELTA);
+    assertEquals(expectedLeft, shape.getXForItemAtPosition(0), DELTA);
     float expectedTop = (ANY_VIEW_HEIGHT / 2) - (ANY_ITEM_SIZE / 2) - (ANY_ITEM_MARGIN / 2);
-    assertEquals(expectedTop, path.getYForItemAtPosition(0), DELTA);
+    assertEquals(expectedTop, shape.getYForItemAtPosition(0), DELTA);
   }
 
   @Test public void shouldPositionElementsFollowingACircle() {
-    PathConfig pathConfig =
+    ShapeConfig shapeConfig =
         givenPathConfig(5, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    path = getPath(pathConfig);
+    shape = getPath(shapeConfig);
 
-    path.calculate();
+    shape.calculate();
 
     float centerX = ANY_VIEW_WIDTH / 2 - ANY_ITEM_SIZE / 2 - ANY_ITEM_MARGIN / 2;
     float centerY = ANY_VIEW_HEIGHT / 2 - ANY_ITEM_SIZE / 2 - ANY_ITEM_MARGIN / 2;
     float radius = ANY_ITEM_SIZE + ANY_ITEM_MARGIN;
-    assertElementPositions(0, centerX, centerY, path);
-    assertElementPositions(1, centerX, centerY + radius, path);
-    assertElementPositions(2, centerX + radius, centerY, path);
-    assertElementPositions(3, centerX, centerY - radius, path);
-    assertElementPositions(4, centerX - radius, centerY, path);
+    assertElementPositions(0, centerX, centerY, shape);
+    assertElementPositions(1, centerX, centerY + radius, shape);
+    assertElementPositions(2, centerX + radius, centerY, shape);
+    assertElementPositions(3, centerX, centerY - radius, shape);
+    assertElementPositions(4, centerX - radius, centerY, shape);
   }
 
-  private void assertElementPositions(int position, float x, float y, Path path) {
-    assertEquals(x, path.getXForItemAtPosition(position), DELTA);
-    assertEquals(y, path.getYForItemAtPosition(position), DELTA);
+  private void assertElementPositions(int position, float x, float y, Shape shape) {
+    assertEquals(x, shape.getXForItemAtPosition(position), DELTA);
+    assertEquals(y, shape.getYForItemAtPosition(position), DELTA);
   }
 }

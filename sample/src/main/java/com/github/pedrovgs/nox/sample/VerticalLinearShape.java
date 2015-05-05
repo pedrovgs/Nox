@@ -16,24 +16,24 @@
 
 package com.github.pedrovgs.nox.sample;
 
-import com.github.pedrovgs.nox.path.Path;
-import com.github.pedrovgs.nox.path.PathConfig;
+import com.github.pedrovgs.nox.shape.Shape;
+import com.github.pedrovgs.nox.shape.ShapeConfig;
 
 /**
- * Vertical linear Path implementation used to place NoxItem objects in a single vertical line in
- * NoxView starting from the top of the view. NoxItem instances in this path will be centered.
+ * Vertical linear Shape implementation used to place NoxItem objects in a single vertical line in
+ * NoxView starting from the top of the view. NoxItem instances in this Shape will be centered.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class VerticalLinearPath extends Path {
+public class VerticalLinearShape extends Shape {
 
-  public VerticalLinearPath(PathConfig pathConfig) {
-    super(pathConfig);
+  public VerticalLinearShape(ShapeConfig shapeConfig) {
+    super(shapeConfig);
   }
 
   @Override public void calculate() {
     int numberOfElements = getNumberOfElements();
-    PathConfig pc = getPathConfig();
+    ShapeConfig pc = getShapeConfig();
     float centerX = pc.getViewWidth() / 2 - pc.getItemSize() / 2;
     float y = getFirstElementPosition();
     for (int position = 0; position < numberOfElements; position++) {
@@ -44,10 +44,10 @@ public class VerticalLinearPath extends Path {
   }
 
   private float getFirstElementPosition() {
-    float center = getPathConfig().getViewHeight() / 2;
+    float center = getShapeConfig().getViewHeight() / 2;
     int numberOfElements = getNumberOfElements();
-    float itemSize = getPathConfig().getItemSize();
-    float itemMargin = getPathConfig().getItemMargin();
+    float itemSize = getShapeConfig().getItemSize();
+    float itemMargin = getShapeConfig().getItemMargin();
     return center - numberOfElements * (itemSize / 2 + itemMargin / 2);
   }
 }

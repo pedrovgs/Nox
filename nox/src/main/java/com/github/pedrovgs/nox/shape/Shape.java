@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 /**
  * Describes where NoxView has to draw NoxItems inside the space available in NoxView. Information
- * needed to indicate the exact position for every item can be retrieved from the PathConfig object
+ * needed to indicate the exact position for every item can be retrieved from the ShapeConfig object
  * passed as argument during the object construction.
  *
  * The offset attributes indicates the scroll performed by the user. This method is called
- * periodically when the user scrolls the view containing this path.
+ * periodically when the user scrolls the view containing this shape.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
-public abstract class Path {
+public abstract class Shape {
 
-  private final PathConfig pathConfig;
+  private final ShapeConfig shapeConfig;
 
   private float[] noxItemsXPositions;
   private float[] noxItemsYPositions;
@@ -39,15 +39,15 @@ public abstract class Path {
   private int minY;
   private int maxY;
 
-  public Path(PathConfig pathConfig) {
-    this.pathConfig = pathConfig;
-    int numberOfElements = pathConfig.getNumberOfElements();
+  public Shape(ShapeConfig shapeConfig) {
+    this.shapeConfig = shapeConfig;
+    int numberOfElements = shapeConfig.getNumberOfElements();
     this.noxItemsXPositions = new float[numberOfElements];
     this.noxItemsYPositions = new float[numberOfElements];
   }
 
   /**
-   * Configures the new offset to apply to the path.
+   * Configures the new offset to apply to the shape.
    */
   public void setOffset(int offsetX, int offsetY) {
     this.offsetX = offsetX;
@@ -55,21 +55,20 @@ public abstract class Path {
   }
 
   /**
-   * Path extensions should implement this method and configure the position in the x and y axis
-   * for
-   * every NoxItem.
+   * Shape extensions should implement this method and configure the position in the x and y axis
+   * for every NoxItem.
    */
   public abstract void calculate();
 
   /**
-   * Returns the X position of a NoxItem for the current path.
+   * Returns the X position of a NoxItem for the current shape.
    */
   public final float getXForItemAtPosition(int position) {
     return noxItemsXPositions[position];
   }
 
   /**
-   * Returns the Y position of a NoxItem for the current path.
+   * Returns the Y position of a NoxItem for the current shape.
    */
   public final float getYForItemAtPosition(int position) {
     return noxItemsYPositions[position];
@@ -82,9 +81,9 @@ public abstract class Path {
     float x = (getXForItemAtPosition(position) + offsetX);
     float y = (getYForItemAtPosition(position) + offsetY);
     float itemSize = getNoxItemSize();
-    int viewWidth = pathConfig.getViewWidth();
+    int viewWidth = shapeConfig.getViewWidth();
     boolean matchesHorizontally = x + itemSize >= 0 && x <= viewWidth;
-    float viewHeight = pathConfig.getViewHeight();
+    float viewHeight = shapeConfig.getViewHeight();
     boolean matchesVertically = y + itemSize >= 0 && y <= viewHeight;
     return matchesHorizontally && matchesVertically;
   }
@@ -101,7 +100,7 @@ public abstract class Path {
    */
   public final int getMaxX() {
     return (int) (this.maxX + getNoxItemSize() + getNoxItemMargin()
-        - getPathConfig().getViewWidth());
+        - getShapeConfig().getViewWidth());
   }
 
   /**
@@ -116,28 +115,28 @@ public abstract class Path {
    */
   public final int getMaxY() {
     return (int) (this.maxY + getNoxItemMargin() + getNoxItemSize()
-        - getPathConfig().getViewHeight());
+        - getShapeConfig().getViewHeight());
   }
 
   /**
    * Returns the over scroll used by the view during the fling process.
    */
   public int getOverSize() {
-    return (int) pathConfig.getItemMargin();
+    return (int) shapeConfig.getItemMargin();
   }
 
   /**
-   * Returns the PathConfig used to create this path.
+   * Returns the ShapeConfig used to create this shape.
    */
-  public final PathConfig getPathConfig() {
-    return pathConfig;
+  public final ShapeConfig getShapeConfig() {
+    return shapeConfig;
   }
 
   /**
-   * Returns the number of elements the Path is using to calculate NoxItems positions.
+   * Returns the number of elements the Shape is using to calculate NoxItems positions.
    */
   public int getNumberOfElements() {
-    return getPathConfig().getNumberOfElements();
+    return getShapeConfig().getNumberOfElements();
   }
 
   /**
@@ -161,19 +160,19 @@ public abstract class Path {
   }
 
   /**
-   * Configures the number of element the Path is going to use to calculate NoxItems positions.
+   * Configures the number of element the Shape is going to use to calculate NoxItems positions.
    * This method resets the previous position calculus.
    */
   public void setNumberOfElements(int numberOfElements) {
-    this.pathConfig.setNumberOfElements(numberOfElements);
+    this.shapeConfig.setNumberOfElements(numberOfElements);
     this.noxItemsXPositions = new float[numberOfElements];
     this.noxItemsYPositions = new float[numberOfElements];
   }
 
   /**
    * Configures the X position for a given NoxItem indicated with the item position. This method
-   * uses two counters to calculate the Path minimum and maximum X position used to configure the
-   * Path scroll.
+   * uses two counters to calculate the Shape minimum and maximum X position used to configure the
+   * Shape scroll.
    */
   protected final void setNoxItemXPosition(int position, float x) {
     noxItemsXPositions[position] = x;
@@ -183,8 +182,8 @@ public abstract class Path {
 
   /**
    * Configures the Y position for a given NoxItem indicated with the item position. This method
-   * uses two counters to calculate the Path minimum and maximum Y position used to configure the
-   * Path scroll.
+   * uses two counters to calculate the Shape minimum and maximum Y position used to configure the
+   * Shape scroll.
    */
   protected final void setNoxItemYPosition(int position, float y) {
     noxItemsYPositions[position] = y;
@@ -196,13 +195,13 @@ public abstract class Path {
    * Returns the NoxItem size taking into account the scale factor.
    */
   protected float getNoxItemSize() {
-    return getPathConfig().getItemSize();
+    return getShapeConfig().getItemSize();
   }
 
   /**
    * Returns the NoxIte margin taking into account the scale factor.
    */
   private float getNoxItemMargin() {
-    return getPathConfig().getItemMargin();
+    return getShapeConfig().getItemMargin();
   }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.pedrovgs.nox.path;
+package com.github.pedrovgs.nox.shape;
 
 import org.junit.Test;
 
@@ -29,40 +29,40 @@ public abstract class BasePathTestCase {
   private static final int ITEM_MARGIN = 2;
   protected static final double DELTA = 0.1;
 
-  public abstract Path getPath(PathConfig pathConfig);
+  public abstract Shape getPath(ShapeConfig shapeConfig);
 
   @Test public void shouldReturnTrueIfViewWidthIsSmallerThanItemSize() {
     int viewWidth = ITEM_SIZE - 1;
     int viewHeight = ITEM_SIZE + ITEM_MARGIN;
-    PathConfig pathConfig = new PathConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
+    ShapeConfig shapeConfig = new ShapeConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
 
-    Path path = getPath(pathConfig);
+    Shape shape = getPath(shapeConfig);
 
-    assertTrue(path.isItemInsideView(0));
+    assertTrue(shape.isItemInsideView(0));
   }
 
   @Test public void shouldReturnTrueIfViewHeightIsSmallerThanItemSize() {
     int viewWidth = ITEM_SIZE + ITEM_MARGIN;
     int viewHeight = ITEM_SIZE - 1;
-    PathConfig pathConfig = new PathConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
+    ShapeConfig shapeConfig = new ShapeConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
 
-    Path path = getPath(pathConfig);
+    Shape shape = getPath(shapeConfig);
 
-    assertTrue(path.isItemInsideView(0));
+    assertTrue(shape.isItemInsideView(0));
   }
 
   @Test public void shouldReturnTrueIfViewIsBiggerOrEqualsThanItemSize() {
     int viewWidth = ITEM_SIZE + ITEM_MARGIN;
     int viewHeight = ITEM_SIZE + ITEM_MARGIN;
-    PathConfig pathConfig = new PathConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
+    ShapeConfig shapeConfig = new ShapeConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
 
-    Path path = getPath(pathConfig);
+    Shape shape = getPath(shapeConfig);
 
-    assertTrue(path.isItemInsideView(0));
+    assertTrue(shape.isItemInsideView(0));
   }
 
-  protected PathConfig givenPathConfig(int numberOfElements, int viewWidth, int viewHeight,
+  protected ShapeConfig givenPathConfig(int numberOfElements, int viewWidth, int viewHeight,
       float itemSize, float itemMargin) {
-    return new PathConfig(numberOfElements, viewWidth, viewHeight, itemSize, itemMargin);
+    return new ShapeConfig(numberOfElements, viewWidth, viewHeight, itemSize, itemMargin);
   }
 }
