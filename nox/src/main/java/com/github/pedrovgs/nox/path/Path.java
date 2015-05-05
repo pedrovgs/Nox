@@ -147,8 +147,8 @@ public abstract class Path {
   public int getNoxItemHit(float x, float y) {
     int noxItemPosition = -1;
     for (int i = 0; i < getNumberOfElements(); i++) {
-      float noxItemX = getXForItemAtPosition(i);
-      float noxItemY = getYForItemAtPosition(i);
+      float noxItemX = getXForItemAtPosition(i) + offsetX;
+      float noxItemY = getYForItemAtPosition(i) + offsetY;
       float itemSize = getNoxItemSize();
       boolean matchesHorizontally = x >= noxItemX && x <= noxItemX + itemSize;
       boolean matchesVertically = y >= noxItemY && y <= noxItemY + itemSize;
