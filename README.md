@@ -12,7 +12,7 @@ Usage
 
 To use Nox inside your layouts you have to follow this steps:
 
-* 1. Add a [NoxView][5] widget to your layout:
+* 1 - Add a [NoxView][5] widget to your layout:
 
 ```xml
 
@@ -28,15 +28,17 @@ To use Nox inside your layouts you have to follow this steps:
 
 ```
 
-* 2. Provide different configurations based on styleable attributes:
+* 2 - Provide different configurations based on styleable attributes:
 
 * NoxItem size: ``nox:item_size``
 * NoxItem margin: ``nox:item_margin``
 * NoxItem placeholder: ``nox:item_placeholder``. This placeholder will be used if the NoxItem to draw has no a placeholder configured.
-* Apply circular transformation: ``nox:use_circular_transformation``. Applies a Picasso circular transformation to the resource loaded.
+* Use circular transformation: ``nox:use_circular_transformation``. Applies a Picasso circular transformation to the resource loaded.
 * Shape used: ``nox:shape``. Review [attrs.xml][6] file to know the list of shapes ready to be used in the library.
 
 **This configuration can be also provided programmatically. Take a look to the sample project to find some samples**.
+
+If you are going to download any resource from internet remember to add the internet permission to your AndroidManifest.
 
 Add it to your project
 ----------------------
@@ -111,7 +113,7 @@ License
 [3]: https://github.com/pedrovgs/Nox/tree/master/nox/src/main/java/com/github/pedrovgs/nox/shape/CircularShape.java
 [4]: ./art/screenshot_demo_1.gif
 [5]: https://github.com/pedrovgs/Nox/tree/master/nox/src/main/java/com/github/pedrovgs/nox/NoxView.java
-[6]: https://github.com/pedrovgs/Nox/tree/master/nox/src/res/values/attrs.xml
+[6]: https://github.com/pedrovgs/Nox/blob/master/nox/src/main/res/values/attrs.xml
 [7]: https://github.com/robolectric/robolectric
 [8]: https://github.com/junit-team/junit
 [9]: https://github.com/mockito/mockito
