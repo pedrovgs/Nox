@@ -17,9 +17,8 @@
 package com.github.pedrovgs.nox.shape;
 
 /**
- * Factory used to obtain different Shape implementations. Returns different Shape implementations
- * ready to be used. This class describes all the library possibilities related to how to show
- * NoxItem instances inside NoxView.
+ * Provides different Shape implementations ready to be used. This class describes all the library
+ * possibilities related to how to show NoxItem instances inside NoxView.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */

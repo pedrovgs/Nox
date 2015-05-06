@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class LinearShapeTest extends BasePathTestCase {
+public class LinearShapeTest extends BaseShapeTestCase {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
@@ -37,20 +37,20 @@ public class LinearShapeTest extends BasePathTestCase {
 
   @Before public void setUp() {
     ShapeConfig shapeConfig =
-        givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+        givenAShapeConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    shape = getShape(shapeConfig);
   }
 
-  @Override public Shape getPath(ShapeConfig shapeConfig) {
+  @Override public Shape getShape(ShapeConfig shapeConfig) {
     return ShapeFactory.getLinearShape(shapeConfig);
   }
 
   @Test public void shouldUseSameTopForEveryElement() {
     int numberOfElements = 10;
     ShapeConfig shapeConfig =
-        givenPathConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
+        givenAShapeConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
             ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+    shape = getShape(shapeConfig);
 
     shape.calculate();
 
@@ -63,9 +63,9 @@ public class LinearShapeTest extends BasePathTestCase {
   @Test public void shouldCalculateLeftPositionsUsingOneLinearDistributionUsingItemSizeAndMargin() {
     int numberOfElements = 10;
     ShapeConfig shapeConfig =
-        givenPathConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
+        givenAShapeConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
             ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+    shape = getShape(shapeConfig);
 
     shape.calculate();
 
@@ -86,8 +86,8 @@ public class LinearShapeTest extends BasePathTestCase {
 
   @Test public void shouldReturnTrueJustForTheElementsInsideTheView() {
     ShapeConfig shapeConfig =
-        givenPathConfig(11, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+        givenAShapeConfig(11, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    shape = getShape(shapeConfig);
 
     shape.calculate();
 

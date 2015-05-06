@@ -20,7 +20,7 @@ import com.github.pedrovgs.nox.shape.Shape;
 import com.github.pedrovgs.nox.shape.ShapeConfig;
 
 /**
- * Fake path implementation created to be used in Nox tests. This Path implementation adds two
+ * Fake Shape implementation created to be used in Nox tests. This Shape implementation adds two
  * methods to be able to displace NoxItem objects in a fixed x and y position.
  *
  * @author Pedro Vicente Gomez Sanchez.

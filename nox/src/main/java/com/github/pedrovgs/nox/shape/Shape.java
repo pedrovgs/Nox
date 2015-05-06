@@ -18,7 +18,8 @@ package com.github.pedrovgs.nox.shape;
 
 /**
  * Describes where NoxView has to draw NoxItems inside the space available in NoxView. Information
- * needed to indicate the exact position for every item can be retrieved from the ShapeConfig object
+ * needed to indicate the exact position for every item can be retrieved from the ShapeConfig
+ * object
  * passed as argument during the object construction.
  *
  * The offset attributes indicates the scroll performed by the user. This method is called
@@ -47,7 +48,7 @@ public abstract class Shape {
   }
 
   /**
-   * Configures the new offset to apply to the shape.
+   * Configures the new offset to apply to the Shape.
    */
   public void setOffset(int offsetX, int offsetY) {
     this.offsetX = offsetX;
@@ -55,27 +56,28 @@ public abstract class Shape {
   }
 
   /**
-   * Shape extensions should implement this method and configure the position in the x and y axis
-   * for every NoxItem.
+   * Shape extensions have implement this method and configure the position in the x and y axis for
+   * every NoxItem.
    */
   public abstract void calculate();
 
   /**
-   * Returns the X position of a NoxItem for the current shape.
+   * Returns the X position of a NoxItem for the current Shape.
    */
   public final float getXForItemAtPosition(int position) {
     return noxItemsXPositions[position];
   }
 
   /**
-   * Returns the Y position of a NoxItem for the current shape.
+   * Returns the Y position of a NoxItem for the current Shape.
    */
   public final float getYForItemAtPosition(int position) {
     return noxItemsYPositions[position];
   }
 
   /**
-   * Returns true if the view should be rendered inside the view window.
+   * Returns true if the view should be rendered inside the view window taking into account the
+   * offset applied by the scroll effect.
    */
   public final boolean isItemInsideView(int position) {
     float x = (getXForItemAtPosition(position) + offsetX);
@@ -119,14 +121,15 @@ public abstract class Shape {
   }
 
   /**
-   * Returns the over scroll used by the view during the fling process.
+   * Returns the over scroll used by the view during the fling process. By default this value will
+   * be equals to the configured margin.
    */
   public int getOverSize() {
     return (int) shapeConfig.getItemMargin();
   }
 
   /**
-   * Returns the ShapeConfig used to create this shape.
+   * Returns the ShapeConfig used to create this Shape.
    */
   public final ShapeConfig getShapeConfig() {
     return shapeConfig;
@@ -141,7 +144,7 @@ public abstract class Shape {
 
   /**
    * Returns the position of the NoxView if any of the previously configured NoxItem instances is
-   * hit. If there is no any NoxItem hit this returns -1.
+   * hit. If there is no any NoxItem hit this method returns -1.
    */
   public int getNoxItemHit(float x, float y) {
     int noxItemPosition = -1;

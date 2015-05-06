@@ -40,9 +40,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Main library component. This custom view is going to receive a List of Nox objects and create a
- * awesome panel full of images. This new UI component is going to be similar to the Apple's watch
- * main menu user interface http://cdni.wired.co.uk/1240x826/a_c/apple-watch-6_1.jpg
+ * Main library component. This custom view receives a List of Nox objects and creates a awesome
+ * panel full of images following different shapes. This new UI component is going to be similar to
+ * the Apple's watch main menu user interface.
  *
  * NoxItem objects are going to be used to render the user interface using the resource used
  * to render inside each element and a view holder.
@@ -207,7 +207,8 @@ public class NoxView extends View {
   }
 
   /**
-   * Configures a OnNoxItemClickListener instace to be notified when a NoxItem instance is clicked.
+   * Configures a OnNoxItemClickListener instance to be notified when a NoxItem instance is
+   * clicked.
    */
   public void setOnNoxItemClickListener(OnNoxItemClickListener listener) {
     validateListener(listener);
@@ -305,8 +306,9 @@ public class NoxView extends View {
   }
 
   private void initializeScroller() {
-    scroller = new Scroller(this, shape.getMinX(), shape.getMaxX(), shape.getMinY(), shape.getMaxY(),
-        shape.getOverSize());
+    scroller =
+        new Scroller(this, shape.getMinX(), shape.getMaxX(), shape.getMinY(), shape.getMaxY(),
+            shape.getOverSize());
     scroller.reset();
   }
 
@@ -348,8 +350,8 @@ public class NoxView extends View {
   }
 
   /**
-   * Initializes a Shape instance given the NoxView configuration provided programmatically or using
-   * XML styleable attributes.
+   * Initializes a Shape instance given the NoxView configuration provided programmatically or
+   * using XML styleable attributes.
    */
   private void createShape() {
     if (shape == null) {
@@ -453,30 +455,6 @@ public class NoxView extends View {
   }
 
   /**
-   * Method created for testing purposes. Configures the Scroller to be used by NoxView.
-   * This method is needed because we don't have access to the view constructor.
-   */
-  void setScroller(Scroller scroller) {
-    this.scroller = scroller;
-  }
-
-  /**
-   * Method created for testing purposes. Configures the NoxItemCatalog to be used by NoxView.
-   * This method is needed because we don't have access to the view constructor.
-   */
-  void setNoxItemCatalog(NoxItemCatalog noxItemCatalog) {
-    this.noxItemCatalog = noxItemCatalog;
-  }
-
-  /**
-   * Method created for testing purposes. Returns the NoxItemCatalog to be used by NoxView.
-   * This method is needed because we don't have access to the view constructor.
-   */
-  NoxItemCatalog getNoxItemCatalog() {
-    return noxItemCatalog;
-  }
-
-  /**
    * Returns a GestureDetectorCompat lazy instantiated created to handle single tap events and
    * detect if a NoxItem has been clicked to notify the previously configured listener.
    */
@@ -559,6 +537,30 @@ public class NoxView extends View {
     if (refreshView) {
       refreshView();
     }
+  }
+
+  /**
+   * Method created for testing purposes. Configures the Scroller to be used by NoxView.
+   * This method is needed because we don't have access to the view constructor.
+   */
+  void setScroller(Scroller scroller) {
+    this.scroller = scroller;
+  }
+
+  /**
+   * Method created for testing purposes. Configures the NoxItemCatalog to be used by NoxView.
+   * This method is needed because we don't have access to the view constructor.
+   */
+  void setNoxItemCatalog(NoxItemCatalog noxItemCatalog) {
+    this.noxItemCatalog = noxItemCatalog;
+  }
+
+  /**
+   * Method created for testing purposes. Returns the NoxItemCatalog to be used by NoxView.
+   * This method is needed because we don't have access to the view constructor.
+   */
+  NoxItemCatalog getNoxItemCatalog() {
+    return noxItemCatalog;
   }
 }
 

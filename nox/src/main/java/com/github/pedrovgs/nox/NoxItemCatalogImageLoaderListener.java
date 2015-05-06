@@ -21,6 +21,9 @@ import android.graphics.drawable.Drawable;
 import com.github.pedrovgs.nox.imageloader.ImageLoader;
 
 /**
+ * ImageLoader.Listener implementation used to notify NoxItemcCatalog when a NoxItem is ready to be
+ * used.
+ *
  * @author Pedro Vicente Gomez Sanchez.
  */
 class NoxItemCatalogImageLoaderListener implements ImageLoader.Listener {

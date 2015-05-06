@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class LinearCenteredShapeTest extends BasePathTestCase {
+public class LinearCenteredShapeTest extends BaseShapeTestCase {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
@@ -35,20 +35,20 @@ public class LinearCenteredShapeTest extends BasePathTestCase {
 
   @Before public void setUp() {
     ShapeConfig shapeConfig =
-        givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+        givenAShapeConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    shape = getShape(shapeConfig);
   }
 
-  @Override public Shape getPath(ShapeConfig shapeConfig) {
+  @Override public Shape getShape(ShapeConfig shapeConfig) {
     return ShapeFactory.getLinearCenteredShape(shapeConfig);
   }
 
   @Test public void shouldUseSameTopForEveryElement() {
     int numberOfElements = 10;
     ShapeConfig shapeConfig =
-        givenPathConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
+        givenAShapeConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
             ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+    shape = getShape(shapeConfig);
 
     shape.calculate();
 
@@ -62,9 +62,9 @@ public class LinearCenteredShapeTest extends BasePathTestCase {
   public void shouldCalculateLeftPositionsUsingOneCenteredLinearDistributionUsingItemSizeAndMargin() {
     int numberOfElements = 10;
     ShapeConfig shapeConfig =
-        givenPathConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
+        givenAShapeConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
             ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+    shape = getShape(shapeConfig);
 
     shape.calculate();
 
@@ -77,8 +77,8 @@ public class LinearCenteredShapeTest extends BasePathTestCase {
 
   @Test public void shouldReturnTheMiddleOfTheViewAsLeftPositionForJustOneElement() {
     ShapeConfig shapeConfig =
-        givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+        givenAShapeConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    shape = getShape(shapeConfig);
 
     shape.calculate();
 

@@ -21,22 +21,24 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * Base Shape test case. This test class should be extended by every Shape implementation.
+ *
  * @author Pedro Vicente Gomez Sanchez.
  */
-public abstract class BasePathTestCase {
+public abstract class BaseShapeTestCase {
 
   private static final int ITEM_SIZE = 10;
   private static final int ITEM_MARGIN = 2;
   protected static final double DELTA = 0.1;
 
-  public abstract Shape getPath(ShapeConfig shapeConfig);
+  public abstract Shape getShape(ShapeConfig shapeConfig);
 
   @Test public void shouldReturnTrueIfViewWidthIsSmallerThanItemSize() {
     int viewWidth = ITEM_SIZE - 1;
     int viewHeight = ITEM_SIZE + ITEM_MARGIN;
     ShapeConfig shapeConfig = new ShapeConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
 
-    Shape shape = getPath(shapeConfig);
+    Shape shape = getShape(shapeConfig);
 
     assertTrue(shape.isItemInsideView(0));
   }
@@ -46,7 +48,7 @@ public abstract class BasePathTestCase {
     int viewHeight = ITEM_SIZE - 1;
     ShapeConfig shapeConfig = new ShapeConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
 
-    Shape shape = getPath(shapeConfig);
+    Shape shape = getShape(shapeConfig);
 
     assertTrue(shape.isItemInsideView(0));
   }
@@ -56,12 +58,12 @@ public abstract class BasePathTestCase {
     int viewHeight = ITEM_SIZE + ITEM_MARGIN;
     ShapeConfig shapeConfig = new ShapeConfig(1, viewWidth, viewHeight, ITEM_SIZE, ITEM_MARGIN);
 
-    Shape shape = getPath(shapeConfig);
+    Shape shape = getShape(shapeConfig);
 
     assertTrue(shape.isItemInsideView(0));
   }
 
-  protected ShapeConfig givenPathConfig(int numberOfElements, int viewWidth, int viewHeight,
+  protected ShapeConfig givenAShapeConfig(int numberOfElements, int viewWidth, int viewHeight,
       float itemSize, float itemMargin) {
     return new ShapeConfig(numberOfElements, viewWidth, viewHeight, itemSize, itemMargin);
   }

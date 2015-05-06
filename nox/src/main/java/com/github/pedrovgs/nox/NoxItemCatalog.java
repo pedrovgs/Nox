@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Observable;
 
 /**
- * Processes NoxItem instances to download the images associated to a list of NoxItem instances
- * asynchronously. This object notifies observer previously added when the resource associated to
- * the NoxItem is ready to be used.
+ * Processes NoxItem instances to download the images or resources associated to a list of NoxItem
+ * instances asynchronously. This object notifies the observers previously added when the resource
+ * or the image associated to the NoxItem is ready to be used.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */
@@ -169,7 +169,8 @@ class NoxItemCatalog extends Observable {
   }
 
   /**
-   * Called by NoxItemCatalogImageLoaderListener when a NoxItem is ready to be used.
+   * Notifies a NoxItem is ready to be used. This method is called by
+   * NoxItemCatalogImageLoaderListener when a NoxItem is ready to be used.
    */
   void notifyNoxItemReady(int position) {
     setChanged();
@@ -184,7 +185,7 @@ class NoxItemCatalog extends Observable {
   }
 
   /**
-   * Configures the drawable associated to a NoxItem given a positin.
+   * Configures the drawable associated to a NoxItem given a position.
    */
   void setDrawable(int position, Drawable drawable) {
     drawables[position] = drawable;
@@ -198,7 +199,7 @@ class NoxItemCatalog extends Observable {
   }
 
   /**
-   * Configures the defaultPlaceholder associated to a NoxItem given a position.
+   * Configures the default placeholder associated to a NoxItem given a position.
    */
   void setDefaultPlaceholder(int position, Drawable placeholder) {
     placeholders[position] = placeholder;

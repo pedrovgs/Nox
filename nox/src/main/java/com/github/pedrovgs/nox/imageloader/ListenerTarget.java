@@ -22,6 +22,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 /**
+ * Picasso Target implementation used to notify the resource download.
+ *
  * @author Pedro Vicente Gomez Sanchez.
  */
 class ListenerTarget implements Target {
@@ -30,10 +32,6 @@ class ListenerTarget implements Target {
 
   ListenerTarget(ImageLoader.Listener listener) {
     this.listener = listener;
-  }
-
-  public ImageLoader.Listener getListener() {
-    return listener;
   }
 
   @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {

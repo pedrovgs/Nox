@@ -17,9 +17,8 @@
 package com.github.pedrovgs.nox.shape;
 
 /**
- * Linear Shape implementation used to place NoxItem objects in a single line in
- * NoxView starting from the left side of the view. NoxItem instances in this shape will have the
- * same size.
+ * Linear Shape implementation used to place NoxItem objects in a single line in NoxView starting
+ * from the left side of the view. NoxItem instances in this shape will have the same size.
  *
  * @author Pedro Vicente Gomez Sanchez.
  */

@@ -128,7 +128,7 @@ class Scroller {
   }
 
   /**
-   * Returns the over size configured in construction.
+   * Returns the scroll over size configured in construction.
    */
   int getOverSize() {
     return overSize;
@@ -213,6 +213,10 @@ class Scroller {
     return isInsideVertically ? distanceY : 0;
   }
 
+  /**
+   * Resets the OverScroller instance used to calculate the scroll position during the fling
+   * gesture.
+   */
   private void resetOverScroller() {
     overScroller.forceFinished(true);
     isScrollingFast = false;

@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class SpiralShapeTest extends BasePathTestCase {
+public class SpiralShapeTest extends BaseShapeTestCase {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
@@ -32,14 +32,14 @@ public class SpiralShapeTest extends BasePathTestCase {
 
   private Shape shape;
 
-  @Override public Shape getPath(ShapeConfig shapeConfig) {
+  @Override public Shape getShape(ShapeConfig shapeConfig) {
     return ShapeFactory.getSpiralShape(shapeConfig);
   }
 
   @Test public void shouldReturnTheMiddleOfTheViewAsPositionForJustOneElement() {
     ShapeConfig shapeConfig =
-        givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+        givenAShapeConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    shape = getShape(shapeConfig);
 
     shape.calculate();
 
@@ -51,8 +51,8 @@ public class SpiralShapeTest extends BasePathTestCase {
 
   @Test public void shouldConfigureElementsFollowingAnArchimedeanSpiral() {
     ShapeConfig shapeConfig =
-        givenPathConfig(10, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+        givenAShapeConfig(10, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    shape = getShape(shapeConfig);
 
     shape.calculate();
 

@@ -60,8 +60,6 @@ import static org.mockito.Mockito.verify;
   private static final int ANY_VIEW_HEIGHT = 100;
   private static final int ANY_ITEM_SIZE = 8;
   private static final int ANY_ITEM_MARGIN = 2;
-  private static final float ANY_X_OUT_OF_THE_VIEW = 2000;
-  private static final float ANY_Y_OUT_OF_THE_VIEW = 2000;
 
   private NoxView noxView;
 
@@ -84,9 +82,9 @@ import static org.mockito.Mockito.verify;
     noxView.showNoxItems(noxItems);
   }
 
-  @Test public void shouldInitializeScrollerUsingPathInformation() {
+  @Test public void shouldInitializeScrollerUsingShapeInformation() {
     Shape shape =
-        givenPathConfiguredToReturn(ANY_MIN_X, ANY_MAX_X, ANY_MIN_Y, ANY_MAX_Y, ANY_OVER_SIZE);
+        givenAShapeConfiguredToReturn(ANY_MIN_X, ANY_MAX_X, ANY_MIN_Y, ANY_MAX_Y, ANY_OVER_SIZE);
 
     noxView.setShape(shape);
 
@@ -97,23 +95,23 @@ import static org.mockito.Mockito.verify;
     assertEquals(ANY_OVER_SIZE, noxView.getOverSize());
   }
 
-  @Test public void shouldInvalidateViewOnNewPathConfigured() {
+  @Test public void shouldInvalidateViewOnNewShapeConfigured() {
     noxView = spy(noxView);
     Shape shape =
-        givenPathConfiguredToReturn(ANY_MIN_X, ANY_MAX_X, ANY_MIN_Y, ANY_MAX_Y, ANY_OVER_SIZE);
+        givenAShapeConfiguredToReturn(ANY_MIN_X, ANY_MAX_X, ANY_MIN_Y, ANY_MAX_Y, ANY_OVER_SIZE);
 
     noxView.setShape(shape);
 
     verify(noxView).invalidate();
   }
 
-  @Test(expected = NullPointerException.class) public void shouldNotAcceptNullPathInstances() {
+  @Test(expected = NullPointerException.class) public void shouldNotAcceptNullShapeInstances() {
     noxView.setShape(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void shouldNotAcceptANewPathWithDifferentNumberOfElementsThanThePreviousConfigured() {
-    Shape shape = givenPathWithNumberOfElements(2);
+  public void shouldNotAcceptANewShapeWithDifferentNumberOfElementsThanThePreviousConfigured() {
+    Shape shape = givenAShapeWithNumberOfElements(2);
     List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
 
     noxView.showNoxItems(noxItems);
@@ -128,9 +126,9 @@ import static org.mockito.Mockito.verify;
     verify(noxView).invalidate();
   }
 
-  @Test public void shouldChangePathNumberOfElementsIfNoxItemsWherePreviouslyConfigured() {
+  @Test public void shouldChangeShpaeNumberOfElementsIfNoxItemsWherePreviouslyConfigured() {
     List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
-    Shape shape = givenPathWithNumberOfElements(noxItems.size() + 1);
+    Shape shape = givenAShapeWithNumberOfElements(noxItems.size() + 1);
     shape = spy(shape);
 
     noxView.setShape(shape);
@@ -252,7 +250,7 @@ import static org.mockito.Mockito.verify;
   @Test public void shouldNotDrawNoxItemsOutOfTheViewEvenIfAreReadyToDraw() {
     Canvas canvas = mock(Canvas.class);
     List<NoxItem> noxItems = givenOneListWithJustOneNoxItem();
-    Shape shape = givenPathToPositionElementsOutOfTheView();
+    Shape shape = givenAShapeToPositionElementsOutOfTheView();
 
     noxView.setShape(shape);
     noxView.showNoxItems(noxItems);
@@ -275,23 +273,24 @@ import static org.mockito.Mockito.verify;
     return noxItems;
   }
 
-  private Shape givenPathWithNumberOfElements(int numberOfElements) {
+  private Shape givenAShapeWithNumberOfElements(int numberOfElements) {
     ShapeConfig shapeConfig =
         new ShapeConfig(numberOfElements, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE,
             ANY_ITEM_MARGIN);
     return new FakeShape(shapeConfig);
   }
 
-  private Shape givenPathToPositionElementsOutOfTheView() {
+  private Shape givenAShapeToPositionElementsOutOfTheView() {
     ShapeConfig shapeConfig =
         new ShapeConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    FakeShape path = new FakeShape(shapeConfig);
-    path.setXPosition(-100);
-    path.setYPosition(-200);
-    return path;
+    FakeShape shape = new FakeShape(shapeConfig);
+    shape.setXPosition(-100);
+    shape.setYPosition(-200);
+    return shape;
   }
 
-  private Shape givenPathConfiguredToReturn(int minX, int maxX, int minY, int maxY, int overSize) {
+  private Shape givenAShapeConfiguredToReturn(int minX, int maxX, int minY, int maxY,
+      int overSize) {
     ShapeConfig shapeConfig = new ShapeConfig(1, 0, 0, 0, 0);
     FakeShape path = new FakeShape(shapeConfig);
     path.setBoundaries(minX, maxX, minY, maxY, overSize);

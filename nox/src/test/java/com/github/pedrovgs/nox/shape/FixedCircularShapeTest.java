@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-public class FixedCircularShapeTest extends BasePathTestCase {
+public class FixedCircularShapeTest extends BaseShapeTestCase {
 
   private static final int ANY_VIEW_WIDTH = 100;
   private static final int ANY_VIEW_HEIGHT = 100;
@@ -35,18 +35,18 @@ public class FixedCircularShapeTest extends BasePathTestCase {
 
   @Before public void setUp() {
     ShapeConfig shapeConfig =
-        givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+        givenAShapeConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    shape = getShape(shapeConfig);
   }
 
-  @Override public Shape getPath(ShapeConfig shapeConfig) {
+  @Override public Shape getShape(ShapeConfig shapeConfig) {
     return ShapeFactory.getFixedCircularShape(shapeConfig);
   }
 
   @Test public void shouldReturnTheMiddleOfTheViewAsPositionForJustOneElement() {
     ShapeConfig shapeConfig =
-        givenPathConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+        givenAShapeConfig(1, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    shape = getShape(shapeConfig);
 
     shape.calculate();
 
@@ -58,8 +58,8 @@ public class FixedCircularShapeTest extends BasePathTestCase {
 
   @Test public void shouldPositionElementsFollowingACircle() {
     ShapeConfig shapeConfig =
-        givenPathConfig(5, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
-    shape = getPath(shapeConfig);
+        givenAShapeConfig(5, ANY_VIEW_WIDTH, ANY_VIEW_HEIGHT, ANY_ITEM_SIZE, ANY_ITEM_MARGIN);
+    shape = getShape(shapeConfig);
 
     shape.calculate();
 

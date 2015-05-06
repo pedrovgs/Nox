@@ -34,6 +34,9 @@ import com.github.pedrovgs.nox.shape.ShapeFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Pedro Vicente Gomez Sanchez.
+ */
 public class AppsActivity extends ActionBarActivity {
 
   private static final String LOGTAG = "AppsActivity";

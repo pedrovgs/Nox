@@ -10,7 +10,7 @@ public interface OnNoxItemClickListener {
 
   OnNoxItemClickListener EMPTY = new OnNoxItemClickListener() {
     @Override public void onNoxItemClicked(int position, NoxItem noxItem) {
-      //Empty
+
     }
   };
 
