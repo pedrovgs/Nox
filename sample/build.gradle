@@ -3,7 +3,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.0.0'
+    classpath 'com.android.tools.build:gradle:1.1.1'
   }
 }
 apply plugin: 'com.android.application'
@@ -34,7 +34,7 @@ android {
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   compile project(':nox')
-  compile 'com.android.support:appcompat-v7:21.0.3'
+  compile 'com.android.support:appcompat-v7:22.1.1'
 }
 
 task checkstyle(type: Checkstyle) {

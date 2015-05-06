@@ -32,8 +32,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -48,9 +46,9 @@ import static org.mockito.Mockito.verify;
 /**
  * @author Pedro Vicente Gomez Sanchez.
  */
-@Config(emulateSdk = 18) @RunWith(RobolectricTestRunner.class) public class NoxViewTest {
+@RunWith(NoxRobolectricTestRunner.class) public class NoxViewTest {
 
-  private static final int ANY_RESOURCE_ID = R.drawable.abc_ab_share_pack_holo_dark;
+  private static final int ANY_RESOURCE_ID = R.drawable.ic_nox;
   private static final int ANY_MIN_X = -50;
   private static final int ANY_MAX_X = 50;
   private static final int ANY_MIN_Y = -70;
