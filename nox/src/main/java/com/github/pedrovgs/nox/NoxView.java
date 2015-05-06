@@ -141,7 +141,7 @@ public class NoxView extends View {
     this.shape = shape;
     this.shape.calculate();
     initializeScroller();
-    refreshView();
+    resetScroll();
   }
 
   /**
@@ -213,6 +213,16 @@ public class NoxView extends View {
   public void setOnNoxItemClickListener(OnNoxItemClickListener listener) {
     validateListener(listener);
     this.listener = listener;
+  }
+
+  /**
+   * Resets the scroll position to the 0,0.
+   */
+  public void resetScroll() {
+    if (scroller != null) {
+      scroller.reset();
+      refreshView();
+    }
   }
 
   /**
@@ -309,7 +319,6 @@ public class NoxView extends View {
     scroller =
         new Scroller(this, shape.getMinX(), shape.getMaxX(), shape.getMinY(), shape.getMaxY(),
             shape.getOverSize());
-    scroller.reset();
   }
 
   /**
