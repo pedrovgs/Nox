@@ -1,7 +1,7 @@
 Nox [![Build Status](https://travis-ci.org/pedrovgs/Nox.svg?branch=master)](https://travis-ci.org/pedrovgs/Nox)
 ===
 
-Nox is an Android library created to show a custom view with some [NoxItem][1] instances inside which are drawn following a shape indicated by the library user. You can create you own [Shape][2] implementations if you want, by default there are some interesting Shape implementations to show NoxItem instances following a circular, spiral or linear shape. The space needed to show you NoxItem instances will be calculated automatically by the library and the scroll effect will be enabled if needed. If the Shape you choose needs a bidirectional scroll, like [CircularShape][3], this will be enabled automatically.
+Nox is an Android library created to show a custom view with some images or drawables ([NoxItem][1] instances) inside which are drawn following a shape indicated by the library user. You can create you own [Shape][2] implementations if you want, by default there are some interesting Shape implementations to show NoxItem instances following a circular, spiral or linear shape. The space needed to show you NoxItem instances will be calculated automatically by the library and the scroll effect will be enabled if needed. If the Shape you choose needs a bidirectional scroll, like [CircularShape][3], this will be enabled automatically.
 
 Screenshots
 -----------
