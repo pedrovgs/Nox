@@ -12,7 +12,7 @@ Usage
 
 To use Nox inside your layouts you have to follow this steps:
 
-* 1 - Add a [NoxView][5] widget to your layout:
+* **1** - Add a [NoxView][5] widget to your layout:
 
 ```xml
 
@@ -28,7 +28,7 @@ To use Nox inside your layouts you have to follow this steps:
 
 ```
 
-* 2 - Provide different configurations based on styleable attributes:
+* **2** - Provide different configurations based on styleable attributes:
 
 * NoxItem size: ``nox:item_size``
 * NoxItem margin: ``nox:item_margin``
@@ -38,7 +38,27 @@ To use Nox inside your layouts you have to follow this steps:
 
 **This configuration can be also provided programmatically. Take a look to the sample project to find some samples**.
 
+* **3** - Create a List<NoxItem> and invoke the method **showNoxItems** in your NoxView instance:
+
+```java
+
+  List<NoxItem> noxItems = new ArrayList<NoxItem>();
+  noxItems.add(new NoxItem("http://api.randomuser.me/portraits/thumb/1.jpg"));
+  noxView.showNoxItems(noxItems);
+
+```
+
+If you've added a new NoxItem to your list and you want to redraw your NoxView you can use **notifyDataSetChanged** method:
+
+```java
+
+   noxView.notifyDataSetChanged();
+   
+```
+
 If you are going to download any resource from internet remember to add the internet permission to your AndroidManifest.
+
+**To be able to configure a custom Shape implementation review [MainActivity][11] class.**
 
 Add it to your project
 ----------------------
@@ -118,3 +138,4 @@ License
 [8]: https://github.com/junit-team/junit
 [9]: https://github.com/mockito/mockito
 [10]: https://github.com/square/picasso
+[11]: https://github.com/pedrovgs/Nox/blob/master/sample/src/main/java/com/github/pedrovgs/nox/sample/MainActivity.java
